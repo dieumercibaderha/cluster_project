@@ -1,0 +1,101 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% trans "CLUSTER SECURITE ALIMENTAIRE || Profile Details" %}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo-abbr.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}" />
+</head>
+<body>
+    <main class="nxl-container" style="margin-left:0; padding-top:24px;">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">{% trans "Profile Details" %}</h4>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'account_settings' %}" class="btn btn-outline-primary">{% trans "Account Settings" %}</a>
+                    <a href="{% url 'index' %}" class="btn btn-primary">{% trans "Back to Dashboard" %}</a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <img src="{% if user_obj.Photo %}{{ user_obj.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans 'user-image' %}" class="rounded-circle mb-3" style="width:96px;height:96px;object-fit:cover;" />
+                            <h5 class="mb-1">{% if user_obj.get_full_name %}{{ user_obj.get_full_name }}{% else %}{{ user_obj.username }}{% endif %}</h5>
+                            <p class="text-muted mb-2">{{ user_obj.email|default:"-" }}</p>
+                            <span class="badge {% if user_obj.admin or user_obj.is_superuser or user_obj.is_staff %}bg-soft-success text-success{% else %}bg-soft-primary text-primary{% endif %}">
+                                {% if user_obj.admin or user_obj.is_superuser or user_obj.is_staff %}{% trans "ADMIN" %}{% else %}{% trans "USER" %}{% endif %}
+                            </span>
+                            <span class="badge {% if user_obj.is_active %}bg-soft-success text-success{% else %}bg-soft-danger text-danger{% endif %} ms-1">
+                                {% if user_obj.is_active %}{% trans "Active" %}{% else %}{% trans "Disabled" %}{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="card-title mb-0">{% trans "User Information" %}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6"><strong>{% trans "Username" %}:</strong> {{ user_obj.username }}</div>
+                                <div class="col-md-6"><strong>{% trans "First Name" %}:</strong> {{ user_obj.first_name|default:"-" }}</div>
+                                <div class="col-md-6"><strong>{% trans "Last Name" %}:</strong> {{ user_obj.last_name|default:"-" }}</div>
+                                <div class="col-md-6"><strong>{% trans "Email" %}:</strong> {{ user_obj.email|default:"-" }}</div>
+                                <div class="col-md-6"><strong>{% trans "Organisation" %}:</strong> {{ user_obj.Organisation|default:"-" }}</div>
+                                <div class="col-md-6"><strong>{% trans "Fonction" %}:</strong> {{ user_obj.Fonction|default:"-" }}</div>
+                                <div class="col-md-6"><strong>{% trans "Date Joined" %}:</strong> {{ user_obj.date_joined|date:"d/m/Y H:i" }}</div>
+                                <div class="col-md-6"><strong>{% trans "Last Login" %}:</strong> {{ user_obj.last_login|date:"d/m/Y H:i"|default:"-" }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="card-title mb-0">{% trans "Recent Activities" %}</h6>
+                            <a href="{% url 'activites' %}?mine=1" class="btn btn-sm btn-light">{% trans "See All" %}</a>
+                        </div>
+                        <div class="card-body">
+                            {% if recent_activities %}
+                                <div class="table-responsive">
+                                    <table class="table table-sm align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>{% trans "Titre" %}</th>
+                                                <th>{% trans "Projet" %}</th>
+                                                <th>{% trans "Zone" %}</th>
+                                                <th>{% trans "Date" %}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in recent_activities %}
+                                            <tr>
+                                                <td>{{ item.Titre|default:"-" }}</td>
+                                                <td>{{ item.Projet.titre|default:"-" }}</td>
+                                                <td>{{ item.zone.nom|default:"-" }}</td>
+                                                <td>{{ item.dates|date:"d/m/Y H:i" }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <p class="text-muted mb-0">{% trans "No activity found for this user." %}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

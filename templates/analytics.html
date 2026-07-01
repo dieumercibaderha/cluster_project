@@ -1,0 +1,3619 @@
+﻿{% load i18n %}
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}">
+
+
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="keyword" content="">
+
+    <meta name="author" content="CLUSTER SECURITE ALIMENTAIRE">
+
+    <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
+
+    <!--! BEGIN: Apps Title-->
+
+    <title>{% trans "CLUSTER SECURITE ALIMENTAIRE || Analytics" %}</title>
+
+    <!--! END:  Apps Title-->
+
+    <!--! BEGIN: Favicon-->
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo-abbr.png' %}">
+
+    <!--! END: Favicon-->
+
+    <!--! BEGIN: Bootstrap CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <!--! END: Bootstrap CSS-->
+
+    <!--! BEGIN: Vendors CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/daterangepicker.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/jquery-jvectormap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2-theme.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/jquery.time-to.min.css' %}">
+
+    <!--! END: Vendors CSS-->
+
+    <!--! BEGIN: Custom CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/language-switcher-fix.css' %}" />
+
+    <!--! END: Custom CSS-->
+
+    <!--! HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries !-->
+
+    <!--! WARNING: Respond.js doesn"t work if you view the page via file: !-->
+
+    <!--[if lt IE 9]>
+
+			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+
+			<script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+		<![endif]-->
+
+</head>
+
+
+
+<body>
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Navigation Manu !-->
+
+    <!--! ================================================================ !-->
+
+    <nav class="nxl-navigation">
+
+        <div class="navbar-wrapper">
+
+            <div class="m-header">
+
+                <a href="{% url 'index' %}" class="b-brand">
+
+                    <!-- ========   change your logo hear   ============ -->
+
+                    <img src="{% static 'assets/images/logo-full.png' %}" alt="" class="logo logo-lg" style="height: 42px; width: auto; max-width: 100%; object-fit: contain;">
+
+                    <img src="{% static 'assets/images/logo-abbr.png' %}" alt="" class="logo logo-sm">
+
+                </a>
+
+            </div>
+
+            <div class="navbar-content">
+
+                <ul class="nxl-navbar">
+
+                    <li class="nxl-item nxl-caption">
+
+                        <label>{% trans "Navigation" %}</label>
+
+                    </li>
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-airplay"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Dashboards" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'index' %}">{% trans "Accueil" %}</a></li>
+
+                            <li class="nxl-item d-none"><a class="nxl-link" href="{% url 'analytics' %}">{% trans "Analytics" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-cast"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Reports" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_project' %}">{% trans "Project Report" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_timesheets' %}">{% trans "Rapport des activités" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-send"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Applications" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'apps_email' %}">{% trans "Email" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'activites' %}">{% trans "Activités" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'gestion_zones' %}">{% trans "Zones" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'type_activites' %}">{% trans "Type d'activités" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-dollar-sign"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'partenaires' %}">{% trans "Partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Utilisateurs" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'utilisateurs' %}">{% trans "Utilisateurs" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-alert-circle"></i></span>
+
+                            <span class="nxl-mtext">{% trans "categorie_partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'categorie_partenaires' %}">{% trans "categorie_partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'creation_categorie_partenaire' %}">{% trans "categorie_partenaires Create" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Projets" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects' %}">{% trans "Projets" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects_create' %}">{% trans "Creer projet" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    
+
+                    
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-power"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Authentification" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            
+
+                            <li class="nxl-item nxl-hasmenu">
+
+                                <a href="javascript:void(0);" class="nxl-link">
+
+                                    <span class="nxl-mtext">{% trans "Reset Pass" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                                </a>
+
+                                <ul class="nxl-submenu">
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"><a class="nxl-link" href="{% url 'auth_reset_creative' %}">{% trans "Creatif" %}</a></li>
+
+                                </ul>
+
+                            </li>
+
+                            
+
+                            
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End]  Navigation Manu !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Header !-->
+
+    <!--! ================================================================ !-->
+
+    <header class="nxl-header">
+
+        <div class="header-wrapper">
+
+            <!--! [Start] Header Left !-->
+
+            <div class="header-left d-flex align-items-center gap-4">
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+
+                    <div class="hamburger hamburger--arrowturn">
+
+                        <div class="hamburger-box">
+
+                            <div class="hamburger-inner"></div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <!--! [Start] nxl-navigation-toggle !-->
+
+                <div class="nxl-navigation-toggle">
+
+                    <a href="javascript:void(0);" id="menu-mini-button">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
+
+                        <i class="feather-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-navigation-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu-toggle !-->
+
+                <div class="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
+
+                    <a href="javascript:void(0);" id="nxl-lavel-mega-menu-open">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-lavel-mega-menu-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu !-->
+
+            </div>
+
+            <!--! [End] Header Left !-->
+
+            <!--! [Start] Header Right !-->
+
+            <div class="header-right ms-auto">
+
+                <div class="d-flex align-items-center">
+
+                    {% get_available_languages as LANGUAGES %}
+
+                    {% get_language_info_list for LANGUAGES as languages %}
+
+                    {% get_current_language as LANGUAGE_CODE %}
+
+                    <div class="dropdown nxl-h-item nxl-header-language d-flex">
+
+                        <a href="javascript:void(0);" class="nxl-head-link me-0 nxl-language-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+
+                            <img src="{% static 'assets/vendors/img/flags/4x3/' %}{% if LANGUAGE_CODE == 'en' %}us{% else %}{{ LANGUAGE_CODE }}{% endif %}.svg" alt="{{ LANGUAGE_CODE }}" class="img-fluid wd-20" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-language-dropdown">
+
+                            <div class="dropdown-divider mt-0"></div>
+
+                            <div class="language-items-wrapper">
+
+                                <div class="select-language px-4 py-2 hstack justify-content-between gap-4">
+
+                                    <div class="lh-lg">
+
+                                        <h6 class="mb-0">{% trans "Select Language" %}</h6>
+
+                                        <p class="fs-11 text-muted mb-0">{% blocktrans count counter=languages|length %}{{ counter }} language available{% plural %}{{ counter }} languages available{% endblocktrans %}</p>
+
+                                    </div>
+
+                                    <a href="javascript:void(0);" class="avatar-text avatar-md" data-bs-toggle="tooltip" title="{% trans 'Add Language' %}">
+
+                                        <i class="feather-plus"></i>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <div class="row px-4 pt-3">
+
+                                    {% for language in languages %}
+
+                                    <div class="col-sm-4 col-6 language_select {% if language.code == LANGUAGE_CODE %}active{% endif %}">
+
+                                        <form action="{% url 'set_language' %}" method="post" style="display: contents;">
+
+                                            {% csrf_token %}
+
+                                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                                            <input name="language" type="hidden" value="{{ language.code }}">
+
+                                            <button type="submit" class="d-flex align-items-center gap-2" style="background:none; border:none; padding:0; width:100%; text-align:left; cursor: pointer;">
+
+                                                <div class="avatar-image avatar-sm">
+
+                                                    <img src="{% static 'assets/vendors/img/flags/1x1/' %}{% if language.code == 'en' %}us{% else %}{{ language.code }}{% endif %}.svg" alt="{{ language.code }}" class="img-fluid" />
+
+                                                </div>
+
+                                                <span>{{ language.name_local|capfirst }}</span>
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="nxl-h-item d-none d-sm-flex">
+
+                        <div class="full-screen-switcher">
+
+                            <a href="javascript:void(0);" class="nxl-head-link me-0" onclick="$('body').fullScreenHelper('toggle');">
+
+                                <i class="feather-maximize maximize"></i>
+
+                                <i class="feather-minimize minimize"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    
+
+                    <div class="dropdown nxl-h-item">
+
+                        <a class="nxl-head-link me-3" data-bs-toggle="dropdown" href="#" role="button" data-bs-auto-close="outside">
+
+                            <i class="feather-bell"></i>
+
+                            <span class="badge bg-danger nxl-h-badge">{{ nombre_notifications_du_jour|default:0 }}</span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-notifications-menu">
+
+                            <div class="d-flex justify-content-between align-items-center notifications-head">
+
+                                <h6 class="fw-bold text-dark mb-0">{% trans "Notifications" %}</h6>
+
+                                <a href="javascript:void(0);" class="fs-11 text-success text-end ms-auto" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}">
+
+                                    <i class="feather-check"></i>
+
+                                    <span>{% trans "Make as Read" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            {% for notification in notifications_du_jour %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static notification.avatar %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span class="fw-semibold text-dark">{{ notification.titre }}</span> {{ notification.description }}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{{ notification.date_affichage }}</div>
+
+                                        <div class="d-flex align-items-center float-end gap-2">
+
+                                            <a href="javascript:void(0);" class="d-block wd-8 ht-8 rounded-circle bg-gray-300" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}"></a>
+
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" title="{% trans "Remove" %}">
+
+                                                <i class="feather-x fs-12"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static 'assets/images/avatar/1.png' %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"><span class="fw-semibold text-dark">{% trans "Aucune notification" %}</span> {% trans "Aucune activité ni projet aujourd'hui." %}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{% trans "Aujourd'hui" %}</div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                            <div class="text-center notifications-footer">
+
+                                <a href="javascript:void(0);" class="fs-13 fw-semibold text-dark">{% trans "Toutes les notifications" %}</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+<div class="dropdown nxl-h-item">
+
+                        <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
+
+                            <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar me-0" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
+
+                            <div class="dropdown-header">
+
+                                <div class="d-flex align-items-center">
+
+                                    <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar" />
+
+                                    <div>
+
+                                        <h6 class="text-dark mb-0">{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="badge bg-soft-success text-success ms-1">{% if request.user.is_superuser or request.user.is_staff %}{% trans "ADMIN" %}{% else %}{% trans "USER" %}{% endif %}</span></h6>
+
+                                        <span class="fs-12 fw-medium text-muted">{{ request.user.email|default:"-" }}</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="dropdown">
+
+                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="dropdown">
+
+                                    <span class="hstack">
+
+                                        <i class="wd-10 ht-10 border border-2 border-gray-1 {% if request.user.is_active %}bg-success{% else %}bg-danger{% endif %} rounded-circle me-2"></i>
+
+                                        <span>{% if request.user.is_active %}{% trans "Active" %}{% else %}{% trans "Disabled" %}{% endif %}</span>
+
+                                    </span>
+
+                                    <i class="feather-chevron-right ms-auto me-0"></i>
+
+                                </a>
+
+                                
+
+                            </div>
+
+                            <a href="{% url 'account_settings' %}" class="dropdown-item">
+
+                                <i class="feather-settings"></i>
+
+                                <span>{% trans "Account Settings" %}</span>
+
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a href="{% url 'auth_logout' %}" class="dropdown-item">
+
+                                <i class="feather-log-out"></i>
+
+                                <span>{% trans "Logout" %}</span>
+
+                            </a>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--! [End] Header Right !-->
+
+        </div>
+
+            <!--! [End] Header Right !-->
+
+        </div>
+
+    </header>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Header !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Main Content !-->
+
+    <!--! ================================================================ !-->
+
+    <main class="nxl-container">
+
+        <div class="nxl-content">
+
+            <!-- [ page-header ] start -->
+
+            <div class="page-header">
+
+                <div class="page-header-left d-flex align-items-center">
+
+                    <div class="page-header-title">
+
+                        <h5 class="m-b-10">{% trans "Dashboard" %}</h5>
+
+                    </div>
+
+                    <ul class="breadcrumb">
+
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+
+                        <li class="breadcrumb-item">{% trans "Analytics" %}</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="page-header-right ms-auto">
+
+                    <div class="page-header-right-items">
+
+                        <div class="d-flex d-md-none">
+
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+
+                                <i class="feather-arrow-left me-2"></i>
+
+                                <span>{% trans "Back" %}</span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+
+                            <div id="reportrange" class="reportrange-picker d-flex align-items-center">
+
+                                <span class="reportrange-picker-field"></span>
+
+                            </div>
+
+                            <div class="dropdown filter-dropdown">
+
+                                <a class="btn btn-light-brand" data-bs-toggle="dropdown" data-bs-offset="0, 10" data-bs-auto-close="outside">
+
+                                    <i class="feather-filter me-2"></i>
+
+                                    <span>{% trans "Filter" %}</span>
+
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="Role" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="Role">{% trans "Role" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="Team" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="Team">{% trans "Team" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="Email" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="Email">{% trans "Email" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="Member" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="Member">{% trans "Member" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="Recommendation" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="Recommendation">{% trans "Recommendation" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="feather-plus me-3"></i>
+
+                                        <span>{% trans "Create New" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="feather-filter me-3"></i>
+
+                                        <span>{% trans "Manage Filter" %}</span>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-md-none d-flex align-items-center">
+
+                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
+
+                            <i class="feather-align-right fs-20"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- [ page-header ] end -->
+
+            <!-- [ Main Content ] start -->
+
+            <div class="main-content">
+
+                <div class="row">
+
+                    <!-- [Mini Card] start -->
+
+                    <div class="col-12">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-body">
+
+                                <div class="hstack justify-content-between mb-4 pb-">
+
+                                    <div>
+
+                                        <h5 class="mb-1">{% trans "Email Reports" %}</h5>
+
+                                        <span class="fs-12 text-muted">{% trans "Email Campaign Reports" %}</span>
+
+                                    </div>
+
+                                    <a href="javascript:void(0);" class="btn btn-light-brand">{% trans "View Alls" %}</a>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-xxl-2 col-lg-4 col-md-6">
+
+                                        <div class="card stretch stretch-full border border-dashed border-gray-5">
+
+                                            <div class="card-body rounded-3 text-center">
+
+                                                <i class="bi bi-envelope fs-3 text-primary"></i>
+
+                                                <div class="fs-4 fw-bolder text-dark mt-3 mb-1">50,545</div>
+
+                                                <p class="fs-12 fw-medium text-muted text-spacing-1 mb-0 text-truncate-1-line">{% trans "Total Email" %}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xxl-2 col-lg-4 col-md-6">
+
+                                        <div class="card stretch stretch-full border border-dashed border-gray-5">
+
+                                            <div class="card-body rounded-3 text-center">
+
+                                                <i class="bi bi-envelope-plus fs-3 text-warning"></i>
+
+                                                <div class="fs-4 fw-bolder text-dark mt-3 mb-1">25,000</div>
+
+                                                <p class="fs-12 fw-medium text-muted text-spacing-1 mb-0 text-truncate-1-line">{% trans "Email Sent" %}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xxl-2 col-lg-4 col-md-6">
+
+                                        <div class="card stretch stretch-full border border-dashed border-gray-5">
+
+                                            <div class="card-body rounded-3 text-center">
+
+                                                <i class="bi bi-envelope-check fs-3 text-success"></i>
+
+                                                <div class="fs-4 fw-bolder text-dark mt-3 mb-1">20,354</div>
+
+                                                <p class="fs-12 fw-medium text-muted text-spacing-1 mb-0 text-truncate-1-line">{% trans "Emails Delivered" %}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xxl-2 col-lg-4 col-md-6">
+
+                                        <div class="card stretch stretch-full border border-dashed border-gray-5">
+
+                                            <div class="card-body rounded-3 text-center">
+
+                                                <i class="bi bi-envelope-open fs-3 text-indigo"></i>
+
+                                                <div class="fs-4 fw-bolder text-dark mt-3 mb-1">12,422</div>
+
+                                                <p class="fs-12 fw-medium text-muted text-spacing-1 mb-0 text-truncate-1-line">{% trans "Emails Opened" %}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xxl-2 col-lg-4 col-md-6">
+
+                                        <div class="card stretch stretch-full border border-dashed border-gray-5">
+
+                                            <div class="card-body rounded-3 text-center">
+
+                                                <i class="bi bi-envelope-heart fs-3 text-teal"></i>
+
+                                                <div class="fs-4 fw-bolder text-dark mt-3 mb-1">6,248</div>
+
+                                                <p class="fs-12 fw-medium text-muted text-spacing-1 mb-0 text-truncate-1-line">{% trans "Emails Clicked" %}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xxl-2 col-lg-4 col-md-6">
+
+                                        <div class="card stretch stretch-full border border-dashed border-gray-5">
+
+                                            <div class="card-body rounded-3 text-center">
+
+                                                <i class="bi bi-envelope-slash fs-3 text-danger"></i>
+
+                                                <div class="fs-4 fw-bolder text-dark mt-3 mb-1">2,047</div>
+
+                                                <p class="fs-12 fw-medium text-muted text-spacing-1 mb-0 text-truncate-1-line">{% trans "Emails Bounce" %}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Mini Card] end -->
+
+                    <!-- [Visitors Overview] start -->
+
+                    <div class="col-xxl-8">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-header">
+
+                                <h5 class="card-title">{% trans "Visitors Overview" %}</h5>
+
+                                <div class="card-header-action">
+
+                                    <div class="card-header-btn">
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Collapse/Expand" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-gray-300" data-bs-toggle="collapse"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Delete" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Refresh" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Maximize/Minimize" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown">
+
+                                        <a href="#" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+
+                                            <div data-bs-toggle="tooltip" title="{% trans "Options" %}">
+
+                                                <i class="feather-more-vertical"></i>
+
+                                            </div>
+
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end">
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>{% trans "New" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>{% trans "Event" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>{% trans "Snoozed" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>{% trans "Deleted" %}</a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>{% trans "Settings" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>{% trans "Tips & Tricks" %}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body custom-card-action">
+
+                                <div id="visitors-overview-statistics-chart"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Visitors Overview] end -->
+
+                    <!-- [Browser States] start -->
+
+                    <div class="col-xxl-4">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-header">
+
+                                <h5 class="card-title">{% trans "Browser States" %}</h5>
+
+                                <div class="card-header-action">
+
+                                    <div class="card-header-btn">
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Collapse/Expand" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-gray-300" data-bs-toggle="collapse"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Delete" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Refresh" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Maximize/Minimize" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown">
+
+                                        <a href="#" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+
+                                            <div data-bs-toggle="tooltip" title="{% trans "Options" %}">
+
+                                                <i class="feather-more-vertical"></i>
+
+                                            </div>
+
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end">
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>{% trans "New" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>{% trans "Event" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>{% trans "Snoozed" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>{% trans "Deleted" %}</a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>{% trans "Settings" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>{% trans "Tips & Tricks" %}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body custom-card-action p-0">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover mb-0">
+
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-chrome fs-16 text-primary me-2"></i>
+
+                                                        <span>{% trans "Google Chrome" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">90%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-success" style="width: 90%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-firefox-browser fs-16 text-warning me-2"></i>
+
+                                                        <span>{% trans "Mozila Firefox" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">76%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-primary" style="width: 76%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-safari fs-16 text-info me-2"></i>
+
+                                                        <span>{% trans "Apple Safari" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">50%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-warning" style="width: 50%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-edge fs-16 text-success me-2"></i>
+
+                                                        <span>{% trans "Edge Browser" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">20%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-success" style="width: 20%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-opera fs-16 text-danger me-2"></i>
+
+                                                        <span>{% trans "Opera mini" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">15%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-danger" style="width: 15%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-internet-explorer fs-16 text-teal me-2"></i>
+
+                                                        <span>{% trans "Internet Explorer" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">12%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-teal" style="width: 12%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);">
+
+                                                        <i class="fa-brands fa-octopus-deploy fs-16 text-dark me-2"></i>
+
+                                                        <span>{% trans "Others Browser" %}</span>
+
+                                                    </a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="text-end d-flex align-items-center m-0">
+
+                                                        <span class="me-3">6%</span>
+
+                                                        <span class="progress w-100 ht-5">
+
+                                                            <span class="progress-bar bg-dark" style="width: 6%"></span>
+
+                                                        </span>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                            <a href="javascript:void(0);" class="card-footer fs-11 fw-bold text-uppercase text-center">{% trans "Explore Details" %}</a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Browser States] end -->
+
+                    <!-- [Mini Card] start -->
+
+                    <div class="col-xxl-3 col-md-6">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-body p-0">
+
+                                <div class="d-flex justify-content-between p-4 mb-4">
+
+                                    <div>
+
+                                        <div class="fw-bold mb-2 text-dark text-truncate-1-line">{% trans "Bounce Rate (Avg)" %}</div>
+
+                                        <div class="fs-11 text-muted">{% trans "VS 20.49% (Prev)" %}</div>
+
+                                    </div>
+
+                                    <div class="text-end">
+
+                                        <div class="fs-24 fw-bold mb-2 text-dark"><span class="counter">78.65</span>%</div>
+
+                                        <div class="fs-11 text-success">(+ 22.85%)</div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="bounce-rate"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xxl-3 col-md-6">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-body p-0">
+
+                                <div class="d-flex justify-content-between p-4 mb-4">
+
+                                    <div>
+
+                                        <div class="fw-bold mb-2 text-dark text-truncate-1-line">{% trans "Page Views (Avg)" %}</div>
+
+                                        <div class="fs-11 text-muted">{% trans "VS 36.47% (Prev)" %}</div>
+
+                                    </div>
+
+                                    <div class="text-end">
+
+                                        <div class="fs-24 fw-bold mb-2 text-dark"><span class="counter">86.37</span>%</div>
+
+                                        <div class="fs-11 text-danger">(- 34.25%)</div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="page-views"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xxl-3 col-md-6">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-body p-0">
+
+                                <div class="d-flex justify-content-between p-4 mb-4">
+
+                                    <div>
+
+                                        <div class="fw-bold mb-2 text-dark text-truncate-1-line">{% trans "Site Impressions (Avg)" %}</div>
+
+                                        <div class="fs-11 text-muted">{% trans "VS 43.67% (Prev)" %}</div>
+
+                                    </div>
+
+                                    <div class="tx-right">
+
+                                        <div class="fs-24 fw-bold mb-2 text-dark"><span class="counter">67.53</span>%</div>
+
+                                        <div class="fs-11 text-success">(+ 42.72%)</div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="site-impressions"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xxl-3 col-md-6">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-body p-0">
+
+                                <div class="d-flex justify-content-between p-4 mb-4">
+
+                                    <div>
+
+                                        <div class="fw-bold mb-2 text-dark text-truncate-1-line">{% trans "Conversions Rate (Avg)" %}</div>
+
+                                        <div class="fs-11 text-muted">{% trans "VS 22.34% (Prev)" %}</div>
+
+                                    </div>
+
+                                    <div class="tx-right">
+
+                                        <div class="fs-24 fw-bold mb-2 text-dark"><span class="counter">32.53</span>%</div>
+
+                                        <div class="fs-11 text-success">(+ 35.47%)</div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="conversions-rate"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Mini Card] end -->
+
+                    <!-- [Goal Progress] start -->
+
+                    <div class="col-xxl-4">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-header">
+
+                                <h5 class="card-title">{% trans "Goal Progress" %}</h5>
+
+                                <div class="card-header-action">
+
+                                    <div class="card-header-btn">
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Delete" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Refresh" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Maximize/Minimize" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown">
+
+                                        <a href="javascript:void(0);" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+
+                                            <div data-bs-toggle="tooltip" title="{% trans "Options" %}">
+
+                                                <i class="feather-more-vertical"></i>
+
+                                            </div>
+
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end">
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>{% trans "New" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>{% trans "Event" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>{% trans "Snoozed" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>{% trans "Deleted" %}</a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>{% trans "Settings" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>{% trans "Tips & Tricks" %}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body custom-card-action">
+
+                                <div class="row g-4">
+
+                                    <div class="col-sm-6">
+
+                                        <div class="px-4 py-3 text-center border border-dashed rounded-3">
+
+                                            <div class="mx-auto mb-4">
+
+                                                <div class="goal-progress-1"></div>
+
+                                            </div>
+
+                                            <h2 class="fs-13 tx-spacing-1">{% trans "Marketing Gaol" %}</h2>
+
+                                            <div class="fs-11 text-muted text-truncate-1-line">{% trans "$550/$1250 USD" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-6">
+
+                                        <div class="px-4 py-3 text-center border border-dashed rounded-3">
+
+                                            <div class="mx-auto mb-4">
+
+                                                <div class="goal-progress-2"></div>
+
+                                            </div>
+
+                                            <h2 class="fs-13 tx-spacing-1">{% trans "Teams Goal" %}</h2>
+
+                                            <div class="fs-11 text-muted text-truncate-1-line">{% trans "$550/$1250 USD" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-6">
+
+                                        <div class="px-4 py-3 text-center border border-dashed rounded-3">
+
+                                            <div class="mx-auto mb-4">
+
+                                                <div class="goal-progress-3"></div>
+
+                                            </div>
+
+                                            <h2 class="fs-13 tx-spacing-1">{% trans "categorie_partenaires Goal" %}</h2>
+
+                                            <div class="fs-11 text-muted text-truncate-1-line">{% trans "$850/$950 USD" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-6">
+
+                                        <div class="px-4 py-3 text-center border border-dashed rounded-3">
+
+                                            <div class="mx-auto mb-4">
+
+                                                <div class="goal-progress-4"></div>
+
+                                            </div>
+
+                                            <h2 class="fs-13 tx-spacing-1">{% trans "Revenue Goal" %}</h2>
+
+                                            <div class="fs-11 text-muted text-truncate-1-line">{% trans "$5,655/$12,500 USD" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer">
+
+                                <a href="javascript:void(0);" class="btn btn-primary">{% trans "Generate Report" %}</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Goal Progress] end -->
+
+                    <!-- [Marketing Campaign] start -->
+
+                    <div class="col-xxl-8">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-header">
+
+                                <h5 class="card-title">{% trans "Marketing Campaign" %}</h5>
+
+                                <div class="card-header-action">
+
+                                    <div class="card-header-btn">
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Collapse/Expand" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-gray-300" data-bs-toggle="collapse"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Delete" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Refresh" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Maximize/Minimize" %}">
+
+                                            <a href="#" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown">
+
+                                        <a href="#" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+
+                                            <div data-bs-toggle="tooltip" title="{% trans "Options" %}">
+
+                                                <i class="feather-more-vertical"></i>
+
+                                            </div>
+
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end">
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>{% trans "New" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>{% trans "Event" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>{% trans "Snoozed" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>{% trans "Deleted" %}</a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>{% trans "Settings" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>{% trans "Tips & Tricks" %}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body custom-card-action p-0">
+
+                                <div id="campaign-alytics-bar-chart"></div>
+
+                            </div>
+
+                            <div class="card-footer">
+
+                                <div class="row g-4">
+
+                                    <div class="col-lg-3">
+
+                                        <div class="p-3 border border-dashed rounded">
+
+                                            <div class="fs-12 text-muted mb-1">{% trans "Reach" %}</div>
+
+                                            <h6 class="fw-bold text-dark">5,486</h6>
+
+                                            <div class="progress mt-2 ht-3">
+
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 81%"></div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-3">
+
+                                        <div class="p-3 border border-dashed rounded">
+
+                                            <div class="fs-12 text-muted mb-1">{% trans "Opened" %}</div>
+
+                                            <h6 class="fw-bold text-dark">42.75%</h6>
+
+                                            <div class="progress mt-2 ht-3">
+
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 82%"></div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-3">
+
+                                        <div class="p-3 border border-dashed rounded">
+
+                                            <div class="fs-12 text-muted mb-1">{% trans "Clicked" %}</div>
+
+                                            <h6 class="fw-bold text-dark">38.68%</h6>
+
+                                            <div class="progress mt-2 ht-3">
+
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 68%"></div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-3">
+
+                                        <div class="p-3 border border-dashed rounded">
+
+                                            <div class="fs-12 text-muted mb-1">{% trans "Conversion" %}</div>
+
+                                            <h6 class="fw-bold text-dark">16.68%</h6>
+
+                                            <div class="progress mt-2 ht-3">
+
+                                                <div class="progress-bar bg-dark" role="progressbar" style="width: 75%"></div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Marketing Campaign] end -->
+
+                    <!-- [Project Remainders] start -->
+
+                    <div class="col-xxl-8">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-header">
+
+                                <h5 class="card-title">{% trans "Project Remainders" %}</h5>
+
+                                <div class="card-header-action">
+
+                                    <div class="card-header-btn">
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Delete" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Refresh" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Maximize/Minimize" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown">
+
+                                        <a href="javascript:void(0);" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+
+                                            <div data-bs-toggle="tooltip" title="{% trans "Options" %}">
+
+                                                <i class="feather-more-vertical"></i>
+
+                                            </div>
+
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end">
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>{% trans "New" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>{% trans "Event" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>{% trans "Snoozed" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>{% trans "Deleted" %}</a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>{% trans "Settings" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>{% trans "Tips & Tricks" %}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body custom-card-action p-0">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover mb-0">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th scope="col">{% trans "Name" %}</th>
+
+                                                <th scope="col">{% trans "Status" %}</th>
+
+                                                <th scope="col">{% trans "Remaining" %}</th>
+
+                                                <th scope="col">{% trans "Stage" %}</th>
+
+                                                <th scope="col" class="text-end">{% trans "Action" %}</th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <div class="hstack gap-2">
+
+                                                        <span class="wd-10 ht-10 bg-gray-400 rounded-circle d-inline-block me-2 lh-base"></span>
+
+                                                        <div class="border-3 border-start rounded ps-3">
+
+                                                            <a href="javascript:void(0);" class="mb-2 d-block">
+
+                                                                <span>{% trans "Accueil Dashboard Redesign" %}</span>
+
+                                                            </a>
+
+                                                            <p class="fs-12 text-muted mb-0">{% trans 'Management of project under "CLUSTER SECURITE ALIMENTAIRE" brand' %}</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="badge bg-soft-primary text-primary">{% trans "In Prograss" %}</span>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div data-time-countdown="countdown_1"></div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div class="hstack gap-1">
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-gray-300 rounded-pill"></div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md ms-auto">
+
+                                                        <i class="feather-arrow-right"></i>
+
+                                                    </a>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <div class="hstack gap-2">
+
+                                                        <span class="wd-10 ht-10 bg-gray-400 rounded-circle d-inline-block me-2 lh-base"></span>
+
+                                                        <div class="border-3 border-start rounded ps-3">
+
+                                                            <a href="javascript:void(0);" class="mb-2 d-block">
+
+                                                                <span>{% trans "CLUSTER SECURITE ALIMENTAIRE Accueil Admin Project" %}</span>
+
+                                                            </a>
+
+                                                            <p class="fs-12 text-muted mb-0">{% trans "CLUSTER SECURITE ALIMENTAIRE Accueil Dashbaord Project" %}</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="badge bg-soft-info text-info">{% trans "Updading" %}</span>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div data-time-countdown="countdown_2"></div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div class="hstack gap-1">
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-gray-300 rounded-pill"></div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md ms-auto">
+
+                                                        <i class="feather-arrow-right"></i>
+
+                                                    </a>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <div class="hstack gap-2">
+
+                                                        <span class="wd-10 ht-10 bg-gray-400 rounded-circle d-inline-block me-2 lh-base"></span>
+
+                                                        <div class="border-3 border-start rounded ps-3">
+
+                                                            <a href="javascript:void(0);" class="mb-2 d-block">
+
+                                                                <span>{% trans "Website Redesign for Nike" %}</span>
+
+                                                            </a>
+
+                                                            <p class="fs-12 text-muted mb-0">{% trans "Website Redesign for Nike" %}</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="badge bg-soft-danger text-danger">{% trans "Upcoming" %}</span>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div data-time-countdown="countdown_3"></div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div class="hstack gap-1">
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-gray-300 rounded-pill"></div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md ms-auto">
+
+                                                        <i class="feather-arrow-right"></i>
+
+                                                    </a>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <div class="hstack gap-2">
+
+                                                        <span class="wd-10 ht-10 bg-gray-400 rounded-circle d-inline-block me-2 lh-base"></span>
+
+                                                        <div class="border-3 border-start rounded ps-3">
+
+                                                            <a href="javascript:void(0);" class="mb-2 d-block">
+
+                                                                <span>{% trans "CLUSTER SECURITE ALIMENTAIRE Accueil Dashbaord Project" %}</span>
+
+                                                            </a>
+
+                                                            <p class="fs-12 text-muted mb-0">{% trans "CLUSTER SECURITE ALIMENTAIRE Accueil Dashbaord Project" %}</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="badge bg-soft-teal text-teal">{% trans "Submitted" %}</span>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div data-time-countdown="countdown_4"></div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div class="hstack gap-1">
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-gray-300 rounded-pill"></div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md ms-auto">
+
+                                                        <i class="feather-arrow-right"></i>
+
+                                                    </a>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <div class="hstack gap-2">
+
+                                                        <span class="wd-10 ht-10 bg-gray-400 rounded-circle d-inline-block me-2 lh-base"></span>
+
+                                                        <div class="border-3 border-start rounded ps-3">
+
+                                                            <a href="javascript:void(0);" class="mb-2 d-block">
+
+                                                                <span>{% trans "Update User Flows with UX Feedback" %}</span>
+
+                                                            </a>
+
+                                                            <p class="fs-12 text-muted mb-0">{% trans "Update User Flows with UX Feedback" %}</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span class="badge bg-soft-warning text-warning">{% trans "Working" %}</span>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div data-time-countdown="countdown_5"></div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div class="hstack gap-1">
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-success rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-warning rounded-pill opacity-75"></div>
+
+                                                        <div class="wd-15 ht-4 bg-gray-300 rounded-pill"></div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md ms-auto">
+
+                                                        <i class="feather-arrow-right"></i>
+
+                                                    </a>
+
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                                <div class="card-footer">
+
+                                    <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
+
+                                        <li>
+
+                                            <a href="javascript:void(0);"><i class="bi bi-arrow-left"></i></a>
+
+                                        </li>
+
+                                        <li><a href="javascript:void(0);" class="active">1</a></li>
+
+                                        <li><a href="javascript:void(0);">2</a></li>
+
+                                        <li>
+
+                                            <a href="javascript:void(0);"><i class="bi bi-dot"></i></a>
+
+                                        </li>
+
+                                        <li><a href="javascript:void(0);">8</a></li>
+
+                                        <li><a href="javascript:void(0);">9</a></li>
+
+                                        <li>
+
+                                            <a href="javascript:void(0);"><i class="bi bi-arrow-right"></i></a>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Project Remainders] end -->
+
+                    <!-- [Social Statistics] start -->
+
+                    <div class="col-xxl-4">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-header">
+
+                                <h5 class="card-title">{% trans "Social Statistics" %}</h5>
+
+                                <div class="card-header-action">
+
+                                    <div class="card-header-btn">
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Delete" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Refresh" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+
+                                        </div>
+
+                                        <div data-bs-toggle="tooltip" title="{% trans "Maximize/Minimize" %}">
+
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown">
+
+                                        <a href="javascript:void(0);" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+
+                                            <div data-bs-toggle="tooltip" title="{% trans "Options" %}">
+
+                                                <i class="feather-more-vertical"></i>
+
+                                            </div>
+
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end">
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>{% trans "New" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>{% trans "Event" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>{% trans "Snoozed" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>{% trans "Deleted" %}</a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>{% trans "Settings" %}</a>
+
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>{% trans "Tips & Tricks" %}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div id="social-radar-chart"></div>
+
+                            </div>
+
+                            <a href="javascript:void(0);" class="card-footer fs-11 fw-bold text-uppercase text-center">{% trans "Explore Details" %}</a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- [Social Statistics] end -->
+
+                </div>
+
+            </div>
+
+            <!-- [ Main Content ] end -->
+
+        </div>
+
+        <!-- [ Footer ] start -->
+
+        <footer class="footer">
+
+            <p class="fs-11 text-muted fw-medium text-uppercase mb-0 copyright">
+
+                <span>{% trans "Copyright ©" %}</span>
+
+                <script>
+
+                    document.write(new Date().getFullYear());
+
+                </script>
+
+            </p>
+
+            <p><span>{% trans "By:" %} <a target="_blank" href="{% url 'index' %}" target="_blank">{% trans "CLUSTER SECURITE ALIMENTAIRE" %}</a></span> ââ‚¬Â¢ <span>{% trans "Distributed by:" %} <a target="_blank" href="{% url 'index' %}" target="_blank">{% trans "CLUSTER SECURITE ALIMENTAIRE" %}</a></span></p>
+
+            <div class="d-flex align-items-center gap-4">
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Help" %}</a>
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Terms" %}</a>
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Privacy" %}</a>
+
+            </div>
+
+        </footer>
+
+        <!-- [ Footer ] end -->
+
+    </main>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Main Content !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Search Modal !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="modal fade-scale" id="searchModal" aria-hidden="true" tabindex="-1">
+
+        <div class="modal-dialog modal-lg modal-dialog-top modal-dialog-scrollable">
+
+            <div class="modal-content">
+
+                <div class="modal-header search-form py-0">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="feather-search fs-4 text-muted"></i>
+
+                        </span>
+
+                        <input type="text" class="form-control search-input-field" placeholder="{% trans "Search..." %}">
+
+                        <span class="input-group-text">
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Close" %}"></button>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="searching-for mb-5">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "I'm searching for..." %}</h4>
+
+                        <div class="row g-1">
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-compass"></i>
+
+                                    <span>{% trans "Recent" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-command"></i>
+
+                                    <span>{% trans "Command" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-users"></i>
+
+                                    <span>{% trans "Peoples" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-file"></i>
+
+                                    <span>{% trans "Files" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-video"></i>
+
+                                    <span>{% trans "Medias" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <span>{% trans "More" %}</span>
+
+                                    <i class="feather-chevron-down"></i>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="recent-result mb-5">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "Recnet" %} <span class="badge small bg-gray-200 rounded ms-1 text-dark">3</span></h4>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-airplay fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Accueil dashboard redesign" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">/<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-file-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Create new eocument" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "N /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-user-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Invite project colleagues" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "P /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="command-result mb-5">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "Command" %} <span class="badge small bg-gray-200 rounded ms-1 text-dark">5</span></h4>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-user fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "My profile" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "P /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-users fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Team profile" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "T /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-user-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Invite colleagues" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "I /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-briefcase fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Create new project" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "CP /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-life-buoy fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Support center" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "SC /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="file-result mb-4">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "Files" %} <span class="badge small bg-gray-200 rounded ms-1 text-dark">3</span></h4>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-folder-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Accueil Desing Project" %} <span class="fs-12 fw-normal text-muted">{% trans "(56.74 MB)" %}</span></div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="file-download"><i class="feather-download"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-folder-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Admin Dashboard Project" %} <span class="fs-12 fw-normal text-muted">{% trans "(46.83 MB)" %}</span></div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="file-download"><i class="feather-download"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-folder-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Accueil Dashboard Project" %} <span class="fs-12 fw-normal text-muted">{% trans "(68.59 MB)" %}</span></div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="file-download"><i class="feather-download"></i></a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Search Modal !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Language Select !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="modal fade-scale" id="languageSelectModal" aria-hidden="true" aria-labelledby="languageSelectModalLabel" tabindex="-1">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="languageSelectModalLabel">{% trans "Select Language" %}</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Close" %}"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/sa.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Arabic" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/bd.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Bengali" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ch.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Chinese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/hr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Croatian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/dk.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Danish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/nl.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Dutch" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select active">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/us.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "English" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/fi.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Filipino" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/fr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "French" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/de.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "German" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/il.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Hebrew" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/in.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Hindi" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/id.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Indonesian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/it.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Italian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/jp.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Japanese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/kr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Korean" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ir.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Persian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/pt.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Portuguese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ru.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Russian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/es.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Spanish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/sv.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Swedish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/tr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Turkish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/pk.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Urdo" %}</span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/vi.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Vietnamese" %}</span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Language Select !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Downloading Toast !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="position-fixed" style="right: 5px; bottom: 5px; z-index: 999999">
+
+        <div id="toast" class="toast bg-black hide" data-bs-delay="3000" role="alert" aria-live="assertive" aria-atomic="true">
+
+            <div class="toast-header px-3 bg-transparent d-flex align-items-center justify-content-between border-bottom border-light border-opacity-10">
+
+                <div class="text-white mb-0 mr-auto">{% trans "Downloading..." %}</div>
+
+                <a href="javascript:void(0)" class="ms-2 mb-1 close fw-normal" data-bs-dismiss="toast" aria-label="{% trans "Close" %}">
+
+                    <span class="text-white">{% trans "&times;" %}</span>
+
+                </a>
+
+            </div>
+
+            <div class="toast-body p-3 text-white">
+
+                <h6 class="fs-13 text-white">{% trans "Project.zip" %}</h6>
+
+                <span class="text-light fs-11">{% trans "4.2mb of 5.5mb" %}</span>
+
+            </div>
+
+            <div class="toast-footer p-3 pt-0 border-top border-light border-opacity-10">
+
+                <div class="progress mt-3" style="height: 5px">
+
+                    <div class="progress-bar progress-bar-striped progress-bar-animated w-75 bg-dark" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! END: Downloading Toast !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Theme Customizer !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="theme-customizer">
+
+        <div class="customizer-handle">
+
+            <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
+
+                <i class="feather-settings"></i>
+
+            </a>
+
+        </div>
+
+        <div class="customizer-sidebar-wrapper">
+
+            <div class="customizer-sidebar-header px-4 ht-80 border-bottom d-flex align-items-center justify-content-between">
+
+                <h5 class="mb-0">{% trans "Theme Settings" %}</h5>
+
+                <a href="javascript:void(0);" class="cutomizer-close-trigger d-flex">
+
+                    <i class="feather-x"></i>
+
+                </a>
+
+            </div>
+
+            <div class="customizer-sidebar-body position-relative p-4" data-scrollbar-target="#psScrollbarInit">
+
+                <!--! BEGIN: [Navigation] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Navigation" %}</label>
+
+                    <div class="row g-2 theme-options-items app-navigation" id="appNavigationList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-navigation-light" name="app-navigation" value="1" data-app-navigation="app-navigation-light" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-navigation-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-navigation-dark" name="app-navigation" value="2" data-app-navigation="app-navigation-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-navigation-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Navigation] !-->
+
+                <!--! BEGIN: [Header] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set mt-5">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Header" %}</label>
+
+                    <div class="row g-2 theme-options-items app-header" id="appHeaderList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-header-light" name="app-header" value="1" data-app-header="app-header-light" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-header-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-header-dark" name="app-header" value="2" data-app-header="app-header-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-header-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Header] !-->
+
+                <!--! BEGIN: [Skins] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Skins" %}</label>
+
+                    <div class="row g-2 theme-options-items app-skin" id="appSkinList">
+
+                        <div class="col-6 text-center position-relative single-option light-button active">
+
+                            <input type="radio" class="btn-check" id="app-skin-light" name="app-skin" value="1" data-app-skin="app-skin-light">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center position-relative single-option dark-button">
+
+                            <input type="radio" class="btn-check" id="app-skin-dark" name="app-skin" value="2" data-app-skin="app-skin-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Skins] !-->
+
+                <!--! BEGIN: [Typography] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-0 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Typography" %}</label>
+
+                    <div class="row g-2 theme-options-items font-family" id="fontFamilyList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-lato" name="font-family" value="1" data-font-family="app-font-family-lato">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-lato">{% trans "Lato" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-rubik" name="font-family" value="2" data-font-family="app-font-family-rubik">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-rubik">{% trans "Rubik" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-inter" name="font-family" value="3" data-font-family="app-font-family-inter" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-inter">{% trans "Inter" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-cinzel" name="font-family" value="4" data-font-family="app-font-family-cinzel">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-cinzel">{% trans "Cinzel" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-nunito" name="font-family" value="6" data-font-family="app-font-family-nunito">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-nunito">{% trans "Nunito" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-roboto" name="font-family" value="7" data-font-family="app-font-family-roboto">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto">{% trans "Roboto" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-ubuntu" name="font-family" value="8" data-font-family="app-font-family-ubuntu">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ubuntu">{% trans "Ubuntu" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-poppins" name="font-family" value="9" data-font-family="app-font-family-poppins">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-poppins">{% trans "Poppins" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-raleway" name="font-family" value="10" data-font-family="app-font-family-raleway">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-raleway">{% trans "Raleway" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-system-ui" name="font-family" value="11" data-font-family="app-font-family-system-ui">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-system-ui">{% trans "System UI" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-noto-sans" name="font-family" value="12" data-font-family="app-font-family-noto-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-noto-sans">{% trans "Noto Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-fira-sans" name="font-family" value="13" data-font-family="app-font-family-fira-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-fira-sans">{% trans "Fira Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-work-sans" name="font-family" value="14" data-font-family="app-font-family-work-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-work-sans">{% trans "Work Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-open-sans" name="font-family" value="15" data-font-family="app-font-family-open-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-open-sans">{% trans "Open Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-maven-pro" name="font-family" value="16" data-font-family="app-font-family-maven-pro">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-maven-pro">{% trans "Maven Pro" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-quicksand" name="font-family" value="17" data-font-family="app-font-family-quicksand">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-quicksand">{% trans "Quicksand" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat" name="font-family" value="18" data-font-family="app-font-family-montserrat">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat">{% trans "Montserrat" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-josefin-sans" name="font-family" value="19" data-font-family="app-font-family-josefin-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-josefin-sans">{% trans "Josefin Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-ibm-plex-sans" name="font-family" value="20" data-font-family="app-font-family-ibm-plex-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ibm-plex-sans">{% trans "IBM Plex Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-source-sans-pro" name="font-family" value="5" data-font-family="app-font-family-source-sans-pro">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-source-sans-pro">{% trans "Source Sans Pro" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat-alt" name="font-family" value="21" data-font-family="app-font-family-montserrat-alt">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat-alt">{% trans "Montserrat Alt" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-roboto-slab" name="font-family" value="22" data-font-family="app-font-family-roboto-slab">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto-slab">{% trans "Roboto Slab" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Typography] !-->
+
+            </div>
+
+            <div class="customizer-sidebar-footer px-4 ht-60 border-top d-flex align-items-center gap-2">
+
+                <div class="flex-fill w-50">
+
+                    <a href="javascript:void(0);" class="btn btn-danger" data-style="reset-all-common-style">{% trans "Reset" %}</a>
+
+                </div>
+
+                <div class="flex-fill w-50">
+
+                    <a href="{% url 'index' %}" target="_blank" class="btn btn-primary">{% trans "Download" %}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Theme Customizer !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! Footer Script !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Vendors JS !-->
+
+    <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
+
+    <!-- vendors.min.js {always must need to be top} -->
+
+    <script src="{% static 'assets/vendors/js/daterangepicker.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/apexcharts.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/jquery.time-to.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/circle-progress.min.js' %}"></script>
+
+    <!--! END: Vendors JS !-->
+
+    <!--! BEGIN: Apps Init  !-->
+
+    <script src="{% static 'assets/js/common-init.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/analytics-init.min.js' %}"></script>
+
+    <!--! END: Apps Init !-->
+
+    <!--! BEGIN: Theme Customizer  !-->
+
+    <script src="{% static 'assets/js/theme-customizer-init.min.js' %}"></script>
+
+    <!--! END: Theme Customizer !-->
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,652 @@
+﻿{% load i18n %}
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CLUSTER SECURITE ALIMENTAIRE || {% trans "Dashboard" %}</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo-abbr.png' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}" />
+
+</head>
+
+<body>
+
+    <!--! [Start] Navigation Manu !-->
+
+    <!--! ================================================================ !-->
+
+    <nav class="nxl-navigation">
+
+        <div class="navbar-wrapper">
+
+            <div class="m-header">
+
+                <a href="{% url 'index' %}" class="b-brand">
+
+                    <img src="{% static 'assets/images/logo-full.png' %}" alt="" class="logo logo-lg" style="height: 42px; width: auto; max-width: 100%; object-fit: contain;">
+
+                    <img src="{% static 'assets/images/logo-abbr.png' %}" alt="" class="logo logo-sm">
+
+                </a>
+
+            </div>
+
+            <div class="navbar-content">
+
+                <ul class="nxl-navbar">
+
+                    <li class="nxl-item nxl-caption">
+
+                        <label>{% trans "Navigation" %}</label>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-airplay"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Dashboards" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'index' %}">{% trans "Accueil" %}</a></li>
+
+                            <li class="nxl-item d-none"><a class="nxl-link" href="{% url 'analytics' %}">{% trans "Analytics" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-cast"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Reports" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_project' %}">{% trans "Project Report" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_timesheets' %}">{% trans "Rapport des activités" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-send"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Applications" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+                            
+                            {% if user.admin %}
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'apps_email' %}">{% trans "Email" %}</a></li>
+
+                            {% endif %}
+                                
+                           
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'activites' %}">{% trans "Activités" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'gestion_zones' %}">{% trans "Zones" %}</a></li>
+                            
+                            {% if user.admin %}
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'type_activites' %}">{% trans "Type d'activités" %}</a></li>
+                            {% endif %}
+                                
+                            
+
+                        </ul>
+
+                    </li>
+
+                    
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-dollar-sign"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'partenaires' %}">{% trans "Partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>  
+                    {% endif %}
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Utilisateurs" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'utilisateurs' %}">{% trans "Utilisateurs" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-alert-circle"></i></span>
+
+                            <span class="nxl-mtext">{% trans "categorie_partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'categorie_partenaires' %}">{% trans "categorie_partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'creation_categorie_partenaire' %}">{% trans "categorie_partenaires Create" %}</a></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Projets" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects' %}">{% trans "Projets" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects_create' %}">{% trans "Creer projet" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    
+
+                    
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-power"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Authentification" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            
+
+                            <li class="nxl-item nxl-hasmenu">
+
+                                <a href="javascript:void(0);" class="nxl-link">
+
+                                    <span class="nxl-mtext">{% trans "Reset Pass" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                                </a>
+
+                                <ul class="nxl-submenu">
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"><a class="nxl-link" href="{% url 'auth_reset_creative' %}">{% trans "Creatif" %}</a></li>
+
+                                </ul>
+
+                            </li>
+
+                            
+
+                            
+
+                        </ul>
+
+                    </li>
+
+                    </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End]  Navigation Manu !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Header !-->
+
+    <!--! ================================================================ !-->
+
+    <header class="nxl-header">
+
+        <div class="header-wrapper">
+
+            <!--! [Start] Header Left !-->
+
+            <div class="header-left d-flex align-items-center gap-4">
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+
+                    <div class="hamburger hamburger--arrowturn">
+
+                        <div class="hamburger-box">
+
+                            <div class="hamburger-inner"></div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <!--! [Start] nxl-navigation-toggle !-->
+
+                <div class="nxl-navigation-toggle">
+
+                    <a href="javascript:void(0);" id="menu-mini-button">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
+
+                        <i class="feather-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-navigation-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu-toggle !-->
+
+                <div class="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
+
+                    <a href="javascript:void(0);" id="nxl-lavel-mega-menu-open">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-lavel-mega-menu-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu !-->
+
+            </div>
+
+            <!--! [End] Header Left !-->
+
+            <!--! [Start] Header Right !-->
+
+            <div class="header-right ms-auto">
+
+                <div class="d-flex align-items-center">
+
+                    {% get_available_languages as LANGUAGES %}
+
+                    {% get_language_info_list for LANGUAGES as languages %}
+
+                    {% get_current_language as LANGUAGE_CODE %}
+
+                    <div class="dropdown nxl-h-item nxl-header-language d-flex">
+
+                        <a href="javascript:void(0);" class="nxl-head-link me-0 nxl-language-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+
+                            <img src="{% static 'assets/vendors/img/flags/4x3/' %}{% if LANGUAGE_CODE == 'en' %}us{% else %}{{ LANGUAGE_CODE }}{% endif %}.svg" alt="{{ LANGUAGE_CODE }}" class="img-fluid wd-20" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-language-dropdown">
+
+                            <div class="dropdown-divider mt-0"></div>
+
+                            <div class="language-items-wrapper">
+
+                                <div class="select-language px-4 py-2 hstack justify-content-between gap-4">
+
+                                    <div class="lh-lg">
+
+                                        <h6 class="mb-0">{% trans "Select Language" %}</h6>
+
+                                        <p class="fs-11 text-muted mb-0">{% blocktrans count counter=languages|length %}{{ counter }} language available{% plural %}{{ counter }} languages available{% endblocktrans %}</p>
+
+                                    </div>
+
+                                    <a href="javascript:void(0);" class="avatar-text avatar-md" data-bs-toggle="tooltip" title="{% trans 'Add Language' %}">
+
+                                        <i class="feather-plus"></i>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <div class="row px-4 pt-3">
+
+                                    {% for language in languages %}
+
+                                    <div class="col-sm-4 col-6 language_select {% if language.code == LANGUAGE_CODE %}active{% endif %}">
+
+                                        <form action="{% url 'set_language' %}" method="post" style="display: contents;">
+
+                                            {% csrf_token %}
+
+                                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                                            <input name="language" type="hidden" value="{{ language.code }}">
+
+                                            <button type="submit" class="d-flex align-items-center gap-2" style="background:none; border:none; padding:0; width:100%; text-align:left; cursor: pointer;">
+
+                                                <div class="avatar-image avatar-sm">
+
+                                                    <img src="{% static 'assets/vendors/img/flags/1x1/' %}{% if language.code == 'en' %}us{% else %}{{ language.code }}{% endif %}.svg" alt="{{ language.code }}" class="img-fluid" />
+
+                                                </div>
+
+                                                <span>{{ language.name_local|capfirst }}</span>
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="nxl-h-item d-none d-sm-flex">
+
+                        <div class="full-screen-switcher">
+
+                            <a href="javascript:void(0);" class="nxl-head-link me-0" onclick="$('body').fullScreenHelper('toggle');">
+
+                                <i class="feather-maximize maximize"></i>
+
+                                <i class="feather-minimize minimize"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    
+
+                    <div class="dropdown nxl-h-item">
+
+                        <a class="nxl-head-link me-3" data-bs-toggle="dropdown" href="#" role="button" data-bs-auto-close="outside">
+
+                            <i class="feather-bell"></i>
+
+                            <span class="badge bg-danger nxl-h-badge">{{ nombre_notifications_du_jour|default:0 }}</span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-notifications-menu">
+
+                            <div class="d-flex justify-content-between align-items-center notifications-head">
+
+                                <h6 class="fw-bold text-dark mb-0">{% trans "Notifications" %}</h6>
+
+                                <a href="javascript:void(0);" class="fs-11 text-success text-end ms-auto" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}">
+
+                                    <i class="feather-check"></i>
+
+                                    <span>{% trans "Make as Read" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            {% for notification in notifications_du_jour %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static notification.avatar %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span class="fw-semibold text-dark">{{ notification.titre }}</span> {{ notification.description }}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{{ notification.date_affichage }}</div>
+
+                                        <div class="d-flex align-items-center float-end gap-2">
+
+                                            <a href="javascript:void(0);" class="d-block wd-8 ht-8 rounded-circle bg-gray-300" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}"></a>
+
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" title="{% trans "Remove" %}">
+
+                                                <i class="feather-x fs-12"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static 'assets/images/avatar/1.png' %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"><span class="fw-semibold text-dark">{% trans "Aucune notification" %}</span> {% trans "Aucune activité ni projet aujourd'hui." %}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{% trans "Aujourd'hui" %}</div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                            <div class="text-center notifications-footer">
+
+                                <a href="javascript:void(0);" class="fs-13 fw-semibold text-dark">{% trans "Toutes les notifications" %}</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+<div class="dropdown nxl-h-item">
+
+                        <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
+
+                            {% if user.Photo %}
+
+                                <img src="{{ user.Photo.url }}" alt="{% trans "user-image" %}" class="img-fluid user-avtar me-0" />
+
+                            <div class="dropdown-header">
+
+                                <div class="d-flex align-items-center">
+
+                                    {% if user.Photo %}
+
+                                        <img src="{{ user.Photo.url }}" alt="{% trans "user-image" %}" class="img-fluid user-avtar" />
+
+                                    {% else %}
+
+                                        <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar" />
+
+                                    {% endif %}
+
+                                    <div>
+
+                                        <h6 class="text-dark mb-0">{{ user.first_name }} {{ user.last_name }} <span class="badge bg-soft-success text-success ms-1">{% if user.is_superuser or user.is_staff %}{% trans "ADMIN" %}{% else %}{% trans "USER" %}{% endif %}</span></h6>
+
+                                        <span class="fs-12 fw-medium text-muted">{{ user.email }}</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="dropdown">
+
+                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="dropdown">
+
+                                    <span class="hstack">
+
+                                        <i class="wd-10 ht-10 border border-2 border-gray-1 {% if user.is_active %}bg-success{% else %}bg-danger{% endif %} rounded-circle me-2"></i>
+
+                                        <span>{% if user.is_active %}{% trans "Active" %}{% else %}{% trans "Disabled" %}{% endif %}</span>
+
+                                    </span>
+
+                                    <i class="feather-chevron-right ms-auto me-0"></i>
+
+                                </a>
+
+                                
+
+                            </div>
+
+                            <a href="{% url 'account_settings' %}" class="dropdown-item">
+
+                                <i class="feather-settings"></i>
+
+                                <span>{% trans "Account Settings" %}</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

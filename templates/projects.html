@@ -1,0 +1,2513 @@
+﻿{% load i18n %}
+
+?{% load static l10n %}
+
+<!DOCTYPE html>
+
+<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}">
+
+
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="keyword" content="">
+
+    <meta name="author" content="CLUSTER SECURITE ALIMENTAIRE">
+
+    <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
+
+    <!--! BEGIN: Apps Title-->
+
+    <title>{% trans "CLUSTER SECURITE ALIMENTAIRE || Projects" %}</title>
+
+    <!--! END:  Apps Title-->
+
+    <!--! BEGIN: Favicon-->
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo-abbr.png' %}"/>
+
+    <!--! END: Favicon-->
+
+    <!--! BEGIN: Bootstrap CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <!--! END: Bootstrap CSS-->
+
+    <!--! BEGIN: Vendors CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/dataTables.bs5.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2-theme.min.css' %}">
+
+    <!--! END: Vendors CSS-->
+
+    <!--! BEGIN: Custom CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/language-switcher-fix.css' %}" />
+
+    <!--! END: Custom CSS-->
+
+    <!--! HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries !-->
+
+    <!--! WARNING: Respond.js doesn"t work if you view the page via file: !-->
+
+    <!--[if lt IE 9]>
+
+			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+
+			<script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+		<![endif]-->
+
+</head>
+
+
+
+<body>
+
+    
+
+    <nav class="nxl-navigation">
+
+        <div class="navbar-wrapper">
+
+            <div class="m-header">
+
+                <a href="{% url 'index' %}" class="b-brand">
+
+                    <!-- ========   change your logo hear   ============ -->
+
+                    <img src="{% static 'assets/images/logo-full.png' %}" alt="" class="logo logo-lg" style="height: 42px; width: auto; max-width: 100%; object-fit: contain;">
+
+                    <img src="{% static 'assets/images/logo-abbr.png' %}" alt="" class="logo logo-sm">
+
+                </a>
+
+            </div>
+
+            <div class="navbar-content">
+
+                <ul class="nxl-navbar">
+
+                    <li class="nxl-item nxl-caption">
+
+                        <label>{% trans "Navigation" %}</label>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-airplay"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Dashboards" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'index' %}">{% trans "Accueil" %}</a></li>
+
+                            <li class="nxl-item d-none"><a class="nxl-link" href="{% url 'analytics' %}">{% trans "Analytics" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-cast"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Reports" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_project' %}">{% trans "Project Report" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_timesheets' %}">{% trans "Rapport des activités" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-send"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Applications" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+                            
+                            {% if user.admin %}
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'apps_email' %}">{% trans "Email" %}</a></li>
+
+                            {% endif %}
+                                
+                           
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'activites' %}">{% trans "Activités" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'gestion_zones' %}">{% trans "Zones" %}</a></li>
+                            
+                            {% if user.admin %}
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'type_activites' %}">{% trans "Type d'activités" %}</a></li>
+                            {% endif %}
+                                
+                            
+
+                        </ul>
+
+                    </li>
+
+                    
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-dollar-sign"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'partenaires' %}">{% trans "Partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>  
+                    {% endif %}
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Utilisateurs" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'utilisateurs' %}">{% trans "Utilisateurs" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-alert-circle"></i></span>
+
+                            <span class="nxl-mtext">{% trans "categorie_partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'categorie_partenaires' %}">{% trans "categorie_partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'creation_categorie_partenaire' %}">{% trans "categorie_partenaires Create" %}</a></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Projets" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects' %}">{% trans "Projets" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects_create' %}">{% trans "Creer projet" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    
+
+                    
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-power"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Authentification" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            
+
+                            <li class="nxl-item nxl-hasmenu">
+
+                                <a href="javascript:void(0);" class="nxl-link">
+
+                                    <span class="nxl-mtext">{% trans "Reset Pass" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                                </a>
+
+                                <ul class="nxl-submenu">
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"><a class="nxl-link" href="{% url 'auth_reset_creative' %}">{% trans "Creatif" %}</a></li>
+
+                                </ul>
+
+                            </li>
+
+                            
+
+                            
+
+                        </ul>
+
+                    </li>
+
+                    </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+   
+  
+
+          
+
+    <header class="nxl-header">
+
+        <div class="header-wrapper">
+
+            <!--! [Start] Header Left !-->
+
+            <div class="header-left d-flex align-items-center gap-4">
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+
+                    <div class="hamburger hamburger--arrowturn">
+
+                        <div class="hamburger-box">
+
+                            <div class="hamburger-inner"></div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <!--! [Start] nxl-navigation-toggle !-->
+
+                <div class="nxl-navigation-toggle">
+
+                    <a href="javascript:void(0);" id="menu-mini-button">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
+
+                        <i class="feather-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-navigation-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu-toggle !-->
+
+                <div class="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
+
+                    <a href="javascript:void(0);" id="nxl-lavel-mega-menu-open">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-lavel-mega-menu-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu !-->
+
+            </div>
+
+            <!--! [End] Header Left !-->
+
+            <!--! [Start] Header Right !-->
+
+            <div class="header-right ms-auto">
+
+                <div class="d-flex align-items-center">
+
+                    {% get_available_languages as LANGUAGES %}
+
+                    {% get_language_info_list for LANGUAGES as languages %}
+
+                    {% get_current_language as LANGUAGE_CODE %}
+
+                    <div class="dropdown nxl-h-item nxl-header-language d-flex">
+
+                        <a href="javascript:void(0);" class="nxl-head-link me-0 nxl-language-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+
+                            <img src="{% static 'assets/vendors/img/flags/4x3/' %}{% if LANGUAGE_CODE == 'en' %}us{% else %}{{ LANGUAGE_CODE }}{% endif %}.svg" alt="{{ LANGUAGE_CODE }}" class="img-fluid wd-20" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-language-dropdown">
+
+                            <div class="dropdown-divider mt-0"></div>
+
+                            <div class="language-items-wrapper">
+
+                                <div class="select-language px-4 py-2 hstack justify-content-between gap-4">
+
+                                    <div class="lh-lg">
+
+                                        <h6 class="mb-0">{% trans "Select Language" %}</h6>
+
+                                        <p class="fs-11 text-muted mb-0">{% blocktrans count counter=languages|length %}{{ counter }} language available{% plural %}{{ counter }} languages available{% endblocktrans %}</p>
+
+                                    </div>
+
+                                    <a href="javascript:void(0);" class="avatar-text avatar-md" data-bs-toggle="tooltip" title="{% trans 'Add Language' %}">
+
+                                        <i class="feather-plus"></i>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <div class="row px-4 pt-3">
+
+                                    {% for language in languages %}
+
+                                    <div class="col-sm-4 col-6 language_select {% if language.code == LANGUAGE_CODE %}active{% endif %}">
+
+                                        <form action="{% url 'set_language' %}" method="post" style="display: contents;">
+
+                                            {% csrf_token %}
+
+                                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                                            <input name="language" type="hidden" value="{{ language.code }}">
+
+                                            <button type="submit" class="d-flex align-items-center gap-2" style="background:none; border:none; padding:0; width:100%; text-align:left; cursor: pointer;">
+
+                                                <div class="avatar-image avatar-sm">
+
+                                                    <img src="{% static 'assets/vendors/img/flags/1x1/' %}{% if language.code == 'en' %}us{% else %}{{ language.code }}{% endif %}.svg" alt="{{ language.code }}" class="img-fluid" />
+
+                                                </div>
+
+                                                <span>{{ language.name_local|capfirst }}</span>
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="nxl-h-item d-none d-sm-flex">
+
+                        <div class="full-screen-switcher">
+
+                            <a href="javascript:void(0);" class="nxl-head-link me-0" onclick="$('body').fullScreenHelper('toggle');">
+
+                                <i class="feather-maximize maximize"></i>
+
+                                <i class="feather-minimize minimize"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    
+
+                    <div class="dropdown nxl-h-item">
+
+                        <a class="nxl-head-link me-3" data-bs-toggle="dropdown" href="#" role="button" data-bs-auto-close="outside">
+
+                            <i class="feather-bell"></i>
+
+                            <span class="badge bg-danger nxl-h-badge">{{ nombre_notifications_du_jour|default:0 }}</span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-notifications-menu">
+
+                            <div class="d-flex justify-content-between align-items-center notifications-head">
+
+                                <h6 class="fw-bold text-dark mb-0">{% trans "Notifications" %}</h6>
+
+                                <a href="javascript:void(0);" class="fs-11 text-success text-end ms-auto" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}">
+
+                                    <i class="feather-check"></i>
+
+                                    <span>{% trans "Make as Read" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            {% for notification in notifications_du_jour %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static notification.avatar %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span class="fw-semibold text-dark">{{ notification.titre }}</span> {{ notification.description }}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{{ notification.date_affichage }}</div>
+
+                                        <div class="d-flex align-items-center float-end gap-2">
+
+                                            <a href="javascript:void(0);" class="d-block wd-8 ht-8 rounded-circle bg-gray-300" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}"></a>
+
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" title="{% trans "Remove" %}">
+
+                                                <i class="feather-x fs-12"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static 'assets/images/avatar/1.png' %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"><span class="fw-semibold text-dark">{% trans "Aucune notification" %}</span> {% trans "Aucune activité ni projet aujourd'hui." %}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{% trans "Aujourd'hui" %}</div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                            <div class="text-center notifications-footer">
+
+                                <a href="javascript:void(0);" class="fs-13 fw-semibold text-dark">{% trans "Toutes les notifications" %}</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+        <div class="dropdown nxl-h-item">
+
+                        <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
+
+                            <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar me-0" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
+
+                            <div class="dropdown-header">
+
+                                <div class="d-flex align-items-center">
+
+                                    <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar" />
+
+                                    <div>
+
+                                        <h6 class="text-dark mb-0">{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="badge bg-soft-success text-success ms-1">{% if request.user.is_superuser or request.user.is_staff %}{% trans "ADMIN" %}{% else %}{% trans "USER" %}{% endif %}</span></h6>
+
+                                        <span class="fs-12 fw-medium text-muted">{{ request.user.email|default:"-" }}</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="dropdown">
+
+                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="dropdown">
+
+                                    <span class="hstack">
+
+                                        <i class="wd-10 ht-10 border border-2 border-gray-1 {% if request.user.is_active %}bg-success{% else %}bg-danger{% endif %} rounded-circle me-2"></i>
+
+                                        <span>{% if request.user.is_active %}{% trans "Active" %}{% else %}{% trans "Disabled" %}{% endif %}</span>
+
+                                    </span>
+
+                                    <i class="feather-chevron-right ms-auto me-0"></i>
+
+                                </a>
+
+                                
+
+                            </div>
+
+                            <a href="{% url 'account_settings' %}" class="dropdown-item">
+
+                                <i class="feather-settings"></i>
+
+                                <span>{% trans "Account Settings" %}</span>
+
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a href="{% url 'auth_logout' %}" class="dropdown-item">
+
+                                <i class="feather-log-out"></i>
+
+                                <span>{% trans "Logout" %}</span>
+
+                            </a>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--! [End] Header Right !-->
+
+        </div>
+
+            <!--! [End] Header Right !-->
+
+        </div>
+
+    </header>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Header !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Main Content !-->
+
+    <!--! ================================================================ !-->
+
+    <main class="nxl-container">
+
+        <div class="nxl-content">
+
+            <!-- [ page-header ] start -->
+
+            <div class="page-header">
+
+                <div class="page-header-left d-flex align-items-center">
+
+                    <div class="page-header-title">
+
+                        <h5 class="m-b-10">{% trans "Projects" %}</h5>
+
+                    </div>
+
+                    <ul class="breadcrumb">
+
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+
+                        <li class="breadcrumb-item">{% trans "Projects" %}</li>
+
+                    </ul>
+
+                </div>
+
+                <div  class="page-header-right ms-auto">
+
+                    <div  class="page-header-right-items">
+
+                        <div class="d-flex d-md-none">
+
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+
+                                <i class="feather-arrow-left me-2"></i>
+
+                                <span>{% trans "Back" %}</span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+
+                            <a href="javascript:void(0);" class="btn btn-icon btn-light-brand" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+
+                                <i class="feather-bar-chart"></i>
+
+                            </a>
+
+                            <div class="dropdown">
+
+                                <a id="filterDropdownToggle" class="btn btn-icon btn-light-brand" data-bs-toggle="dropdown" data-bs-offset="0, 10" data-bs-auto-close="outside" title="{% trans "Filtrer par état" %}">
+
+                                    <i class="feather-filter"></i>
+
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" id="projectFilterMenu">
+
+                                    <div class="px-3 py-1">
+
+                                        <p class="fs-11 fw-semibold text-uppercase text-muted mb-1">{% trans "Filtrer par état" %}</p>
+
+                                    </div>
+
+                                    <div class="dropdown-divider mt-0"></div>
+
+                                    <a href="javascript:void(0);" class="dropdown-item active project-filter-item" data-filter="">
+
+                                        <span class="wd-7 ht-7 bg-primary rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "Tous les projets" %}</span>
+
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:void(0);" class="dropdown-item project-filter-item" data-filter="Projet en cours">
+
+                                        <span class="wd-7 ht-7 bg-soft-primary border border-primary rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "Projet en cours" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item project-filter-item" data-filter="Projet planifi&#233;">
+
+                                        <span class="wd-7 ht-7 bg-soft-info border border-info rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "Projet planifi&#233;" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item project-filter-item" data-filter="Projet cl&#244;tur&#233;">
+
+                                        <span class="wd-7 ht-7 bg-soft-teal border border-teal rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "Projet cl&#244;tur&#233;" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item project-filter-item" data-filter="Non demarre">
+
+                                        <span class="wd-7 ht-7 bg-soft-warning border border-warning rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "Non d&#233;marr&#233;" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item project-filter-item" data-filter="En attente">
+
+                                        <span class="wd-7 ht-7 bg-soft-success border border-success rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "En attente" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item project-filter-item" data-filter="Annule">
+
+                                        <span class="wd-7 ht-7 bg-soft-danger border border-danger rounded-circle d-inline-block me-3"></span>
+
+                                        <span>{% trans "Annul&#233;" %}</span>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <div class="dropdown">
+
+                                <a class="btn btn-icon btn-light-brand" data-bs-toggle="dropdown" data-bs-offset="0, 10" data-bs-auto-close="outside">
+
+                                    <i class="feather-paperclip"></i>
+
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="bi bi-filetype-pdf me-3"></i>
+
+                                        <span>{% trans "PDF" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="bi bi-filetype-csv me-3"></i>
+
+                                        <span>{% trans "CSV" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="bi bi-filetype-xml me-3"></i>
+
+                                        <span>{% trans "XML" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="bi bi-filetype-txt me-3"></i>
+
+                                        <span>{% trans "Text" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="bi bi-filetype-exe me-3"></i>
+
+                                        <span>{% trans "Excel" %}</span>
+
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="bi bi-printer me-3"></i>
+
+                                        <span>{% trans "Print" %}</span>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'projects_create' %}" class="btn btn-primary">
+
+                                <i class="feather-plus me-2"></i>
+
+                                <span>{% trans "Créer Projet" %}</span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-md-none d-flex align-items-center">
+
+                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
+
+                            <i class="feather-align-right fs-20"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="collapseOne" class="accordion-collapse collapse page-header-collapse">
+
+                <div class="accordion-body pb-2">
+
+                    <div class="row">
+
+                        <div class="col-xxl-3 col-md-6">
+
+                            <div class="card stretch stretch-full">
+
+                                <div class="card-body">
+
+                                    <a href="javascript:void(0);" class="fw-bold d-block">
+
+                                        <span class="d-block">{% trans "Projet en cours" %}</span>
+
+                                        <span class="fs-24 fw-bolder d-block">{{ projets_en_cours }}</span>
+
+                                    </a>
+
+                                    <div class="pt-4">
+
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <a href="javascript:void(0);" class="fs-12 fw-medium text-muted">
+
+                                                <span>{% trans "Représentation" %}</span>
+
+                                                <i class="feather-link-2 fs-10 ms-1"></i>
+
+                                            </a>
+
+                                            <div>
+
+                                                <span class="fs-12 text-muted">{{ projets_en_cours }} projets</span>
+
+                                                <span class="fs-11 text-muted">({{ pct_projets_en_cours }}%)</span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="progress mt-2 ht-3">
+
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ pct_projets_en_cours|unlocalize }}%"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xxl-3 col-md-6">
+
+                            <div class="card stretch stretch-full">
+
+                                <div class="card-body">
+
+                                    <a href="javascript:void(0);" class="fw-bold d-block">
+
+                                        <span class="d-block">{% trans "Totalité des projets" %}</span>
+
+                                        <span class="fs-24 fw-bolder d-block">{{ total_projets }}</span>
+
+                                    </a>
+
+                                    <div class="pt-4">
+
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <a href="javascript:void(0);" class="fs-12 fw-medium text-muted">
+
+                                                <span>{% trans "Représentation" %}</span>
+
+                                                <i class="feather-link-2 fs-10 ms-1"></i>
+
+                                            </a>
+
+                                            <div>
+
+                                                <span class="fs-12 text-muted">{{ total_projets }} projets</span>
+
+                                                <span class="fs-11 text-muted">({{ pct_total_projets }}%)</span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="progress mt-2 ht-3">
+
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ pct_total_projets|unlocalize }}%"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xxl-3 col-md-6">
+
+                            <div class="card stretch stretch-full">
+
+                                <div class="card-body">
+
+                                    <a href="javascript:void(0);" class="fw-bold d-block">
+
+                                        <span class="d-block">{% trans "Projet clôturé" %}</span>
+
+                                        <span class="fs-24 fw-bolder d-block">{{ projets_clotures }}</span>
+
+                                    </a>
+
+                                    <div class="pt-4">
+
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <a href="javascript:void(0);" class="fs-12 fw-medium text-muted">
+
+                                                <span>{% trans "Représentation" %}</span>
+
+                                                <i class="feather-link-2 fs-10 ms-1"></i>
+
+                                            </a>
+
+                                            <div>
+
+                                                <span class="fs-12 text-muted">{{ projets_clotures }} projets</span>
+
+                                                <span class="fs-11 text-muted">({{ pct_projets_clotures }}%)</span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="progress mt-2 ht-3">
+
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ pct_projets_clotures|unlocalize }}%"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xxl-3 col-md-6">
+
+                            <div class="card stretch stretch-full">
+
+                                <div class="card-body">
+
+                                    <a href="javascript:void(0);" class="fw-bold d-block">
+
+                                        <span class="d-block">{% trans "Projet planifié" %}</span>
+
+                                        <span class="fs-24 fw-bolder d-block">{{ projets_planifies }}</span>
+
+                                    </a>
+
+                                    <div class="pt-4">
+
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <a href="javascript:void(0);" class="fs-12 fw-medium text-muted">
+
+                                                <span>{% trans "Représentation" %}</span>
+
+                                                <i class="feather-link-2 fs-10 ms-1"></i>
+
+                                            </a>
+
+                                            <div>
+
+                                                <span class="fs-12 text-muted">{{ projets_planifies }} projets</span>
+
+                                                <span class="fs-11 text-muted">({{ pct_projets_planifies }}%)</span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="progress mt-2 ht-3">
+
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ pct_projets_planifies|unlocalize }}%"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- [ page-header ] end -->
+
+            <!-- [ Main Content ] start -->
+
+            <div class="main-content">
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="card stretch stretch-full">
+
+                            <div class="card-body p-0">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover" id="projectList">
+
+                                        <thead>
+
+                                            <tr>
+
+                                               
+
+                                                <th>{% trans "id" %}</th>
+
+                                                <th>{% trans "titre" %}</th>
+
+                                                <th>{% trans "partenaires" %}</th>
+
+                                                <th>{% trans "budjets" %}</th>
+
+                                                <th>{% trans "Budgets" %}</th>
+
+                                                <th>{% trans "debut_du_projet" %}</th>
+
+                                                <th>{% trans "fin_du_projet" %}</th>
+
+                                                <th>{% trans "user" %}</th>
+
+                                                <th>{% trans "etat_du_projet" %}</th>
+
+                                                <th class="text-end">{% trans "Actions" %}</th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            {% for projet in projets %}
+
+                                            <tr class="single-item" data-etat="{{ projet.etat_du_projet|default:'' }}">
+
+                                               
+
+                                                <td>{{ projet.id }}</td>
+
+                                                <td class="project-name-td">
+
+                                                    <div class="hstack gap-4">
+
+                                                        <div class="avatar-text avatar-md bg-soft-primary text-primary fw-bold">
+
+                                                            {{ projet.titre|default:'P'|slice:':2'|upper }}
+
+                                                        </div>
+
+                                                        <div>
+
+                                                            <a href="{% url 'projects_view_pk' projet.pk %}" class="font-body fw-bold d-block mb-1">{{ projet.titre }}</a>
+
+                                                            <p class="fs-12 text-muted mt-2 text-truncate-1-line project-list-desc">{{ projet.description|default:'Aucune description'|truncatechars:110 }}</p>
+
+                                                            <div class="project-list-action fs-12 d-flex align-items-center gap-3 mt-2">
+
+                                                                <a href="{% url 'projects_view_pk' projet.pk %}">{% trans "Voir" %}</a>
+
+                                                                <span class="vr text-muted"></span>
+
+                                                                <a href="{% url 'projects_create' %}?pk={{ projet.pk }}">{% trans "Edit" %}</a>
+
+                                                                <span class="vr text-muted"></span>
+
+                                                               
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>{{ projet.partenaires.nom|default:'-' }}</td>
+
+                                                <td>{{ projet.budjets }}</td>
+
+                                                <td>{{ projet.Budgets }}</td>
+
+                                                <td>{{ projet.debut_du_projet|date:'Y-m-d' }}</td>
+
+                                                <td>{{ projet.fin_du_projet|date:'Y-m-d' }}</td>
+
+                                                <td>
+
+                                                    <select class="form-select form-control" data-select2-selector="user">
+
+                                                        <option value="{{ projet.user.username|default:projet.user.username }}" selected>
+
+                                                            {{ projet.user.username|default:projet.user.username }}
+
+                                                        </option>
+
+                                                    </select>
+
+                                                </td>
+
+                                                <td>
+
+                                                    {% if projet.etat_du_projet == 'Projet en cours' %}
+
+                                                    <span class="badge bg-soft-primary text-primary">{{ projet.etat_du_projet }}</span>
+
+                                                    {% elif projet.etat_du_projet == 'Non demarre' %}
+
+                                                    <span class="badge bg-soft-warning text-warning">{{ projet.etat_du_projet }}</span>
+
+                                                    {% elif projet.etat_du_projet == 'En attente' %}
+
+                                                    <span class="badge bg-soft-success text-success">{{ projet.etat_du_projet }}</span>
+
+                                                    {% elif projet.etat_du_projet == 'Annule' %}
+
+                                                    <span class="badge bg-soft-danger text-danger">{{ projet.etat_du_projet }}</span>
+
+                                                    {% elif projet.etat_du_projet == 'Projet cloture' or projet.etat_du_projet == 'Projet clôturé' %}
+
+                                                    <span class="badge bg-soft-teal text-teal">{{ projet.etat_du_projet }}</span>
+
+                                                    {% elif projet.etat_du_projet == 'Projet planifie' or projet.etat_du_projet == 'Projet planifié' %}
+
+                                                    <span class="badge bg-soft-info text-info">{{ projet.etat_du_projet }}</span>
+
+                                                    {% else %}
+
+                                                    <span class="badge bg-soft-secondary text-muted">{{ projet.etat_du_projet|default:'-' }}</span>
+
+                                                    {% endif %}
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div class="hstack gap-2 justify-content-end">
+
+                                                        <div class="dropdown">
+
+                                                            <a href="javascript:void(0)" class="avatar-text avatar-md" data-bs-toggle="dropdown" data-bs-offset="0,21">
+
+                                                                <i class="feather feather-more-horizontal"></i>
+
+                                                            </a>
+
+                                                            <ul class="dropdown-menu">
+
+                                                                <li>
+
+                                                                    <a class="dropdown-item" href="{% url 'projects_view_pk' projet.pk %}">
+
+                                                                        <i class="feather feather-eye me-3"></i>
+
+                                                                        <span>{% trans "Voir" %}</span>
+
+                                                                    </a>
+
+                                                                </li>
+
+                                                                <li>
+
+                                                                    <a class="dropdown-item" href="{% url 'projects_create' %}?pk={{ projet.pk }}">
+
+                                                                        <i class="feather feather-edit-3 me-3"></i>
+
+                                                                        <span>{% trans "Edit" %}</span>
+
+                                                                    </a>
+
+                                                                </li>
+
+                                                                <li>
+
+                                                                    <a class="dropdown-item printBTN" href="javascript:void(0)">
+
+                                                                        <i class="feather feather-printer me-3"></i>
+
+                                                                        <span>{% trans "Print" %}</span>
+
+                                                                    </a>
+
+                                                                </li>
+
+                                                                <li class="dropdown-divider"></li>
+
+                                                                <li>
+
+                                                                    <button type="button" class="dropdown-item text-danger btn-delete-projet"
+
+                                                                        data-bs-toggle="modal"
+
+                                                                        data-bs-target="#confirmDeleteModal"
+
+                                                                        data-projet-pk="{{ projet.pk }}"
+
+                                                                        data-projet-titre="{{ projet.titre|escapejs }}">
+
+                                                                        <i class="feather feather-trash-2 me-3"></i>
+
+                                                                        <span>{% trans "Supprimer" %}</span>
+
+                                                                    </button>
+
+                                                                </li>
+
+                                                            </ul>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                            {% empty %}
+
+                                            <tr>
+
+                                                <td colspan="8" class="text-center py-5">
+
+                                                    <div class="d-flex flex-column align-items-center gap-2">
+
+                                                        <div class="avatar-text avatar-xl bg-soft-primary text-primary">
+
+                                                            <i class="feather-briefcase"></i>
+
+                                                        </div>
+
+                                                        <h6 class="mb-0">{% trans "Aucun projet disponible" %}</h6>
+
+                                                        <p class="fs-12 text-muted mb-0">{% trans "Creez un premier projet pour l'afficher dans ce tableau." %}</p>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                            {% endfor %}
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- [ Main Content ] end -->
+
+        </div>
+
+        <!-- [ Footer ] start -->
+
+        <footer class="footer">
+
+            <p class="fs-11 text-muted fw-medium text-uppercase mb-0 copyright">
+
+                <span>{% trans "Copyright &copy;" %}</span>
+
+                <script>
+
+                    document.write(new Date().getFullYear());
+
+                </script>
+
+            </p>
+
+            <p><span>{% trans "By:" %} <a target="_blank" href="{% url 'index' %}" target="_blank">{% trans "CLUSTER SECURITE ALIMENTAIRE" %}</a></span> {% trans "&bull;" %} <span>{% trans "Distributed by:" %} <a target="_blank" href="{% url 'index' %}" target="_blank">{% trans "CLUSTER SECURITE ALIMENTAIRE" %}</a></span></p>
+
+            <div class="d-flex align-items-center gap-4">
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Help" %}</a>
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Terms" %}</a>
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Privacy" %}</a>
+
+            </div>
+
+        </footer>
+
+        <!-- [ Footer ] end -->
+
+    </main>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Main Content !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Confirm Delete Modal !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true"
+
+         data-url-pattern="{% url 'projects_view_pk' 0 %}">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content border-0 shadow">
+
+                <div class="modal-header border-bottom-0 pb-0">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="avatar-text avatar-md bg-soft-danger text-danger">
+
+                            <i class="feather-trash-2 fs-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="modal-title fw-bold mb-0" id="confirmDeleteModalLabel">{% trans "Confirmer la suppression" %}</h5>
+
+                            <p class="text-muted fs-12 mb-0">{% trans "Cette action est irréversible" %}</p>
+
+                        </div>
+
+                    </div>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Fermer" %}"></button>
+
+                </div>
+
+                <div class="modal-body pt-3">
+
+                    <div class="alert alert-danger d-flex align-items-start gap-3 border-0 mb-0" role="alert">
+
+                        <i class="feather-alert-triangle fs-5 mt-1 flex-shrink-0"></i>
+
+                        <div>
+
+                            <p class="mb-1 fw-semibold">{% trans "Voulez-vous vraiment supprimer ce projet&nbsp;?" %}</p>
+
+                            <p class="mb-0 fs-13">{% trans "Projet&nbsp;:" %} <strong id="confirmDeleteProjetTitre" class="text-dark"></strong></p>
+
+                            <p class="mb-0 mt-1 fs-12 text-muted">{% trans "Toutes les données associées (activités, zones) seront définitivement supprimées." %}</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer border-top-0 pt-0 gap-2">
+
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+
+                        <i class="feather-x me-2"></i>{% trans "Annuler" %}
+
+                    </button>
+
+                    <form id="confirmDeleteForm" method="post" action="" class="m-0">
+
+                        {% csrf_token %}
+
+                        <input type="hidden" name="action" value="{% trans "delete" %}">
+
+                        <button type="submit" class="btn btn-danger">
+
+                            <i class="feather-trash-2 me-2"></i>{% trans "Oui, supprimer" %}
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Confirm Delete Modal !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Language Select !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="modal fade-scale" id="languageSelectModal" aria-hidden="true" aria-labelledby="languageSelectModalLabel" tabindex="-1">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="languageSelectModalLabel">{% trans "Select Language" %}</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Close" %}"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/sa.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Arabic" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/bd.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Bengali" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ch.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Chinese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/hr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Croatian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/dk.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Danish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/nl.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Dutch" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select active">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/us.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "English" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/fi.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Filipino" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/fr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "French" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/de.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "German" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/il.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Hebrew" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/in.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Hindi" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/id.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Indonesian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/it.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Italian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/jp.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Japanese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/kr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Korean" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ir.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Persian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/pt.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Portuguese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ru.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Russian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/es.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Spanish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/sv.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Swedish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/tr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Turkish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/pk.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Urdo" %}</span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/vi.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Vietnamese" %}</span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Language Select !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Downloading Toast !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="position-fixed" style="right: 5px; bottom: 5px; z-index: 999999">
+
+        <div id="toast" class="toast bg-black hide" data-bs-delay="3000" role="alert" aria-live="assertive" aria-atomic="true">
+
+            <div class="toast-header px-3 bg-transparent d-flex align-items-center justify-content-between border-bottom border-light border-opacity-10">
+
+                <div class="text-white mb-0 mr-auto">{% trans "Downloading..." %}</div>
+
+                <a href="javascript:void(0)" class="ms-2 mb-1 close fw-normal" data-bs-dismiss="toast" aria-label="{% trans "Close" %}">
+
+                    <span class="text-white">{% trans "&times;" %}</span>
+
+                </a>
+
+            </div>
+
+            <div class="toast-body p-3 text-white">
+
+                <h6 class="fs-13 text-white">{% trans "Project.zip" %}</h6>
+
+                <span class="text-light fs-11">{% trans "4.2mb of 5.5mb" %}</span>
+
+            </div>
+
+            <div class="toast-footer p-3 pt-0 border-top border-light border-opacity-10">
+
+                <div class="progress mt-3" style="height: 5px">
+
+                    <div class="progress-bar progress-bar-striped progress-bar-animated w-75 bg-dark" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! END: Downloading Toast !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Theme Customizer !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="theme-customizer">
+
+        <div class="customizer-handle">
+
+            <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
+
+                <i class="feather-settings"></i>
+
+            </a>
+
+        </div>
+
+        <div class="customizer-sidebar-wrapper">
+
+            <div class="customizer-sidebar-header px-4 ht-80 border-bottom d-flex align-items-center justify-content-between">
+
+                <h5 class="mb-0">{% trans "Theme Settings" %}</h5>
+
+                <a href="javascript:void(0);" class="cutomizer-close-trigger d-flex">
+
+                    <i class="feather-x"></i>
+
+                </a>
+
+            </div>
+
+            <div class="customizer-sidebar-body position-relative p-4" data-scrollbar-target="#psScrollbarInit">
+
+                <!--! BEGIN: [Navigation] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Navigation" %}</label>
+
+                    <div class="row g-2 theme-options-items app-navigation" id="appNavigationList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-navigation-light" name="app-navigation" value="1" data-app-navigation="app-navigation-light" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-navigation-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-navigation-dark" name="app-navigation" value="2" data-app-navigation="app-navigation-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-navigation-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Navigation] !-->
+
+                <!--! BEGIN: [Header] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set mt-5">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Header" %}</label>
+
+                    <div class="row g-2 theme-options-items app-header" id="appHeaderList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-header-light" name="app-header" value="1" data-app-header="app-header-light" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-header-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-header-dark" name="app-header" value="2" data-app-header="app-header-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-header-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Header] !-->
+
+                <!--! BEGIN: [Skins] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Skins" %}</label>
+
+                    <div class="row g-2 theme-options-items app-skin" id="appSkinList">
+
+                        <div class="col-6 text-center position-relative single-option light-button active">
+
+                            <input type="radio" class="btn-check" id="app-skin-light" name="app-skin" value="1" data-app-skin="app-skin-light">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center position-relative single-option dark-button">
+
+                            <input type="radio" class="btn-check" id="app-skin-dark" name="app-skin" value="2" data-app-skin="app-skin-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Skins] !-->
+
+                <!--! BEGIN: [Typography] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-0 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Typography" %}</label>
+
+                    <div class="row g-2 theme-options-items font-family" id="fontFamilyList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-lato" name="font-family" value="1" data-font-family="app-font-family-lato">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-lato">{% trans "Lato" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-rubik" name="font-family" value="2" data-font-family="app-font-family-rubik">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-rubik">{% trans "Rubik" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-inter" name="font-family" value="3" data-font-family="app-font-family-inter" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-inter">{% trans "Inter" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-cinzel" name="font-family" value="4" data-font-family="app-font-family-cinzel">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-cinzel">{% trans "Cinzel" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-nunito" name="font-family" value="6" data-font-family="app-font-family-nunito">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-nunito">{% trans "Nunito" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-roboto" name="font-family" value="7" data-font-family="app-font-family-roboto">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto">{% trans "Roboto" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-ubuntu" name="font-family" value="8" data-font-family="app-font-family-ubuntu">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ubuntu">{% trans "Ubuntu" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-poppins" name="font-family" value="9" data-font-family="app-font-family-poppins">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-poppins">{% trans "Poppins" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-raleway" name="font-family" value="10" data-font-family="app-font-family-raleway">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-raleway">{% trans "Raleway" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-system-ui" name="font-family" value="11" data-font-family="app-font-family-system-ui">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-system-ui">{% trans "System UI" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-noto-sans" name="font-family" value="12" data-font-family="app-font-family-noto-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-noto-sans">{% trans "Noto Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-fira-sans" name="font-family" value="13" data-font-family="app-font-family-fira-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-fira-sans">{% trans "Fira Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-work-sans" name="font-family" value="14" data-font-family="app-font-family-work-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-work-sans">{% trans "Work Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-open-sans" name="font-family" value="15" data-font-family="app-font-family-open-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-open-sans">{% trans "Open Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-maven-pro" name="font-family" value="16" data-font-family="app-font-family-maven-pro">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-maven-pro">{% trans "Maven Pro" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-quicksand" name="font-family" value="17" data-font-family="app-font-family-quicksand">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-quicksand">{% trans "Quicksand" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat" name="font-family" value="18" data-font-family="app-font-family-montserrat">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat">{% trans "Montserrat" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-josefin-sans" name="font-family" value="19" data-font-family="app-font-family-josefin-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-josefin-sans">{% trans "Josefin Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-ibm-plex-sans" name="font-family" value="20" data-font-family="app-font-family-ibm-plex-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ibm-plex-sans">{% trans "IBM Plex Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-source-sans-pro" name="font-family" value="5" data-font-family="app-font-family-source-sans-pro">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-source-sans-pro">{% trans "Source Sans Pro" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat-alt" name="font-family" value="21" data-font-family="app-font-family-montserrat-alt">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat-alt">{% trans "Montserrat Alt" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-roboto-slab" name="font-family" value="22" data-font-family="app-font-family-roboto-slab">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto-slab">{% trans "Roboto Slab" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Typography] !-->
+
+            </div>
+
+            <div class="customizer-sidebar-footer px-4 ht-60 border-top d-flex align-items-center gap-2">
+
+                <div class="flex-fill w-50">
+
+                    <a href="javascript:void(0);" class="btn btn-danger" data-style="reset-all-common-style">{% trans "Reset" %}</a>
+
+                </div>
+
+                <div class="flex-fill w-50">
+
+                    <a href="{% url 'index' %}" target="_blank" class="btn btn-primary">{% trans "Download" %}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Theme Customizer !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! Footer Script !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Vendors JS !-->
+
+    <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
+
+    <!-- vendors.min.js {always must need to be top} -->
+
+    <script src="{% static 'assets/vendors/js/dataTables.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/dataTables.bs5.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/select2.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/select2-active.min.js' %}"></script>
+
+    <!--! END: Vendors JS !-->
+
+    <!--! BEGIN: Apps Init  !-->
+
+    <script src="{% static 'assets/js/common-init.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/projects-init.min.js' %}"></script>
+
+    <!--! END: Apps Init !-->
+
+    <!--! BEGIN: Theme Customizer  !-->
+
+    <script src="{% static 'assets/js/theme-customizer-init.min.js' %}"></script>
+
+    <!--! END: Theme Customizer !-->
+
+    <!--! BEGIN: Project Filter Init !-->
+
+    <script>
+
+        (function () {
+
+            var filterItems = document.querySelectorAll('.project-filter-item');
+
+            var toggleBtn   = document.getElementById('filterDropdownToggle');
+
+            var activeFilter = '';
+
+
+
+            function applyFilter(value) {
+
+                activeFilter = value;
+
+                var rows = document.querySelectorAll('#projectList tbody tr.single-item');
+
+                var visible = 0;
+
+
+
+                rows.forEach(function (row) {
+
+                    var etat = (row.getAttribute('data-etat') || '').trim();
+
+                    var match = !value || etat === value;
+
+                    row.style.display = match ? '' : 'none';
+
+                    if (match) visible++;
+
+                });
+
+
+
+                // Mettre à jour l'icône du bouton pour signaler un filtre actif
+
+                if (value) {
+
+                    toggleBtn.classList.add('btn-primary');
+
+                    toggleBtn.classList.remove('btn-light-brand');
+
+                    toggleBtn.setAttribute('title', 'Filtre actif : ' + value);
+
+                } else {
+
+                    toggleBtn.classList.remove('btn-primary');
+
+                    toggleBtn.classList.add('btn-light-brand');
+
+                    toggleBtn.setAttribute('title', 'Filtrer par état');
+
+                }
+
+
+
+                // Afficher ligne "aucun résultat" si 0 lignes visibles
+
+                var emptyRow = document.querySelector('#projectList tbody tr.filter-empty-row');
+
+                if (visible === 0 && rows.length > 0) {
+
+                    if (!emptyRow) {
+
+                        emptyRow = document.createElement('tr');
+
+                        emptyRow.className = 'filter-empty-row';
+
+                        emptyRow.innerHTML = '<td colspan="8" class="text-center py-4 text-muted fst-italic">Aucun projet ne correspond au filtre sélectionné.</td>';
+
+                        document.querySelector('#projectList tbody').appendChild(emptyRow);
+
+                    }
+
+                    emptyRow.style.display = '';
+
+                } else if (emptyRow) {
+
+                    emptyRow.style.display = 'none';
+
+                }
+
+            }
+
+
+
+            filterItems.forEach(function (item) {
+
+                item.addEventListener('click', function () {
+
+                    // Mettre à jour l'item actif
+
+                    filterItems.forEach(function (el) { el.classList.remove('active'); });
+
+                    item.classList.add('active');
+
+                    applyFilter(item.getAttribute('data-filter') || '');
+
+                });
+
+            });
+
+        })();
+
+    </script>
+
+    <!--! END: Project Filter Init !-->
+
+    <!--! BEGIN: Confirm Delete Modal Init !-->
+
+    <script>
+
+        (function () {
+
+            var deleteModal = document.getElementById('confirmDeleteModal');
+
+            if (!deleteModal) return;
+
+
+
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+
+                var trigger = event.relatedTarget;
+
+                if (!trigger) return;
+
+
+
+                var pk    = trigger.getAttribute('data-projet-pk');
+
+                var titre = trigger.getAttribute('data-projet-titre');
+
+
+
+                // Mettre à jour le titre dans le corps du modal
+
+                var titreEl = document.getElementById('confirmDeleteProjetTitre');
+
+                if (titreEl) titreEl.textContent = titre || 'ââ‚¬â€';
+
+
+
+                // Construire l'URL depuis le pattern injecté par Django
+
+                var form = document.getElementById('confirmDeleteForm');
+
+                if (form && pk) {
+
+                    var pattern = deleteModal.getAttribute('data-url-pattern') || '';
+
+                    form.action = pattern.replace('/0/', '/' + pk + '/');
+
+                }
+
+            });
+
+        })();
+
+    </script>
+
+    <!--! END: Confirm Delete Modal Init !-->
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

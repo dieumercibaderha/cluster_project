@@ -1,0 +1,875 @@
+﻿{% load i18n %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Carte des activites" %}</title>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+    >
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-rgb: 7, 127, 157;
+            --brand: rgb(var(--brand-rgb));
+            --white: rgb(255, 255, 255);
+            --bg-main: rgba(var(--brand-rgb), 0.08);
+            --bg-surface: var(--white);
+            --ink-primary: rgba(var(--brand-rgb), 0.96);
+            --ink-muted: rgba(var(--brand-rgb), 0.78);
+            --line-soft: rgba(var(--brand-rgb), 0.26);
+            --line-strong: rgba(var(--brand-rgb), 0.38);
+            --brand-soft: rgba(var(--brand-rgb), 0.14);
+            --shadow-lg: 0 24px 58px rgba(var(--brand-rgb), 0.22);
+            --shadow-md: 0 12px 32px rgba(var(--brand-rgb), 0.16);
+        }
+
+        body {
+            margin: 0;
+            font-family: "Space Grotesk", "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at 8% -8%, rgba(var(--brand-rgb), 0.22) 0, transparent 34%),
+                radial-gradient(circle at 94% 4%, rgba(var(--brand-rgb), 0.14) 0, transparent 38%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(var(--brand-rgb), 0.06) 100%),
+                var(--bg-main);
+            color: var(--ink-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(2px);
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            left: -90px;
+            top: -110px;
+            background: radial-gradient(circle, rgba(var(--brand-rgb), 0.22) 0%, rgba(var(--brand-rgb), 0.05) 60%, transparent 100%);
+        }
+
+        body::after {
+            width: 340px;
+            height: 340px;
+            right: -120px;
+            bottom: -120px;
+            background: radial-gradient(circle, rgba(var(--brand-rgb), 0.24) 0%, rgba(var(--brand-rgb), 0.05) 58%, transparent 100%);
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(var(--brand-rgb), 0.08) 100%);
+            border: 1px solid var(--line-soft);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--brand-rgb), 0.2) 0%, rgba(var(--brand-rgb), 0.02) 68%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            margin: 0 0 6px 0;
+            font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-subtitle {
+            margin: 0;
+            color: var(--ink-muted);
+            font-size: 0.93rem;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .status-strip {
+            position: relative;
+            margin-bottom: 14px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--line-soft);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(var(--brand-rgb), 0.08) 100%);
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(var(--brand-rgb), 0.12);
+        }
+
+        .status-strip-track {
+            width: 100%;
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(var(--brand-rgb), 0.14);
+            overflow: hidden;
+        }
+
+        .status-strip-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(var(--brand-rgb), 0.45) 0%, rgba(var(--brand-rgb), 0.9) 55%, rgba(var(--brand-rgb), 0.6) 100%);
+            box-shadow: 0 6px 14px rgba(var(--brand-rgb), 0.28);
+            transition: width 0.35s ease;
+        }
+
+        .status-strip-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 7px;
+            font-size: 12px;
+            color: var(--ink-muted);
+            font-weight: 600;
+        }
+
+        .badge {
+            animation: badgePulse 4.2s ease-in-out infinite;
+        }
+
+        .map-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            padding: 12px 14px;
+            border: 1px solid var(--line-soft);
+            border-radius: 14px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(var(--brand-rgb), 0.08) 100%);
+            box-shadow: 0 8px 22px rgba(var(--brand-rgb), 0.14);
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .map-toolbar label {
+            font-size: 13px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .map-toolbar select {
+            border: 1px solid var(--line-soft);
+            border-radius: 10px;
+            padding: 8px 11px;
+            background: #fff;
+            color: var(--ink-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .map-toolbar select:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.18);
+        }
+
+        .badge {
+            background: var(--brand-soft);
+            color: var(--ink-primary);
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(var(--brand-rgb), 0.26);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 16px;
+        }
+
+        #map {
+            width: 100%;
+            height: 72vh;
+            min-height: 460px;
+            border-radius: 14px;
+            border: 1px solid var(--line-soft);
+            background: #fff;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .panel {
+            background: linear-gradient(175deg, rgba(255, 255, 255, 0.98) 0%, rgba(var(--brand-rgb), 0.08) 100%);
+            border: 1px solid var(--line-soft);
+            border-radius: 14px;
+            padding: 14px;
+            max-height: 72vh;
+            overflow: auto;
+            box-shadow: var(--shadow-md);
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: rgba(var(--brand-rgb), 0.35);
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+        }
+
+        .panel-title {
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .item {
+            border: 1px solid rgba(var(--brand-rgb), 0.2);
+            border-radius: 12px;
+            padding: 11px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: #fff;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            animation: itemIn 0.35s ease both;
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(var(--brand-rgb), 0.42);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 10px 24px rgba(var(--brand-rgb), 0.18);
+        }
+
+        .item h4 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .muted {
+            color: #64748b;
+            font-size: 12px;
+            margin: 2px 0;
+        }
+
+        .point-link {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .point-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.2s ease;
+            background: rgba(var(--brand-rgb), 0.9);
+        }
+
+        .point-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .btn-back {
+            text-decoration: none;
+            border: 1px solid var(--line-soft);
+            background: #fff;
+            color: var(--ink-primary);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-1px);
+            border-color: rgba(var(--brand-rgb), 0.52);
+            box-shadow: 0 8px 18px rgba(var(--brand-rgb), 0.22);
+        }
+
+        .btn-back.primary {
+            background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.95) 0%, rgba(var(--brand-rgb), 0.78) 100%);
+            border-color: var(--brand);
+            color: #fff;
+        }
+
+        .hero-graphic {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .hero-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(var(--brand-rgb), 0.82);
+            box-shadow: 0 0 0 5px rgba(var(--brand-rgb), 0.12);
+        }
+
+        .hero-line {
+            width: 84px;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(var(--brand-rgb), 0.2) 0%, rgba(var(--brand-rgb), 0.88) 45%, rgba(var(--brand-rgb), 0.2) 100%);
+            animation: waveLine 3.4s ease-in-out infinite;
+        }
+
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+            box-shadow: 0 12px 30px rgba(var(--brand-rgb), 0.25);
+        }
+
+        .marker-cluster,
+        .marker-cluster div {
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .marker-cluster {
+            animation: clusterFloat 2.8s ease-in-out infinite;
+        }
+
+        .marker-cluster-small,
+        .marker-cluster-medium,
+        .marker-cluster-large {
+            background: rgba(var(--brand-rgb), 0.24);
+        }
+
+        .marker-cluster-small div,
+        .marker-cluster-medium div,
+        .marker-cluster-large div {
+            background: rgba(var(--brand-rgb), 0.9);
+            color: #fff;
+            font-family: "Space Grotesk", "Segoe UI", sans-serif;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(var(--brand-rgb), 0.25);
+        }
+
+        .marker-cluster:hover,
+        .marker-cluster:hover div {
+            transform: scale(1.06);
+            box-shadow: 0 14px 24px rgba(var(--brand-rgb), 0.3);
+        }
+
+        .marker-cluster-count-hidden div {
+            width: 38px;
+            height: 38px;
+            margin-left: 1px;
+            margin-top: 1px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .marker-cluster-count-visible div {
+            width: 38px;
+            height: 38px;
+            margin-left: 1px;
+            margin-top: 1px;
+            border-radius: 50%;
+        }
+
+        .marker-cluster-count-hidden span {
+            display: none;
+        }
+
+        .marker-cluster-count-hidden div::after {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 0 0 2px rgba(var(--brand-rgb), 0.28);
+        }
+
+        .leaflet-popup-content {
+            font-family: "Space Grotesk", "Segoe UI", sans-serif;
+            line-height: 1.45;
+        }
+
+        @keyframes itemIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes badgePulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(var(--brand-rgb), 0.18);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(var(--brand-rgb), 0);
+            }
+        }
+
+        @keyframes waveLine {
+            0%,
+            100% {
+                transform: scaleX(0.92);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scaleX(1.08);
+                opacity: 1;
+            }
+        }
+
+        @keyframes clusterFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-1px);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 14px;
+            }
+
+            .page-header {
+                padding: 14px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero-graphic {
+                margin-top: 8px;
+            }
+
+            .map-toolbar {
+                padding: 10px;
+            }
+
+            #map {
+                height: 56vh;
+                min-height: 360px;
+            }
+
+            .panel {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="page-header">
+            <div>
+                <h2 class="hero-title">{% trans "Apercu cartographique des activites" %}</h2>
+                <p class="hero-subtitle">{% trans "Coordonnees geographiques issues des champs latitude et longitude" %}</p>
+                <div class="hero-graphic" aria-hidden="true">
+                    <span class="hero-dot"></span>
+                    <span class="hero-line"></span>
+                    <span class="hero-dot"></span>
+                </div>
+            </div>
+            <div class="header-links">
+                <a class="btn-back" href="{% url 'activites' %}">{% trans "Retour aux activites" %}</a>
+                <a class="btn-back primary" href="{% url 'activites_carte_google' %}">{% trans "Version Google Maps" %}</a>
+            </div>
+        </div>
+
+        <div class="stats">
+            <span class="badge" id="pointsCountBadge">{% trans "Points affiches" %}: 0</span>
+            <span class="badge" id="bboxIgnoredBadge">{% trans "Hors zone visible" %}: 0</span>
+            <span class="badge">{% trans "Sans coordonnees valides" %}: {{ activites_sans_coordonnees }}</span>
+        </div>
+
+        <div class="status-strip" aria-live="polite">
+            <div class="status-strip-track">
+                <div id="statusStripFill" class="status-strip-fill"></div>
+            </div>
+            <div class="status-strip-meta">
+                <span id="statusStripLabel">0 point affiche</span>
+                <span>{% trans "Mise a jour en temps reel" %}</span>
+            </div>
+        </div>
+
+        <div class="map-toolbar">
+            <div class="filters">
+                <label for="basemapSelector">{% trans "Fond de carte" %}</label>
+                <select id="basemapSelector">
+                    <option value="plan">{% trans "Plan (OpenStreetMap)" %}</option>
+                    <option value="topo">{% trans "Topographique" %}</option>
+                    <option value="relief">{% trans "Relief" %}</option>
+                    <option value="satellite">{% trans "Satellite" %}</option>
+                </select>
+            </div>
+            <div class="filters">
+                <label for="projetFilter">{% trans "Projet" %}</label>
+                <select id="projetFilter">
+                    <option value="">{% trans "Tous les projets" %}</option>
+                    {% for projet in projets_filtres %}
+                    <option value="{{ projet.id }}">{{ projet.titre }}</option>
+                    {% endfor %}
+                </select>
+                <label for="zoneFilter">{% trans "Zone" %}</label>
+                <select id="zoneFilter">
+                    <option value="">{% trans "Toutes les zones" %}</option>
+                    {% for zone in zones_filtres %}
+                    <option value="{{ zone.id }}">{{ zone.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="layout">
+            <div id="map"></div>
+            <aside class="panel">
+                <h3 class="panel-title">{% trans "Coordonnees detectees" %}</h3>
+                <p class="muted">{% trans "Les points se chargent selon la zone visible de la carte." %}</p>
+                <div id="pointList"></div>
+            </aside>
+        </div>
+    </div>
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+        (function () {
+            const centreLat = Number("{{ centre_lat }}") || 0;
+            const centreLon = Number("{{ centre_lon }}") || 0;
+            const pointsApiUrl = "{% url 'activites_carte_points_api' %}";
+            const pointList = document.getElementById('pointList');
+            const pointsCountBadge = document.getElementById('pointsCountBadge');
+            const bboxIgnoredBadge = document.getElementById('bboxIgnoredBadge');
+            const statusStripFill = document.getElementById('statusStripFill');
+            const statusStripLabel = document.getElementById('statusStripLabel');
+            const projetFilter = document.getElementById('projetFilter');
+            const zoneFilter = document.getElementById('zoneFilter');
+            const showClusterCountFrom = 10;
+
+            const map = L.map('map').setView([centreLat, centreLon], centreLat || centreLon ? 7 : 2);
+
+            const fondPlan = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+
+            const fondTopographique = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                maxZoom: 17,
+                attribution: '&copy; OpenTopoMap, OpenStreetMap contributors'
+            });
+
+            const fondRelief = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 13,
+                attribution: 'Tiles &copy; Esri'
+            });
+
+            const fondSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 18,
+                attribution: 'Tiles &copy; Esri'
+            });
+
+            const fondsCarte = {
+                plan: fondPlan,
+                topo: fondTopographique,
+                relief: fondRelief,
+                satellite: fondSatellite
+            };
+
+            let fondActif = fondPlan;
+            function getClusterSizeClass(childCount) {
+                if (childCount < 10) {
+                    return 'marker-cluster-small';
+                }
+                if (childCount < 100) {
+                    return 'marker-cluster-medium';
+                }
+                return 'marker-cluster-large';
+            }
+
+            const clusterGroup = L.markerClusterGroup({
+                disableClusteringAtZoom: 14,
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: false,
+                iconCreateFunction: function (cluster) {
+                    const childCount = cluster.getChildCount();
+                    const showCount = childCount >= showClusterCountFrom;
+                    return L.divIcon({
+                        html: '<div><span aria-hidden="true">' + childCount + '</span></div>',
+                        className: 'marker-cluster ' + getClusterSizeClass(childCount) + (showCount ? ' marker-cluster-count-visible' : ' marker-cluster-count-hidden'),
+                        iconSize: L.point(40, 40)
+                    });
+                }
+            });
+            map.addLayer(clusterGroup);
+
+            let abortController = null;
+            let hasAppliedInitialBounds = false;
+            let ignoreViewportReload = false;
+
+            function changerFondCarte(cleFond) {
+                const nouvelleCouche = fondsCarte[cleFond] || fondPlan;
+                if (fondActif && map.hasLayer(fondActif)) {
+                    map.removeLayer(fondActif);
+                }
+                nouvelleCouche.addTo(map);
+                fondActif = nouvelleCouche;
+            }
+
+            function getCurrentParams(includeBbox) {
+                const params = new URLSearchParams();
+
+                if (includeBbox) {
+                    const bounds = map.getBounds();
+                    params.set('min_lat', bounds.getSouth().toFixed(6));
+                    params.set('max_lat', bounds.getNorth().toFixed(6));
+                    params.set('min_lng', bounds.getWest().toFixed(6));
+                    params.set('max_lng', bounds.getEast().toFixed(6));
+                }
+
+                if (projetFilter && projetFilter.value) {
+                    params.set('projet', projetFilter.value);
+                }
+                if (zoneFilter && zoneFilter.value) {
+                    params.set('zone', zoneFilter.value);
+                }
+
+                return params;
+            }
+
+            function buildPointItem(point, marker) {
+                const googleMapsUrl = 'https://www.google.com/maps?q=' + point.latitude + ',' + point.longitude;
+                const sourceLabel = point.gps_source === 'map-pick' ? 'Carte manuelle' : 'Navigateur';
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML =
+                    '<h4>' + point.titre + '</h4>' +
+                    '<p class="muted"><strong>Projet:</strong> ' + point.projet + '</p>' +
+                    '<p class="muted"><strong>Zone:</strong> ' + point.zone + '</p>' +
+                    '<p class="muted"><strong>Coordonnees:</strong> ' + point.latitude + ', ' + point.longitude + '</p>' +
+                    '<p class="muted"><strong>Source GPS:</strong> ' + sourceLabel + '</p>' +
+                    '<a class="point-link" href="' + googleMapsUrl + '" target="_blank" rel="noopener noreferrer">Ouvrir dans Google Maps</a>';
+                item.addEventListener('click', function () {
+                    map.setView([point.latitude, point.longitude], 13);
+                    marker.openPopup();
+                });
+                return item;
+            }
+
+            function renderPoints(points, meta) {
+                clusterGroup.clearLayers();
+                pointList.innerHTML = '';
+
+                if (pointsCountBadge) {
+                    pointsCountBadge.textContent = 'Points affiches: ' + points.length;
+                }
+                if (bboxIgnoredBadge) {
+                    const ignored = meta && typeof meta.ignored_bbox === 'number' ? meta.ignored_bbox : 0;
+                    bboxIgnoredBadge.textContent = 'Hors zone visible: ' + ignored;
+                }
+
+                if (statusStripFill || statusStripLabel) {
+                    const ignored = meta && typeof meta.ignored_bbox === 'number' ? meta.ignored_bbox : 0;
+                    const totalObservable = points.length + ignored;
+                    const ratio = totalObservable > 0 ? (points.length / totalObservable) * 100 : 0;
+                    const safeRatio = Math.max(0, Math.min(100, ratio));
+
+                    if (statusStripFill) {
+                        statusStripFill.style.width = safeRatio.toFixed(1) + '%';
+                    }
+                    if (statusStripLabel) {
+                        statusStripLabel.textContent = points.length + (points.length > 1 ? ' points affiches' : ' point affiche');
+                    }
+                }
+
+                if (!points.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'muted';
+                    empty.textContent = "Aucun point dans la zone visible avec ces filtres.";
+                    pointList.appendChild(empty);
+                    return;
+                }
+
+                points.forEach(function (point) {
+                    const googleMapsUrl = 'https://www.google.com/maps?q=' + point.latitude + ',' + point.longitude;
+                    const sourceLabel = point.gps_source === 'map-pick' ? 'Carte manuelle' : 'Navigateur';
+                    const marker = L.marker([point.latitude, point.longitude]);
+                    marker.bindPopup(
+                        '<strong>' + point.titre + '</strong><br>' +
+                        'Projet: ' + point.projet + '<br>' +
+                        'Zone: ' + point.zone + '<br>' +
+                        'Coordonnees: ' + point.latitude + ', ' + point.longitude + '<br>' +
+                        'Source GPS: ' + sourceLabel + '<br>' +
+                        '<a href="' + googleMapsUrl + '" target="_blank" rel="noopener noreferrer">Ouvrir dans Google Maps</a>'
+                    );
+                    clusterGroup.addLayer(marker);
+                    pointList.appendChild(buildPointItem(point, marker));
+                });
+            }
+
+            function applyInitialMapBounds(points) {
+                if (hasAppliedInitialBounds || !points || !points.length) {
+                    return;
+                }
+
+                const bounds = L.latLngBounds(points.map(function (point) {
+                    return [point.latitude, point.longitude];
+                }));
+
+                if (bounds.isValid()) {
+                    ignoreViewportReload = true;
+                    map.fitBounds(bounds.pad(0.08), { maxZoom: 13 });
+                }
+
+                hasAppliedInitialBounds = true;
+            }
+
+            function loadPoints(options) {
+                const includeBbox = !(options && options.includeBbox === false);
+                if (abortController) {
+                    abortController.abort();
+                }
+                abortController = new AbortController();
+
+                const query = getCurrentParams(includeBbox).toString();
+                fetch(pointsApiUrl + '?' + query, { signal: abortController.signal })
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Erreur API points carte');
+                        }
+                        return response.json();
+                    })
+                    .then(function (payload) {
+                        const points = payload.points || [];
+                        renderPoints(points, payload);
+
+                        if (!includeBbox) {
+                            applyInitialMapBounds(points);
+                        }
+                    })
+                    .catch(function (error) {
+                        if (error && error.name === 'AbortError') {
+                            return;
+                        }
+                    });
+            }
+
+            function debounce(fn, delay) {
+                let timer = null;
+                return function () {
+                    if (timer) {
+                        clearTimeout(timer);
+                    }
+                    timer = setTimeout(fn, delay);
+                };
+            }
+
+            const debouncedLoadPoints = debounce(function () {
+                if (ignoreViewportReload) {
+                    ignoreViewportReload = false;
+                    return;
+                }
+                loadPoints();
+            }, 220);
+            map.on('moveend', debouncedLoadPoints);
+            map.on('zoomend', debouncedLoadPoints);
+
+            const basemapSelector = document.getElementById('basemapSelector');
+            if (basemapSelector) {
+                basemapSelector.addEventListener('change', function () {
+                    changerFondCarte(this.value);
+                });
+            }
+
+            if (projetFilter) {
+                projetFilter.addEventListener('change', loadPoints);
+            }
+            if (zoneFilter) {
+                zoneFilter.addEventListener('change', loadPoints);
+            }
+
+            loadPoints({ includeBbox: false });
+        })();
+    </script>
+</body>
+</html>
+
+

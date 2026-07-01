@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle activite créee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f2f8fa;
+            font-family: "Montserrat Alt", "Montserrat Alternates", "Montserrat", "Segoe UI", Tahoma, Arial, sans-serif;
+            color: #15313a;
+            -webkit-font-smoothing: antialiased;
+        }
+        table { border-collapse: collapse; }
+        img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+        a { text-decoration: none; }
+        .wrapper {
+            width: 100%;
+            padding: 22px 0;
+            background: radial-gradient(circle at top right, #e7f7fb 0%, #f2f8fa 45%, #eef6f8 100%);
+        }
+        .card {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 18px 42px rgba(7, 127, 152, 0.15);
+        }
+        .logo-wrap { text-align: center; }
+        .logo-frame {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+        }
+        .logo { max-height: 58px; width: auto; display: block; }
+        .hero-inner {
+            background: linear-gradient(135deg, #077f98 0%, #0a98b6 100%);
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+        .brand-strip {
+            margin-top: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.26);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.96);
+            text-align: center;
+        }
+        .panel {
+            background: #f7fbfc;
+            border: 1px solid #d8eef3;
+            border-radius: 12px;
+            padding: 20px 22px;
+            margin: 0 0 18px;
+        }
+        .panel-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #077f98;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0 0 14px;
+        }
+        .detail-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #2f6f7f;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .detail-value {
+            font-size: 13px;
+            color: #224855;
+            line-height: 1.5;
+        }
+        .warning-panel {
+            background: #fff8ec;
+            border: 1px solid #fdd99a;
+            border-left: 4px solid #f59e0b;
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin: 0 0 28px;
+        }
+        .footer {
+            padding: 20px 28px 28px;
+            font-size: 12px;
+            color: #5f7f88;
+            text-align: center;
+        }
+        .footer a { color: #077f98; text-decoration: none; }
+        @media only screen and (max-width: 620px) {
+            .card { border-radius: 0 !important; }
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; background:#f2f8fa; font-family:'Montserrat Alt','Montserrat Alternates','Montserrat','Segoe UI',Tahoma,Arial,sans-serif;">
+<table role="presentation" class="wrapper" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td align="center" style="padding: 22px 0;">
+            <table role="presentation" class="card" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 24px 24px 10px;">
+                        <div class="hero-inner">
+                            <div class="brand-strip"> CLUSTER SECURITE ALIMENTAIRE</div>
+                            <div class="logo-wrap">
+                                <div class="logo-frame">
+                                    {% if logo_cid %}
+                                    <img src="cid:{{ logo_cid }}" alt="CLUSTER" class="logo">
+                                    {% else %}
+                                    <span style="font-size:13px; font-weight:700; color:#077f98; letter-spacing:0.05em;">CLUSTER</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <center>
+                                <h1 style="color:#ffffff; font-size:22px; font-weight:700; line-height:1.3; margin:14px 0 8px; font-family:'Montserrat Alt','Montserrat Alternates','Montserrat','Segoe UI',Tahoma,Arial,sans-serif;">
+                                    Nouvelle activite créée
+                                </h1>
+                                <p style="color:rgba(255,255,255,0.92); font-size:14px; line-height:1.6; margin:0;">
+                                    Une nouvelle activite vient d'etre enregistree sur la plateforme.
+                                </p>
+                            </center>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding: 28px 24px 10px;">
+                        <p style="font-size:15px; font-weight:700; color:#15313a; margin:0 0 8px; font-family:'Montserrat Alt','Montserrat Alternates','Montserrat','Segoe UI',Tahoma,Arial,sans-serif;">
+                            Bonjour,
+                        </p>
+                        <p style="font-size:13px; color:#4a6c7a; line-height:1.6; margin:0 0 20px;">
+                            Une activite a ete creee par <strong>{{ created_by_display }}</strong> le <strong>{{ created_at_display }}</strong>.
+                        </p>
+
+                        <div class="panel">
+                            <p class="panel-title">Details de l'activite</p>
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="padding-bottom:10px;" class="detail-label">Titre</td>
+                                    <td style="padding-bottom:10px;" class="detail-value">{{ activity.Titre|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom:10px;" class="detail-label">Projet</td>
+                                    <td style="padding-bottom:10px;" class="detail-value">{{ activity.Projet.titre|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom:10px;" class="detail-label">Zone</td>
+                                    <td style="padding-bottom:10px;" class="detail-value">{{ activity.zone.nom|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom:10px;" class="detail-label">Periode</td>
+                                    <td style="padding-bottom:10px;" class="detail-value">{{ activity.Debut_de_lactivite|date:"d/m/Y" }} - {{ activity.fin_de_lactivite|date:"d/m/Y" }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom:10px;" class="detail-label">Beneficiaires</td>
+                                    <td style="padding-bottom:10px;" class="detail-value">{{ activity.Nbre_de_beneficiaires|default:"0" }}</td>
+                                </tr>
+                               
+                            </table>
+                        </div>
+
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+                            <tr>
+                                <td align="center">
+                                    <a href="{{ activities_url }}" style="display:inline-block; background:#077f98; border:1px solid #077f98; color:#ffffff; padding:11px 20px; border-radius:10px; font-size:14px; font-weight:700; font-family:'Montserrat Alt','Montserrat Alternates','Montserrat','Segoe UI',Tahoma,Arial,sans-serif;">
+                                        Ouvrir la liste des activites
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="warning-panel">
+                            <p style="font-size:13px; font-weight:700; color:#92620a; margin:0 0 6px; font-family:'Montserrat Alt','Montserrat Alternates','Montserrat','Segoe UI',Tahoma,Arial,sans-serif;">
+                                Information
+                            </p>
+                            <p style="font-size:13px; color:#7a5210; margin:0; line-height:1.5; font-family:'Montserrat Alt','Montserrat Alternates','Montserrat','Segoe UI',Tahoma,Arial,sans-serif;">
+                                Ceci est une notification automatique envoyee a tous les utilisateurs actifs de la plateforme.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="footer">
+                        <p style="margin:0 0 6px; font-weight:700; color:#15313a; font-size:13px;">CLUSTER Securite Alimentaire</p>
+                        <p style="margin:0 0 12px; font-size:12px; color:#5f7f88; line-height:1.5;">
+                            Plateforme de gestion de la securite alimentaire<br>
+                            © 2026 Tous droits reserves.
+                        </p>
+                        <p style="margin:0; font-size:11px;">
+                            <a href="#" style="color:#077f98;">Politique de confidentialite</a>
+                            &nbsp;•&nbsp;
+                            <a href="#" style="color:#077f98;">Conditions d'utilisation</a>
+                            &nbsp;•&nbsp;
+                            <a href="#" style="color:#077f98;">Contact</a>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

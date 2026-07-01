@@ -1,0 +1,5684 @@
+﻿{% load i18n %}
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}">
+
+
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="keyword" content="">
+
+    <meta name="author" content="CLUSTER SECURITE ALIMENTAIRE">
+
+    <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
+
+    <!--! BEGIN: Apps Title-->
+
+    <title>{% trans "CLUSTER SECURITE ALIMENTAIRE || Projects Create" %}</title>
+
+    <!--! END:  Apps Title-->
+
+    <!--! BEGIN: Favicon-->
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo-abbr.png' %}"/>
+
+    <!--! END: Favicon-->
+
+    <!--! BEGIN: Bootstrap CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <!--! END: Bootstrap CSS-->
+
+    <!--! BEGIN: Vendors CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2-theme.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/quill.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/datepicker.min.css' %}">
+
+    <!--! END: Vendors CSS-->
+
+    <!--! BEGIN: Custom CSS-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/language-switcher-fix.css' %}" />
+
+    <style>
+
+        .project-partner-shell,
+
+        .project-date-shell,
+
+        .project-zone-shell {
+
+            border: 1px solid rgba(15, 23, 42, 0.08);
+
+            border-radius: 16px;
+
+            background: linear-gradient(180deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 1) 100%);
+
+            padding: 16px;
+
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+
+            transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+
+        }
+
+
+
+        .project-partner-shell:focus-within,
+
+        .project-date-shell:focus-within,
+
+        .project-zone-shell:focus-within {
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
+
+            border-color: rgba(56, 189, 248, 0.4);
+
+        }
+
+
+
+        .project-zone-shell:focus-within {
+
+            border-color: rgba(52, 211, 153, 0.4);
+
+        }
+
+
+
+        .project-field-meta {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+
+        .project-field-meta-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-weight: 700;
+
+            color: #0f172a;
+
+        }
+
+
+
+        .project-field-meta-title i {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 12px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e0f2fe;
+
+            color: #0369a1;
+
+        }
+
+
+
+        /* Zone shell ââ‚¬â€ accent vert émeraude */
+
+        .project-zone-shell .project-field-meta-title i {
+
+            background: #d1fae5;
+
+            color: #065f46;
+
+        }
+
+
+
+        .project-field-meta-badge {
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.04em;
+
+            color: #0369a1;
+
+            background: #e0f2fe;
+
+            border-radius: 999px;
+
+            padding: 6px 10px;
+
+            white-space: nowrap;
+
+        }
+
+
+
+        .project-zone-shell .project-field-meta-badge {
+
+            color: #065f46;
+
+            background: #d1fae5;
+
+        }
+
+
+
+        .project-partner-shell .select2-container,
+
+        .project-date-shell .form-control,
+
+        .project-zone-shell .select2-container {
+
+            width: 100% !important;
+
+        }
+
+
+
+        .project-partner-shell .select2-container--default .select2-selection--single {
+
+            height: 52px;
+
+            border-radius: 14px;
+
+            border: 1px solid #cbd5e1;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 14px;
+
+            background: #fff;
+
+        }
+
+
+
+        .project-partner-shell .select2-container--default .select2-selection--single .select2-selection__rendered {
+
+            line-height: 1.4;
+
+            color: #0f172a;
+
+            padding-left: 0;
+
+        }
+
+
+
+        .project-partner-shell .select2-container--default .select2-selection--single .select2-selection__arrow {
+
+            height: 50px;
+
+            right: 10px;
+
+        }
+
+
+
+        .project-date-shell .form-control {
+
+            height: 52px;
+
+            border-radius: 14px;
+
+            border: 1px solid #cbd5e1;
+
+            background: #fff;
+
+            padding-inline: 14px;
+
+            font-weight: 600;
+
+            color: #0f172a;
+
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        }
+
+
+
+        .project-date-shell .form-control:focus,
+
+        .project-partner-shell .select2-container--default.select2-container--focus .select2-selection--single,
+
+        .project-partner-shell .select2-container--default.select2-container--open .select2-selection--single {
+
+            border-color: #38bdf8;
+
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+
+        }
+
+
+
+        /* Zone Select2 multi */
+
+        .project-zone-shell .select2-container--default .select2-selection--multiple {
+
+            min-height: 52px;
+
+            border-radius: 14px;
+
+            border: 1px solid #cbd5e1;
+
+            background: #fff;
+
+            padding: 6px 10px;
+
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        }
+
+
+
+        .project-zone-shell .select2-container--default.select2-container--focus .select2-selection--multiple {
+
+            border-color: #34d399;
+
+            box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.15);
+
+        }
+
+
+
+        .project-zone-shell .select2-container--default .select2-selection--multiple .select2-selection__choice {
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            background: #d1fae5;
+
+            border-color: #a7f3d0;
+
+            color: #065f46;
+
+        }
+
+
+
+        .project-zone-shell .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+
+            color: #059669;
+
+        }
+
+
+
+        .project-date-note {
+
+            margin-top: 10px;
+
+            font-size: 12px;
+
+            color: #64748b;
+
+        }
+
+
+
+        .project-date-inline {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 12px;
+
+            color: #0f766e;
+
+            background: #ccfbf1;
+
+            border-radius: 999px;
+
+            padding: 6px 10px;
+
+        }
+
+
+
+        /* Animation focus sur les champs standards */
+
+        .form-control,
+
+        .form-select {
+
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        }
+
+
+
+        .project-select2-dropdown {
+
+            border-radius: 14px;
+
+            border-color: #cbd5e1;
+
+            overflow: hidden;
+
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+
+        }
+
+
+
+        .project-select2-dropdown .select2-search__field {
+
+            border-radius: 10px;
+
+            border-color: #cbd5e1;
+
+        }
+
+
+
+        /* En-tête de la carte preview */
+
+        #previewCardHeader {
+
+            transition: background 0.4s ease;
+
+        }
+
+
+
+        /* Choix 4: sections guidées */
+
+        .project-stepper {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+
+        .project-step-pill {
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 12px;
+
+            background: #f8fafc;
+
+            padding: 8px 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            transition: all 0.2s ease;
+
+        }
+
+
+
+        .project-step-pill-dot {
+
+            width: 10px;
+
+            height: 10px;
+
+            border-radius: 999px;
+
+            background: #94a3b8;
+
+            flex-shrink: 0;
+
+        }
+
+
+
+        .project-step-pill span {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #475569;
+
+            line-height: 1.2;
+
+        }
+
+
+
+        .project-step-pill.is-complete {
+
+            border-color: #34d399;
+
+            background: #ecfdf5;
+
+        }
+
+
+
+        .project-step-pill.is-complete .project-step-pill-dot {
+
+            background: #10b981;
+
+        }
+
+
+
+        .project-step-pill.is-complete span {
+
+            color: #065f46;
+
+        }
+
+
+
+        .project-form-section {
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 14px;
+
+            background: #ffffff;
+
+            padding: 14px;
+
+            margin-bottom: 16px;
+
+            transition: border-color 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+
+        }
+
+
+
+        .project-form-section.is-active {
+
+            border-color: #38bdf8;
+
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.13);
+
+        }
+
+
+
+        .project-form-section.is-dimmed {
+
+            opacity: 0.62;
+
+        }
+
+
+
+        .project-form-section-title {
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.05em;
+
+            color: #334155;
+
+            margin-bottom: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+
+
+        .project-form-section-title .badge {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+
+        /* Choix 3: dashboard */
+
+        .project-dashboard-kpi {
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            padding: 10px;
+
+            height: 100%;
+
+        }
+
+
+
+        .project-dashboard-kpi-label {
+
+            font-size: 11px;
+
+            color: #64748b;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.04em;
+
+            margin-bottom: 4px;
+
+        }
+
+
+
+        .project-dashboard-kpi-value {
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #0f172a;
+
+            line-height: 1.25;
+
+        }
+
+
+
+        .project-insight-list {
+
+            display: grid;
+
+            gap: 8px;
+
+        }
+
+
+
+        .project-insight-item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 8px 10px;
+
+            background: #ffffff;
+
+        }
+
+
+
+        .project-insight-item span:first-child {
+
+            font-size: 12px;
+
+            color: #64748b;
+
+        }
+
+
+
+        .project-insight-item span:last-child {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #0f172a;
+
+            text-align: right;
+
+        }
+
+
+
+        .project-preview-focus-block {
+
+            transition: border-color 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+
+        }
+
+
+
+        .project-preview-focus-block.is-active {
+
+            border-color: #38bdf8 !important;
+
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
+
+            transform: translateY(-1px);
+
+        }
+
+
+
+        .project-preview-focus-block.is-dimmed {
+
+            opacity: 0.55;
+
+        }
+
+
+
+        /* Choix 7: Data Dense (Back-Office) */
+
+        .project-display-dense .project-layout-row {
+
+            --bs-gutter-x: 1rem;
+
+            --bs-gutter-y: 1rem;
+
+        }
+
+
+
+        .project-display-dense .project-form-section {
+
+            padding: 10px;
+
+            margin-bottom: 10px;
+
+            border-radius: 10px;
+
+        }
+
+
+
+        .project-display-dense .project-form-section-title {
+
+            font-size: 11px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+
+        .project-display-dense .project-stepper {
+
+            gap: 6px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .project-display-dense .project-step-pill {
+
+            padding: 6px 8px;
+
+            border-radius: 10px;
+
+        }
+
+
+
+        .project-display-dense .project-step-pill span {
+
+            font-size: 11px;
+
+        }
+
+
+
+        .project-display-dense .project-partner-shell,
+
+        .project-display-dense .project-date-shell,
+
+        .project-display-dense .project-zone-shell {
+
+            padding: 10px;
+
+            border-radius: 12px;
+
+        }
+
+
+
+        .project-display-dense .project-field-meta {
+
+            margin-bottom: 8px;
+
+        }
+
+
+
+        .project-display-dense .project-field-meta-title i {
+
+            width: 30px;
+
+            height: 30px;
+
+            border-radius: 9px;
+
+        }
+
+
+
+        .project-display-dense .project-field-meta-badge,
+
+        .project-display-dense .project-date-inline {
+
+            font-size: 10px;
+
+            padding: 4px 8px;
+
+        }
+
+
+
+        .project-display-dense .project-form-section .row.mb-4 {
+
+            margin-bottom: 0.75rem !important;
+
+        }
+
+
+
+        .project-display-dense #projectSmartSummary {
+
+            padding: 0.5rem 0.6rem;
+
+            border-radius: 10px;
+
+            margin-bottom: 0.7rem !important;
+
+            background: #f8fafc;
+
+        }
+
+
+
+        .project-display-dense .project-summary-inline {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 0.5rem;
+
+            flex-wrap: wrap;
+
+            margin: 0;
+
+        }
+
+
+
+        .project-display-dense .project-summary-inline-item {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 0.3rem;
+
+            padding: 0.18rem 0.4rem;
+
+            border-radius: 999px;
+
+            background: #eef2ff;
+
+            border: 1px solid #dbe4ff;
+
+            font-size: 11px;
+
+            color: #334155;
+
+            line-height: 1.25;
+
+            max-width: 100%;
+
+        }
+
+
+
+        .project-display-dense .project-summary-inline-item strong {
+
+            font-size: 10px;
+
+            color: #64748b;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.03em;
+
+            font-weight: 700;
+
+        }
+
+
+
+        .project-display-dense .project-summary-inline-item span {
+
+            max-width: 220px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+        }
+
+
+
+        /* Grille back-office: ligne compacte label/champ */
+
+        .project-display-dense .project-form-section .row {
+
+            --bs-gutter-x: 0.6rem;
+
+            --bs-gutter-y: 0.35rem;
+
+            padding-bottom: 0.55rem;
+
+            border-bottom: 1px dashed #e2e8f0;
+
+        }
+
+
+
+        .project-display-dense .project-form-section .row:last-of-type {
+
+            border-bottom: 0;
+
+            padding-bottom: 0;
+
+        }
+
+
+
+        .project-display-dense .project-form-section .col-lg-4 {
+
+            flex: 0 0 30%;
+
+            max-width: 30%;
+
+            padding-top: 0.2rem;
+
+        }
+
+
+
+        .project-display-dense .project-form-section .col-lg-8 {
+
+            flex: 0 0 70%;
+
+            max-width: 70%;
+
+        }
+
+
+
+        .project-display-dense .project-form-section label {
+
+            font-size: 12px;
+
+            margin-bottom: 0;
+
+        }
+
+
+
+        .project-display-dense .input-group-text {
+
+            min-height: 38px;
+
+            padding: 0.35rem 0.55rem;
+
+            font-size: 12px;
+
+        }
+
+
+
+        .project-display-dense .form-control,
+
+        .project-display-dense .form-select {
+
+            min-height: 38px;
+
+            font-size: 13px;
+
+            padding: 0.35rem 0.6rem;
+
+        }
+
+
+
+        .project-display-dense #projectDescription {
+
+            min-height: 86px;
+
+            line-height: 1.35;
+
+        }
+
+
+
+        .project-display-dense .project-partner-shell .select2-container--default .select2-selection--single,
+
+        .project-display-dense .project-zone-shell .select2-container--default .select2-selection--multiple,
+
+        .project-display-dense .project-date-shell .form-control {
+
+            min-height: 40px;
+
+        }
+
+
+
+        .project-display-dense .project-date-note,
+
+        .project-display-dense .form-text {
+
+            font-size: 11px;
+
+            margin-top: 0.3rem;
+
+        }
+
+
+
+        .project-display-dense #manual-submit-btn {
+
+            padding: 0.45rem 0.75rem;
+
+            font-size: 12px;
+
+        }
+
+
+
+        .project-display-dense .project-preview-card .card-body {
+
+            padding: 0.85rem !important;
+
+        }
+
+
+
+        .project-display-dense .project-dashboard-kpi {
+
+            padding: 8px;
+
+            border-radius: 10px;
+
+        }
+
+
+
+        .project-display-dense .project-dashboard-kpi-label,
+
+        .project-display-dense .project-insight-item span:first-child,
+
+        .project-display-dense .project-insight-item span:last-child {
+
+            font-size: 11px;
+
+        }
+
+
+
+        .project-display-dense .project-dashboard-kpi-value {
+
+            font-size: 12px;
+
+        }
+
+
+
+        .project-display-dense .project-insight-item {
+
+            padding: 6px 8px;
+
+            border-radius: 8px;
+
+        }
+
+
+
+        .project-display-dense .project-preview-focus-block.is-dimmed,
+
+        .project-display-dense .project-form-section.is-dimmed {
+
+            opacity: 0.78;
+
+        }
+
+
+
+        /* Choix 8: Premium narratif */
+
+        .project-display-premium .project-layout-row {
+
+            --bs-gutter-x: 1.75rem;
+
+            --bs-gutter-y: 1.5rem;
+
+        }
+
+
+
+        .project-display-premium #project-create-form-wrapper {
+
+            background:
+
+                radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.08), transparent 32%),
+
+                radial-gradient(circle at 85% 0%, rgba(16, 185, 129, 0.08), transparent 30%);
+
+        }
+
+
+
+        .project-display-premium .project-step-pill {
+
+            border-radius: 999px;
+
+            background: #ffffff;
+
+            border-color: #dbeafe;
+
+        }
+
+
+
+        .project-display-premium .project-form-section {
+
+            border-radius: 16px;
+
+            border: 1px solid #dbeafe;
+
+            border-left: 4px solid #0ea5e9;
+
+            padding: 16px;
+
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+
+        }
+
+
+
+        .project-display-premium .project-form-section-title {
+
+            font-size: 11px;
+
+            color: #0f3a63;
+
+            letter-spacing: 0.06em;
+
+        }
+
+
+
+        .project-display-premium #projectSmartSummary {
+
+            border-radius: 14px;
+
+            background: linear-gradient(90deg, #eff6ff 0%, #ecfeff 100%);
+
+            border-color: #cfe5ff;
+
+            padding: 0.65rem 0.75rem;
+
+        }
+
+
+
+        .project-display-premium .project-summary-inline {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 0.45rem;
+
+            flex-wrap: wrap;
+
+            margin: 0;
+
+        }
+
+
+
+        .project-display-premium .project-summary-inline-item {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 0.32rem;
+
+            padding: 0.2rem 0.45rem;
+
+            border-radius: 999px;
+
+            background: #ffffff;
+
+            border: 1px solid #dbeafe;
+
+            font-size: 11px;
+
+            color: #1e3a5f;
+
+        }
+
+
+
+        .project-display-premium .project-summary-inline-item strong {
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            color: #64748b;
+
+            letter-spacing: 0.04em;
+
+        }
+
+
+
+        .project-display-premium .project-preview-card {
+
+            border-radius: 18px;
+
+            border: 1px solid #dbeafe;
+
+            box-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+
+        }
+
+
+
+        .project-display-premium #previewCardHeader {
+
+            background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 48%, #0891b2 100%) !important;
+
+        }
+
+
+
+        .project-display-premium .project-dashboard-kpi {
+
+            background: #ffffff;
+
+            border-color: #dbeafe;
+
+            border-radius: 14px;
+
+        }
+
+
+
+        .project-display-premium .project-insight-item {
+
+            border-color: #dbeafe;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+
+        }
+
+
+
+        .project-display-premium .project-preview-focus-block.is-dimmed,
+
+        .project-display-premium .project-form-section.is-dimmed {
+
+            opacity: 0.7;
+
+        }
+
+
+
+        .project-display-classic .project-stepper,
+
+        .project-display-classic .project-dashboard-section,
+
+        .project-display-classic .project-insight-section {
+
+            display: none !important;
+
+        }
+
+
+
+        .project-display-classic #project-create-form-wrapper {
+
+            background: #ffffff;
+
+        }
+
+
+
+        .project-display-classic .project-form-section {
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+
+            border-left-width: 1px;
+
+            background: #ffffff;
+
+            box-shadow: none;
+
+        }
+
+
+
+        .project-display-classic .project-summary-inline-item {
+
+            background: #f8fafc;
+
+            border-color: #e2e8f0;
+
+        }
+
+
+
+        .project-display-classic .project-preview-card {
+
+            border-radius: 14px;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+
+        }
+
+
+
+        .project-display-classic #previewCardHeader {
+
+            background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
+
+        }
+
+
+
+        .project-display-classic .project-preview-focus-block.is-dimmed,
+
+        .project-display-classic .project-form-section.is-dimmed {
+
+            opacity: 1;
+
+        }
+
+
+
+        /* Choix 10: animations légères utiles */
+
+        @keyframes projectFadeSlideUp {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(10px);
+
+            }
+
+
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+
+
+        .project-motion-item {
+
+            opacity: 0;
+
+            transform: translateY(10px);
+
+        }
+
+
+
+        .project-motion-ready .project-motion-item {
+
+            animation: projectFadeSlideUp 0.45s ease forwards;
+
+        }
+
+
+
+        .project-motion-ready .project-motion-item:nth-child(1) { animation-delay: 0.04s; }
+
+        .project-motion-ready .project-motion-item:nth-child(2) { animation-delay: 0.08s; }
+
+        .project-motion-ready .project-motion-item:nth-child(3) { animation-delay: 0.12s; }
+
+        .project-motion-ready .project-motion-item:nth-child(4) { animation-delay: 0.16s; }
+
+        .project-motion-ready .project-motion-item:nth-child(5) { animation-delay: 0.20s; }
+
+        .project-motion-ready .project-motion-item:nth-child(6) { animation-delay: 0.24s; }
+
+        .project-motion-ready .project-motion-item:nth-child(7) { animation-delay: 0.28s; }
+
+
+
+        .project-step-pill,
+
+        .project-dashboard-kpi,
+
+        .project-insight-item,
+
+        #previewCompletionBar,
+
+        #previewStatusBadge,
+
+        #previewCardHeader,
+
+        #manual-submit-btn {
+
+            transition: all 0.25s ease;
+
+        }
+
+
+
+        #manual-submit-btn:not(:disabled):hover {
+
+            transform: translateY(-1px);
+
+            box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
+
+        }
+
+
+
+        .project-display-premium .project-dashboard-kpi:hover,
+
+        .project-display-premium .project-insight-item:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+
+        }
+
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .project-motion-item,
+
+            .project-motion-ready .project-motion-item,
+
+            .project-step-pill,
+
+            .project-dashboard-kpi,
+
+            .project-insight-item,
+
+            #previewCompletionBar,
+
+            #previewStatusBadge,
+
+            #previewCardHeader,
+
+            #manual-submit-btn {
+
+                animation: none !important;
+
+                transition: none !important;
+
+                transform: none !important;
+
+                opacity: 1 !important;
+
+            }
+
+        }
+
+
+
+        /* Layout 2 colonnes equilibrées */
+
+        .project-layout-row {
+
+            --bs-gutter-x: 1.5rem;
+
+            --bs-gutter-y: 1.5rem;
+
+            align-items: stretch;
+
+        }
+
+
+
+        .project-form-column,
+
+        .project-preview-column {
+
+            display: flex;
+
+        }
+
+
+
+        .project-form-column .card,
+
+        .project-preview-column .card {
+
+            width: 100%;
+
+            height: 100%;
+
+        }
+
+
+
+        .project-preview-card {
+
+            position: sticky;
+
+            top: 24px;
+
+            overflow: hidden;
+
+        }
+
+
+
+        .project-preview-card .card-body {
+
+            overflow: visible;
+
+        }
+
+
+
+        /* Responsive: passage en une colonne et suppression sticky */
+
+        @media (max-width: 1199.98px) {
+
+            .project-form-column,
+
+            .project-preview-column {
+
+                display: block;
+
+            }
+
+
+
+            .project-preview-card {
+
+                position: static;
+
+                top: auto;
+
+            }
+
+        }
+
+
+
+        @media (max-width: 767.98px) {
+
+            .project-layout-row {
+
+                --bs-gutter-x: 1rem;
+
+                --bs-gutter-y: 1rem;
+
+            }
+
+
+
+            .project-stepper {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+
+            .project-form-section.is-dimmed,
+
+            .project-preview-focus-block.is-dimmed {
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+
+        @media (max-width: 991.98px) {
+
+            .project-field-meta {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+
+            .project-display-dense .project-form-section .col-lg-4,
+
+            .project-display-dense .project-form-section .col-lg-8 {
+
+                flex: 0 0 100%;
+
+                max-width: 100%;
+
+            }
+
+
+
+            .project-display-dense .project-form-section .row {
+
+                border-bottom: 0;
+
+                padding-bottom: 0;
+
+            }
+
+        }
+
+    </style>
+
+    <!--! END: Custom CSS-->
+
+    <!--! HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries !-->
+
+    <!--! WARNING: Respond.js doesn"t work if you view the page via file: !-->
+
+    <!--[if lt IE 9]>
+
+			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+
+			<script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+		<![endif]-->
+
+</head>
+
+
+
+<body>
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Navigation Manu !-->
+
+    <!--! ================================================================ !-->
+
+    <nav class="nxl-navigation">
+
+        <div class="navbar-wrapper">
+
+            <div class="m-header">
+
+                <a href="{% url 'index' %}" class="b-brand">
+
+                    <!-- ========   change your logo hear   ============ -->
+
+                    <img src="{% static 'assets/images/logo-full.png' %}" alt="" class="logo logo-lg" style="height: 42px; width: auto; max-width: 100%; object-fit: contain;">
+
+                    <img src="{% static 'assets/images/logo-abbr.png' %}" alt="" class="logo logo-sm">
+
+                </a>
+
+            </div>
+
+            <div class="navbar-content">
+
+                <ul class="nxl-navbar">
+
+                    <li class="nxl-item nxl-caption">
+
+                        <label>{% trans "Navigation" %}</label>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-airplay"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Dashboards" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'index' %}">{% trans "Accueil" %}</a></li>
+
+                            <li class="nxl-item d-none"><a class="nxl-link" href="{% url 'analytics' %}">{% trans "Analytics" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-cast"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Reports" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_project' %}">{% trans "Project Report" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'reports_timesheets' %}">{% trans "Rapport des activités" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-send"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Applications" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+                            
+                            {% if user.admin %}
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'apps_email' %}">{% trans "Email" %}</a></li>
+
+                            {% endif %}
+                                
+                           
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'activites' %}">{% trans "Activités" %}</a></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'gestion_zones' %}">{% trans "Zones" %}</a></li>
+                            
+                            {% if user.admin %}
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'type_activites' %}">{% trans "Type d'activités" %}</a></li>
+                            {% endif %}
+                                
+                            
+
+                        </ul>
+
+                    </li>
+
+                    
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-dollar-sign"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'partenaires' %}">{% trans "Partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>  
+                    {% endif %}
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Utilisateurs" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'utilisateurs' %}">{% trans "Utilisateurs" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    {% if user.admin %}
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-alert-circle"></i></span>
+
+                            <span class="nxl-mtext">{% trans "categorie_partenaires" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'categorie_partenaires' %}">{% trans "categorie_partenaires" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'creation_categorie_partenaire' %}">{% trans "categorie_partenaires Create" %}</a></li>
+
+                        </ul>
+
+                    </li>
+                    {% endif %}
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Projets" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects' %}">{% trans "Projets" %}</a></li>
+
+                            <li class="nxl-item"></li>
+
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'projects_create' %}">{% trans "Creer projet" %}</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    
+
+                    
+
+                    <li class="nxl-item nxl-hasmenu">
+
+                        <a href="javascript:void(0);" class="nxl-link">
+
+                            <span class="nxl-micon"><i class="feather-power"></i></span>
+
+                            <span class="nxl-mtext">{% trans "Authentification" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                        </a>
+
+                        <ul class="nxl-submenu">
+
+                            
+
+                            <li class="nxl-item nxl-hasmenu">
+
+                                <a href="javascript:void(0);" class="nxl-link">
+
+                                    <span class="nxl-mtext">{% trans "Reset Pass" %}</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+
+                                </a>
+
+                                <ul class="nxl-submenu">
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"></li>
+
+                                    <li class="nxl-item"><a class="nxl-link" href="{% url 'auth_reset_creative' %}">{% trans "Creatif" %}</a></li>
+
+                                </ul>
+
+                            </li>
+
+                            
+
+                            
+
+                        </ul>
+
+                    </li>
+
+                    </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End]  Navigation Manu !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Header !-->
+
+    <!--! ================================================================ !-->
+
+    <header class="nxl-header">
+
+        <div class="header-wrapper">
+
+            <!--! [Start] Header Left !-->
+
+            <div class="header-left d-flex align-items-center gap-4">
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+
+                    <div class="hamburger hamburger--arrowturn">
+
+                        <div class="hamburger-box">
+
+                            <div class="hamburger-inner"></div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                <!--! [Start] nxl-head-mobile-toggler !-->
+
+                <!--! [Start] nxl-navigation-toggle !-->
+
+                <div class="nxl-navigation-toggle">
+
+                    <a href="javascript:void(0);" id="menu-mini-button">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
+
+                        <i class="feather-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-navigation-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu-toggle !-->
+
+                <div class="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
+
+                    <a href="javascript:void(0);" id="nxl-lavel-mega-menu-open">
+
+                        <i class="feather-align-left"></i>
+
+                    </a>
+
+                </div>
+
+                <!--! [End] nxl-lavel-mega-menu-toggle !-->
+
+                <!--! [Start] nxl-lavel-mega-menu !-->
+
+            </div>
+
+            <!--! [End] Header Left !-->
+
+            <!--! [Start] Header Right !-->
+
+            <div class="header-right ms-auto">
+
+                <div class="d-flex align-items-center">
+
+                    {% get_available_languages as LANGUAGES %}
+
+                    {% get_language_info_list for LANGUAGES as languages %}
+
+                    {% get_current_language as LANGUAGE_CODE %}
+
+                    <div class="dropdown nxl-h-item nxl-header-language d-flex">
+
+                        <a href="javascript:void(0);" class="nxl-head-link me-0 nxl-language-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+
+                            <img src="{% static 'assets/vendors/img/flags/4x3/' %}{% if LANGUAGE_CODE == 'en' %}us{% else %}{{ LANGUAGE_CODE }}{% endif %}.svg" alt="{{ LANGUAGE_CODE }}" class="img-fluid wd-20" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-language-dropdown">
+
+                            <div class="dropdown-divider mt-0"></div>
+
+                            <div class="language-items-wrapper">
+
+                                <div class="select-language px-4 py-2 hstack justify-content-between gap-4">
+
+                                    <div class="lh-lg">
+
+                                        <h6 class="mb-0">{% trans "Select Language" %}</h6>
+
+                                        <p class="fs-11 text-muted mb-0">{% blocktrans count counter=languages|length %}{{ counter }} language available{% plural %}{{ counter }} languages available{% endblocktrans %}</p>
+
+                                    </div>
+
+                                    <a href="javascript:void(0);" class="avatar-text avatar-md" data-bs-toggle="tooltip" title="{% trans 'Add Language' %}">
+
+                                        <i class="feather-plus"></i>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <div class="row px-4 pt-3">
+
+                                    {% for language in languages %}
+
+                                    <div class="col-sm-4 col-6 language_select {% if language.code == LANGUAGE_CODE %}active{% endif %}">
+
+                                        <form action="{% url 'set_language' %}" method="post" style="display: contents;">
+
+                                            {% csrf_token %}
+
+                                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                                            <input name="language" type="hidden" value="{{ language.code }}">
+
+                                            <button type="submit" class="d-flex align-items-center gap-2" style="background:none; border:none; padding:0; width:100%; text-align:left; cursor: pointer;">
+
+                                                <div class="avatar-image avatar-sm">
+
+                                                    <img src="{% static 'assets/vendors/img/flags/1x1/' %}{% if language.code == 'en' %}us{% else %}{{ language.code }}{% endif %}.svg" alt="{{ language.code }}" class="img-fluid" />
+
+                                                </div>
+
+                                                <span>{{ language.name_local|capfirst }}</span>
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="nxl-h-item d-none d-sm-flex">
+
+                        <div class="full-screen-switcher">
+
+                            <a href="javascript:void(0);" class="nxl-head-link me-0" onclick="$('body').fullScreenHelper('toggle');">
+
+                                <i class="feather-maximize maximize"></i>
+
+                                <i class="feather-minimize minimize"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    
+
+                    <div class="dropdown nxl-h-item">
+
+                        <a class="nxl-head-link me-3" data-bs-toggle="dropdown" href="#" role="button" data-bs-auto-close="outside">
+
+                            <i class="feather-bell"></i>
+
+                            <span class="badge bg-danger nxl-h-badge">{{ nombre_notifications_du_jour|default:0 }}</span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-notifications-menu">
+
+                            <div class="d-flex justify-content-between align-items-center notifications-head">
+
+                                <h6 class="fw-bold text-dark mb-0">{% trans "Notifications" %}</h6>
+
+                                <a href="javascript:void(0);" class="fs-11 text-success text-end ms-auto" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}">
+
+                                    <i class="feather-check"></i>
+
+                                    <span>{% trans "Make as Read" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            {% for notification in notifications_du_jour %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static notification.avatar %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span class="fw-semibold text-dark">{{ notification.titre }}</span> {{ notification.description }}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{{ notification.date_affichage }}</div>
+
+                                        <div class="d-flex align-items-center float-end gap-2">
+
+                                            <a href="javascript:void(0);" class="d-block wd-8 ht-8 rounded-circle bg-gray-300" data-bs-toggle="tooltip" title="{% trans "Make as Read" %}"></a>
+
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" title="{% trans "Remove" %}">
+
+                                                <i class="feather-x fs-12"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="notifications-item">
+
+                                <img src="{% static 'assets/images/avatar/1.png' %}" alt="" class="rounded me-3 border" />
+
+                                <div class="notifications-desc">
+
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"><span class="fw-semibold text-dark">{% trans "Aucune notification" %}</span> {% trans "Aucune activité ni projet aujourd'hui." %}</a>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">{% trans "Aujourd'hui" %}</div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                            <div class="text-center notifications-footer">
+
+                                <a href="javascript:void(0);" class="fs-13 fw-semibold text-dark">{% trans "Toutes les notifications" %}</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+<div class="dropdown nxl-h-item">
+
+                        <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
+
+                            <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar me-0" />
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
+
+                            <div class="dropdown-header">
+
+                                <div class="d-flex align-items-center">
+
+                                    <img src="{% if request.user.Photo %}{{ request.user.Photo.url }}{% else %}{% static 'assets/images/avatar/1.png' %}{% endif %}" alt="{% trans "user-image" %}" class="img-fluid user-avtar" />
+
+                                    <div>
+
+                                        <h6 class="text-dark mb-0">{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="badge bg-soft-success text-success ms-1">{% if request.user.is_superuser or request.user.is_staff %}{% trans "ADMIN" %}{% else %}{% trans "USER" %}{% endif %}</span></h6>
+
+                                        <span class="fs-12 fw-medium text-muted">{{ request.user.email|default:"-" }}</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="dropdown">
+
+                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="dropdown">
+
+                                    <span class="hstack">
+
+                                        <i class="wd-10 ht-10 border border-2 border-gray-1 {% if request.user.is_active %}bg-success{% else %}bg-danger{% endif %} rounded-circle me-2"></i>
+
+                                        <span>{% if request.user.is_active %}{% trans "Active" %}{% else %}{% trans "Disabled" %}{% endif %}</span>
+
+                                    </span>
+
+                                    <i class="feather-chevron-right ms-auto me-0"></i>
+
+                                </a>
+
+                                
+
+                            </div>
+
+                            <a href="{% url 'account_settings' %}" class="dropdown-item">
+
+                                <i class="feather-settings"></i>
+
+                                <span>{% trans "Account Settings" %}</span>
+
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a href="{% url 'auth_logout' %}" class="dropdown-item">
+
+                                <i class="feather-log-out"></i>
+
+                                <span>{% trans "Logout" %}</span>
+
+                            </a>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--! [End] Header Right !-->
+
+        </div>
+
+            <!--! [End] Header Right !-->
+
+        </div>
+
+    </header>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Header !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Main Content !-->
+
+    <!--! ================================================================ !-->
+
+    <main class="nxl-container">
+
+        <div class="nxl-content">
+
+            <!-- [ page-header ] start -->
+
+            <div class="page-header">
+
+                <div class="page-header-left d-flex align-items-center">
+
+                    <div class="page-header-title">
+
+                        <h5 class="m-b-10">{% trans "Projects" %}</h5>
+
+                    </div>
+
+                    <ul class="breadcrumb">
+
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+
+                        <li class="breadcrumb-item">{% trans "Create" %}</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="page-header-right ms-auto">
+
+                    <div class="page-header-right-items">
+
+                        <div class="d-flex d-md-none">
+
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+
+                                <i class="feather-arrow-left me-2"></i>
+
+                                <span>{% trans "Back" %}</span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+
+                            <div class="dropdown">
+
+                                <a class="btn btn-light-brand" data-bs-toggle="dropdown" data-bs-offset="0, 10" data-bs-auto-close="outside">
+
+                                    <i class="feather-layers me-2"></i>
+
+                                    <span>{% trans "Tab-List" %}</span>
+
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkType" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkType">{% trans "Type" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkDetails" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkDetails">{% trans "Details" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkSettings" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkSettings">{% trans "Settings" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkBudjets" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkBudjets">{% trans "Budjets" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkAssigned" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkAssigned">{% trans "Assigned" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkTarget" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkTarget">{% trans "Target" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkAttachement" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkAttachement">{% trans "Attachement" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkCompleted" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkCompleted">{% trans "Completed" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-item">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" id="checkRecommendation" checked="checked">
+
+                                            <label class="custom-control-label c-pointer" for="checkRecommendation">{% trans "Recommendation" %}</label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="feather-plus me-3"></i>
+
+                                        <span>{% trans "Create New" %}</span>
+
+                                    </a>
+
+                                    <a href="javascript:void(0);" class="dropdown-item">
+
+                                        <i class="feather-filter me-3"></i>
+
+                                        <span>{% trans "Manage Filter" %}</span>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <a href="javascript:void(0);" class="btn btn-primary">
+
+                                <i class="feather-send me-2"></i>
+
+                                <span>{% trans "Sent Invitation" %}</span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-md-none d-flex align-items-center">
+
+                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
+
+                            <i class="feather-align-right fs-20"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- [ page-header ] end -->
+
+            <!-- [ Main Content ] start -->
+
+            <div class="main-content">
+
+                <form id="project-details" class="project-display-premium" method="post" action="{% url 'projects_create' %}">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="action" value="{% if projet %}update{% else %}create{% endif %}">
+
+                    {% if projet %}
+
+                    <input type="hidden" name="pk" value="{{ projet.pk }}">
+
+                    {% endif %}
+
+                    <div class="row project-layout-row">
+
+                        <div class="col-12 col-lg-6 project-form-column">
+
+                            <div class="card stretch stretch-full">
+
+                                <div class="card-body general-info" id="project-create-form-wrapper">
+
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+
+                                        <h5 class="fw-bold mb-0 me-4">
+
+                                            <span class="d-block mb-2">{% trans "Projet :" %}</span>
+
+                                            <span class="fs-12 fw-normal text-muted text-truncate-1-line">{% trans "Création ou mise à jour des informations du projet." %}</span>
+
+                                        </h5>
+
+                                            <div class="d-flex align-items-center gap-2">
+
+                                                <span id="projectDisplayModeBadge" class="badge bg-soft-info text-info">{% trans "Mode narratif" %}</span>
+
+                                                <span id="formCompletionBadge" class="badge bg-soft-secondary text-secondary">{% trans "Formulaire à compléter" %}</span>
+
+                                            </div>
+
+                                    </div>
+
+
+
+                                    <div id="projectSmartSummary" class="alert alert-light border mb-4 project-motion-item" role="status" aria-live="polite">
+
+                                        <div class="project-summary-inline">
+
+                                            <div class="project-summary-inline-item"><strong>{% trans "Titre" %}</strong><span id="summaryTitle">{% trans "Non renseigné" %}</span></div>
+
+                                            <div class="project-summary-inline-item"><strong>{% trans "Partenaire" %}</strong><span id="summaryPartner">{% trans "Non sélectionné" %}</span></div>
+
+                                            <div class="project-summary-inline-item"><strong>{% trans "Statut" %}</strong><span id="summaryStatus">{% trans "En attente des dates" %}</span></div>
+
+                                            <div class="project-summary-inline-item"><strong>{% trans "Période" %}</strong><span id="summaryTimeline">{% trans "À définir" %}</span></div>
+
+                                            <div class="project-summary-inline-item"><strong>{% trans "Zones" %}</strong><span id="summaryZones">{% trans "Aucune zone sélectionnée" %}</span></div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="project-stepper project-motion-item" role="status" aria-live="polite">
+
+                                        <div id="projectStepIdentity" class="project-step-pill">
+
+                                            <i class="project-step-pill-dot"></i>
+
+                                            <span>{% trans "1. Identité" %}</span>
+
+                                        </div>
+
+                                        <div id="projectStepPlanning" class="project-step-pill">
+
+                                            <i class="project-step-pill-dot"></i>
+
+                                            <span>{% trans "2. Planification" %}</span>
+
+                                        </div>
+
+                                        <div id="projectStepCoverage" class="project-step-pill">
+
+                                            <i class="project-step-pill-dot"></i>
+
+                                            <span>{% trans "3. Couverture" %}</span>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="project-form-section project-motion-item" id="formSectionIdentity" data-focus-group="identity">
+
+                                        <div class="project-form-section-title">
+
+                                            <i class="feather-briefcase"></i>
+
+                                            <span>{% trans "Section 1: Identité projet" %}</span>
+
+                                            <span class="badge bg-soft-primary text-primary">{% trans "Base" %}</span>
+
+                                        </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectName" class="fw-semibold">{% trans "Titre:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="input-group">
+
+                                                <div class="input-group-text"><i class="feather-briefcase"></i></div>
+
+                                                <input type="text" class="form-control" id="projectName" name="titre" value="{{ projet.titre|default:'' }}" maxlength="255" placeholder="{% trans "Titre du projet" %}" required>
+
+                                            </div>
+
+                                            <div class="form-text" id="projectNameCounter">{% trans "0 / 255 caractères" %}</div>
+
+                                            <div class="form-text" id="projectTitleSuggestionWrapper">
+
+                                                {% trans "Suggestion:" %} <button type="button" id="projectTitleSuggestionBtn" class="btn btn-link btn-sm p-0 align-baseline text-decoration-none" disabled>{% trans "Aucune suggestion pour l'instant" %}</button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectDescription" class="fw-semibold">{% trans "Description:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="input-group">
+
+                                                <div class="input-group-text"><i class="feather-type"></i></div>
+
+                                                <textarea id="projectDescription" name="description" class="form-control" rows="5" placeholder="{% trans "Description du projet" %}" required>{{ projet.description|default:'' }}</textarea>
+
+                                            </div>
+
+                                            <div class="form-text" id="projectDescriptionCounter">{% trans "0 caractère" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectClient" class="fw-semibold">{% trans "Partenaire:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="project-partner-shell">
+
+                                                <div class="project-field-meta">
+
+                                                    <div class="project-field-meta-title">
+
+                                                        <i class="feather-users"></i>
+
+                                                        <span>{% trans "Partenaire principal" %}</span>
+
+                                                    </div>
+
+                                                    <span class="project-field-meta-badge">{% trans "Recherche rapide" %}</span>
+
+                                                </div>
+
+                                                <select id="projectClient" class="form-select" name="partenaires" data-placeholder="{% trans "Rechercher un partenaire" %}" required>
+
+                                                    <option value="">{% trans "Sélectionner un partenaire" %}</option>
+
+                                                    {% for partenaire in partenaires %}
+
+                                                    <option value="{{ partenaire.pk }}" {% if projet and projet.partenaires_id == partenaire.pk %}selected{% endif %}>{{ partenaire.nom }}</option>
+
+                                                    {% endfor %}
+
+                                                </select>
+
+                                                <div class="form-text mt-2" id="projectClientHint">{% trans "Choisissez le partenaire principal du projet." %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectReleaseDate" class="fw-semibold">{% trans "Date de début:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="project-date-shell">
+
+                                                <div class="project-field-meta">
+
+                                                    <div class="project-field-meta-title">
+
+                                                        <i class="feather-sunrise"></i>
+
+                                                        <span>{% trans "Lancement du projet" %}</span>
+
+                                                    </div>
+
+                                                    <span class="project-date-inline"><i class="feather-clock"></i>{% trans "Point de départ" %}</span>
+
+                                                </div>
+
+                                                <input type="date" class="form-control" id="projectReleaseDate" name="debut_du_projet" value="{{ projet.debut_du_projet|date:'Y-m-d' }}" required>
+
+                                                <div class="project-date-note" id="projectTimelineHint">{% trans "Ajoutez les dates pour calculer automatiquement la durée et le statut." %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="targetReleaseDate" class="fw-semibold">{% trans "Date de fin:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="project-date-shell">
+
+                                                <div class="project-field-meta">
+
+                                                    <div class="project-field-meta-title">
+
+                                                        <i class="feather-sunset"></i>
+
+                                                        <span>{% trans "Clôture prévisionnelle" %}</span>
+
+                                                    </div>
+
+                                                    <span class="project-date-inline"><i class="feather-flag"></i>{% trans "Échéance" %}</span>
+
+                                                </div>
+
+                                                <input type="date" class="form-control" id="targetReleaseDate" name="fin_du_projet" value="{{ projet.fin_du_projet|date:'Y-m-d' }}" required>
+
+                                                <div id="targetReleaseDateFeedback" class="invalid-feedback d-block"></div>
+
+                                                <div class="project-date-note" id="projectDurationHint">{% trans "Durée estimée: non calculée" %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="billingType" class="fw-semibold">{% trans "Bailleur de fonds:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="input-group">
+
+                                                <div class="input-group-text"><i class="feather-credit-card"></i></div>
+
+                                                <input type="text" id="billingType" class="form-control" name="Bailleur" value="{{ projet.Bailleur|default:'' }}" maxlength="255" placeholder="{% trans "Saisir le bailleur de fonds du projet" %}" required>
+
+                                            </div>
+
+                                            <div class="form-text" id="billingTypeCounter">{% trans "0 / 255 caractères" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectBudget" class="fw-semibold">{% trans "Budjets:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="input-group">
+
+                                                <div class="input-group-text"><i class="feather-dollar-sign"></i></div>
+
+                                                <input type="number" id="projectBudget" class="form-control" name="budjets" value="{{ projet.budjets|default:0 }}" min="0" step="1" placeholder="{% trans "Saisir le budget du projet" %}" required>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row mb-3">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectBudgets" class="fw-semibold">{% trans "Budgets:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="input-group">
+
+                                                <div class="input-group-text"><i class="feather-dollar-sign"></i></div>
+
+                                                <input type="number" id="projectBudgets" class="form-control" name="Budgets" value="{{ projet.Budgets|default:0 }}" min="0" step="1" placeholder="{% trans "Saisir le budget du projet" %}">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    </div>
+
+
+
+                                    <div class="project-form-section project-motion-item" id="formSectionPlanning" data-focus-group="planning">
+
+                                        <div class="project-form-section-title">
+
+                                            <i class="feather-calendar"></i>
+
+                                            <span>{% trans "Section 2: Planification" %}</span>
+
+                                            <span class="badge bg-soft-warning text-warning">{% trans "Calendrier" %}</span>
+
+                                        </div>
+
+
+
+                                    <div class="row mb-4 align-items-center">
+
+                                        <div class="col-lg-4">
+
+                                            <label for="projectStatus" class="fw-semibold">{% trans "Statut:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="input-group">
+
+                                                <div class="input-group-text"><i class="feather-activity"></i></div>
+
+                                                <input type="text" id="projectStatus" class="form-control bg-light" name="etat_du_projet" value="{{ projet.etat_du_projet|default:'' }}" maxlength="255" placeholder="{% trans "Statut calculé automatiquement selon les dates" %}" readonly required style="cursor: not-allowed; opacity: 0.9;">
+
+                                            </div>
+
+                                            <div class="form-text text-muted">{% trans "Le statut se complète automatiquement selon les dates de début et de fin du projet" %}</div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    </div>
+
+
+
+                                    <div class="project-form-section project-motion-item mb-0" id="formSectionCoverage" data-focus-group="coverage">
+
+                                        <div class="project-form-section-title">
+
+                                            <i class="feather-map-pin"></i>
+
+                                            <span>{% trans "Section 3: Couverture" %}</span>
+
+                                            <span class="badge bg-soft-success text-success">{% trans "Ciblage" %}</span>
+
+                                        </div>
+
+
+
+                                    <div class="row mb-4 align-items-start">
+
+                                        <div class="col-lg-4 pt-2">
+
+                                            <label for="zone_dintervention" class="fw-semibold">{% trans "Zones d'intervention:" %} </label>
+
+                                        </div>
+
+                                        <div class="col-lg-8">
+
+                                            <div class="project-zone-shell">
+
+                                                <div class="project-field-meta">
+
+                                                    <div class="project-field-meta-title">
+
+                                                        <i class="feather-map-pin"></i>
+
+                                                        <span>{% trans "Zones couvertes" %}</span>
+
+                                                    </div>
+
+                                                    <span class="project-field-meta-badge">{% trans "Multi-sélection" %}</span>
+
+                                                </div>
+
+                                                <select id="zone_dintervention" class="form-select" name="zone_dintervention" data-placeholder="{% trans "Rechercher une zone" %}" multiple required>
+
+                                                    {% for zone in zones %}
+
+                                                    <option value="{{ zone.pk }}" {% if projet and zone in projet.zone_dintervention.all %}selected{% endif %}>{{ zone.nom }}</option>
+
+                                                    {% endfor %}
+
+                                                </select>
+
+                                                <div class="form-text mt-2" id="zoneSelectionHint">{% trans "Sélectionnez une ou plusieurs zones d'intervention." %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="d-flex justify-content-end">
+
+                                        <button type="submit" id="manual-submit-btn" class="btn btn-primary" disabled>
+
+                                            <i class="feather-save me-2"></i>
+
+                                            <span>{% trans "Soumettre" %}</span>
+
+                                        </button>
+
+                                    </div>
+
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-lg-6 project-preview-column">
+
+                            <div class="card stretch stretch-full project-preview-card">
+
+                                <!-- Bandeau en-tête coloré dynamique -->
+
+                                <div id="previewCardHeader" class="p-4 project-preview-focus-block project-motion-item" data-focus-group="identity" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+
+                                    <div class="d-flex align-items-start gap-3">
+
+                                        <div id="previewProjectInitials" class="flex-shrink-0 d-flex align-items-center justify-content-center fw-bold text-white rounded-3" style="min-width:52px;width:52px;height:52px;font-size:18px;background:rgba(255,255,255,0.2);letter-spacing:-1px;">{% trans "P" %}</div>
+
+                                        <div class="flex-grow-1 min-w-0">
+
+                                            <div class="fs-11 text-white mb-1" style="opacity:0.75;text-transform:uppercase;letter-spacing:0.06em;">{% trans "Fiche projet" %}</div>
+
+                                            <div id="previewProjectTitle" class="fw-bold text-white lh-sm" style="font-size:1.05rem;word-break:break-word;">{% trans "Projet sans titre" %}</div>
+
+                                        </div>
+
+                                        <span id="previewStatusBadge" class="badge flex-shrink-0" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3);">{% trans "Brouillon" %}</span>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="card-body pt-3 pb-4">
+
+                                    <!-- Description -->
+
+                                    <p id="previewProjectDescription" class="text-muted small mb-3 pb-3 border-bottom lh-base project-preview-focus-block" data-focus-group="identity" style="min-height:36px;">{% trans "Ajoutez une description pour voir un aperçu synthétique du projet." %}</p>
+
+
+
+                                    <!-- Progression -->
+
+                                    <div class="mb-4">
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                            <span class="fs-12 fw-semibold text-muted text-uppercase" style="letter-spacing:0.04em;">{% trans "Progression de saisie" %}</span>
+
+                                            <span id="previewCompletionPercent" class="fs-11 fw-bold" style="color:#3b82f6;">0%</span>
+
+                                        </div>
+
+                                        <div class="progress rounded-pill" style="height:6px;background:#e2e8f0;">
+
+                                            <div id="previewCompletionBar" class="progress-bar rounded-pill" role="progressbar" style="width:0%;background:linear-gradient(90deg,#3b82f6,#06b6d4);transition:width 0.4s ease;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="mb-3 project-preview-focus-block project-dashboard-section project-motion-item" data-focus-group="identity">
+
+                                        <div class="fs-12 fw-semibold text-muted text-uppercase mb-2" style="letter-spacing:0.04em;">{% trans "Snapshot dashboard" %}</div>
+
+                                        <div class="row g-2">
+
+                                            <div class="col-6">
+
+                                                <div class="project-dashboard-kpi">
+
+                                                    <div class="project-dashboard-kpi-label">{% trans "Prêt à soumettre" %}</div>
+
+                                                    <div id="previewKpiReadiness" class="project-dashboard-kpi-value">{% trans "À compléter" %}</div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-6">
+
+                                                <div class="project-dashboard-kpi">
+
+                                                    <div class="project-dashboard-kpi-label">{% trans "Zones actives" %}</div>
+
+                                                    <div id="previewKpiZones" class="project-dashboard-kpi-value">{% trans "0 zone" %}</div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-6">
+
+                                                <div class="project-dashboard-kpi">
+
+                                                    <div class="project-dashboard-kpi-label">{% trans "Jours restants" %}</div>
+
+                                                    <div id="previewKpiDeadline" class="project-dashboard-kpi-value">{% trans "Indéfini" %}</div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-6">
+
+                                                <div class="project-dashboard-kpi">
+
+                                                    <div class="project-dashboard-kpi-label">{% trans "Phase" %}</div>
+
+                                                    <div id="previewKpiPhase" class="project-dashboard-kpi-value">{% trans "Préparation" %}</div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Métriques 2Ã—2 -->
+
+                                    <div class="row g-2 mb-3 project-motion-item">
+
+                                        <div class="col-6">
+
+                                            <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+
+                                                <div class="fs-11 text-muted mb-1" style="text-transform:uppercase;letter-spacing:0.04em;"><i class="feather-users" style="width:10px;height:10px;"></i> {% trans "Partenaire" %}</div>
+
+                                                <div id="previewPartner" class="fw-semibold fs-12" style="word-break:break-word;">{% trans "Non sélectionné" %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-6">
+
+                                            <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+
+                                                <div class="fs-11 text-muted mb-1" style="text-transform:uppercase;letter-spacing:0.04em;"><i class="feather-credit-card" style="width:10px;height:10px;"></i> {% trans "Bailleur" %}</div>
+
+                                                <div id="previewBilling" class="fw-semibold fs-12" style="word-break:break-word;">{% trans "Non renseigné" %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-6">
+
+                                            <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+
+                                                <div class="fs-11 text-muted mb-1" style="text-transform:uppercase;letter-spacing:0.04em;"><i class="feather-calendar" style="width:10px;height:10px;"></i> {% trans "Période" %}</div>
+
+                                                <div id="previewTimeline" class="fw-semibold" style="font-size:11px;">{% trans "À définir" %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-6">
+
+                                            <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+
+                                                <div class="fs-11 text-muted mb-1" style="text-transform:uppercase;letter-spacing:0.04em;"><i class="feather-clock" style="width:10px;height:10px;"></i> {% trans "Durée" %}</div>
+
+                                                <div id="previewDuration" class="fw-semibold fs-12">{% trans "Non calculée" %}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Timeline visuelle -->
+
+                                    <div id="previewTimelineViz" class="rounded-3 p-3 mb-3 project-preview-focus-block project-motion-item" data-focus-group="planning" style="background:#f8fafc;border:1px solid #e2e8f0;display:none;">
+
+                                        <div class="fs-11 text-muted text-uppercase mb-2" style="letter-spacing:0.04em;"><i class="feather-trending-up" style="width:10px;height:10px;"></i> {% trans "Calendrier" %}</div>
+
+                                        <div class="position-relative mb-2" style="height:8px;border-radius:4px;background:#e2e8f0;">
+
+                                            <div id="previewTimelineProgress" class="position-absolute top-0 start-0 h-100 rounded-pill" style="width:0%;background:linear-gradient(90deg,#3b82f6,#06b6d4);transition:width 0.5s ease;"></div>
+
+                                            <div id="previewTimelineDot" class="position-absolute top-50 translate-middle rounded-circle" style="width:14px;height:14px;background:#ef4444;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,0.2);left:0%;transition:left 0.5s ease;"></div>
+
+                                        </div>
+
+                                        <div class="d-flex justify-content-between">
+
+                                            <span id="previewTimelineStart" class="fs-11 text-muted">-</span>
+
+                                            <span id="previewTimelineEnd" class="fs-11 text-muted">-</span>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="mb-3 project-preview-focus-block project-insight-section project-motion-item" data-focus-group="planning">
+
+                                        <div class="fs-12 fw-semibold text-muted text-uppercase mb-2" style="letter-spacing:0.04em;">{% trans "Indicateurs clés" %}</div>
+
+                                        <div class="project-insight-list">
+
+                                            <div class="project-insight-item">
+
+                                                <span>{% trans "Santé de saisie" %}</span>
+
+                                                <span id="previewHealth">{% trans "En construction" %}</span>
+
+                                            </div>
+
+                                            <div class="project-insight-item">
+
+                                                <span>{% trans "État des dates" %}</span>
+
+                                                <span id="previewDateState">{% trans "Incomplet" %}</span>
+
+                                            </div>
+
+                                            <div class="project-insight-item">
+
+                                                <span>{% trans "Niveau de risque" %}</span>
+
+                                                <span id="previewRisk">{% trans "À évaluer" %}</span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Zones -->
+
+                                    <div class="mb-3 project-preview-focus-block project-motion-item" data-focus-group="coverage">
+
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+
+                                            <span class="fs-12 fw-semibold text-muted text-uppercase" style="letter-spacing:0.04em;"><i class="feather-map-pin" style="width:10px;height:10px;"></i> {% trans "Zones" %}</span>
+
+                                            <span id="previewZonesCount" class="badge bg-soft-primary text-primary">{% trans "0 sélectionnée" %}</span>
+
+                                        </div>
+
+                                        <div id="previewZonesList" class="d-flex flex-wrap gap-1">
+
+                                            <span class="badge bg-soft-secondary text-secondary">{% trans "Aucune zone" %}</span>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <!-- [ Main Content ] end -->
+
+        </div>
+
+        <!-- [ Footer ] start -->
+
+        <footer class="footer">
+
+            <p class="fs-11 text-muted fw-medium text-uppercase mb-0 copyright">
+
+                <span>{% trans "Copyright &copy;" %}</span>
+
+                <script>
+
+                    document.write(new Date().getFullYear());
+
+                </script>
+
+            </p>
+
+            <p><span>{% trans "By:" %} <a target="_blank" href="{% url 'index' %}" target="_blank">{% trans "CLUSTER SECURITE ALIMENTAIRE" %}</a></span> ââ‚¬Â¢ <span>{% trans "Distributed by:" %} <a target="_blank" href="{% url 'index' %}" target="_blank">{% trans "CLUSTER SECURITE ALIMENTAIRE" %}</a></span></p>
+
+            <div class="d-flex align-items-center gap-4">
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Help" %}</a>
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Terms" %}</a>
+
+                <a href="javascript:void(0);" class="fs-11 fw-semibold text-uppercase">{% trans "Privacy" %}</a>
+
+            </div>
+
+        </footer>
+
+        <!-- [ Footer ] end -->
+
+    </main>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Main Content !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Search Modal !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="modal fade-scale" id="searchModal" aria-hidden="true" tabindex="-1">
+
+        <div class="modal-dialog modal-lg modal-dialog-top modal-dialog-scrollable">
+
+            <div class="modal-content">
+
+                <div class="modal-header search-form py-0">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="feather-search fs-4 text-muted"></i>
+
+                        </span>
+
+                        <input type="text" class="form-control search-input-field" placeholder="{% trans "Search..." %}">
+
+                        <span class="input-group-text">
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Close" %}"></button>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="searching-for mb-5">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "I'm searching for..." %}</h4>
+
+                        <div class="row g-1">
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-compass"></i>
+
+                                    <span>{% trans "Recent" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-command"></i>
+
+                                    <span>{% trans "Command" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-users"></i>
+
+                                    <span>{% trans "Peoples" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-file"></i>
+
+                                    <span>{% trans "Files" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <i class="feather-video"></i>
+
+                                    <span>{% trans "Medias" %}</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-4 col-xl-2">
+
+                                <a href="javascript:void(0);" class="d-flex align-items-center gap-2 px-3 lh-lg border rounded-pill">
+
+                                    <span>{% trans "More" %}</span>
+
+                                    <i class="feather-chevron-down"></i>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="recent-result mb-5">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "Recnet" %} <span class="badge small bg-gray-200 rounded ms-1 text-dark">3</span></h4>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-airplay fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Accueil dashboard redesign" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">/<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-file-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Create new eocument" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "N /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-user-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Invite project colleagues" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "P /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="command-result mb-5">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "Command" %} <span class="badge small bg-gray-200 rounded ms-1 text-dark">5</span></h4>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-user fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "My profile" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "P /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-users fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Team profile" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "T /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-user-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Invite colleagues" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "I /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-briefcase fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Create new project" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "CP /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-life-buoy fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Support center" %}</div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="badge border rounded text-dark">{% trans "SC /" %}<i class="feather-command ms-1 fs-12"></i></a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="file-result mb-4">
+
+                        <h4 class="fs-13 fw-normal text-gray-600 mb-3">{% trans "Files" %} <span class="badge small bg-gray-200 rounded ms-1 text-dark">3</span></h4>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-folder-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Accueil Desing Project" %} <span class="fs-12 fw-normal text-muted">{% trans "(56.74 MB)" %}</span></div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="file-download"><i class="feather-download"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-folder-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Admin Dashboard Project" %} <span class="fs-12 fw-normal text-muted">{% trans "(46.83 MB)" %}</span></div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="file-download"><i class="feather-download"></i></a>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-start gap-3">
+
+                                <i class="feather-folder-plus fs-5"></i>
+
+                                <div class="fs-13 fw-semibold">{% trans "Accueil Dashboard Project" %} <span class="fs-12 fw-normal text-muted">{% trans "(68.59 MB)" %}</span></div>
+
+                            </a>
+
+                            <a href="javascript:void(0);" class="file-download"><i class="feather-download"></i></a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Search Modal !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! [Start] Language Select !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="modal fade-scale" id="languageSelectModal" aria-hidden="true" aria-labelledby="languageSelectModalLabel" tabindex="-1">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="languageSelectModalLabel">{% trans "Select Language" %}</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Close" %}"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/sa.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Arabic" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/bd.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Bengali" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ch.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Chinese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/hr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Croatian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/dk.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Danish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/nl.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Dutch" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select active">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/us.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "English" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/fi.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Filipino" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/fr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "French" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/de.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "German" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/il.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Hebrew" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/in.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Hindi" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/id.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Indonesian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/it.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Italian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/jp.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Japanese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/kr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Korean" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ir.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Persian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/pt.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Portuguese" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/ru.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Russian" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/es.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Spanish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/sv.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Swedish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/tr.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Turkish" %} </span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/pk.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Urdo" %}</span>
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 language_select">
+
+                            <a href="javascript:void(0);" class="d-flex align-items-center gap-2">
+
+                                <div class="avatar-image avatar-sm"><img src="{% static 'assets/vendors/img/flags/1x1/vi.svg' %}" alt="" class="img-fluid"></div>
+
+                                <span>{% trans "Vietnamese" %}</span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Language Select !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Downloading Toast !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="position-fixed" style="right: 5px; bottom: 5px; z-index: 999999">
+
+        <div id="toast" class="toast bg-black hide" data-bs-delay="3000" role="alert" aria-live="assertive" aria-atomic="true">
+
+            <div class="toast-header px-3 bg-transparent d-flex align-items-center justify-content-between border-bottom border-light border-opacity-10">
+
+                <div class="text-white mb-0 mr-auto">{% trans "Downloading..." %}</div>
+
+                <a href="javascript:void(0)" class="ms-2 mb-1 close fw-normal" data-bs-dismiss="toast" aria-label="{% trans "Close" %}">
+
+                    <span class="text-white">{% trans "&times;" %}</span>
+
+                </a>
+
+            </div>
+
+            <div class="toast-body p-3 text-white">
+
+                <h6 class="fs-13 text-white">{% trans "Project.zip" %}</h6>
+
+                <span class="text-light fs-11">{% trans "4.2mb of 5.5mb" %}</span>
+
+            </div>
+
+            <div class="toast-footer p-3 pt-0 border-top border-light border-opacity-10">
+
+                <div class="progress mt-3" style="height: 5px">
+
+                    <div class="progress-bar progress-bar-striped progress-bar-animated w-75 bg-dark" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--! ================================================================ !-->
+
+    <!--! END: Downloading Toast !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Theme Customizer !-->
+
+    <!--! ================================================================ !-->
+
+    <div class="theme-customizer">
+
+        <div class="customizer-handle">
+
+            <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
+
+                <i class="feather-settings"></i>
+
+            </a>
+
+        </div>
+
+        <div class="customizer-sidebar-wrapper">
+
+            <div class="customizer-sidebar-header px-4 ht-80 border-bottom d-flex align-items-center justify-content-between">
+
+                <h5 class="mb-0">{% trans "Theme Settings" %}</h5>
+
+                <a href="javascript:void(0);" class="cutomizer-close-trigger d-flex">
+
+                    <i class="feather-x"></i>
+
+                </a>
+
+            </div>
+
+            <div class="customizer-sidebar-body position-relative p-4" data-scrollbar-target="#psScrollbarInit">
+
+                <!--! BEGIN: [Navigation] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Navigation" %}</label>
+
+                    <div class="row g-2 theme-options-items app-navigation" id="appNavigationList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-navigation-light" name="app-navigation" value="1" data-app-navigation="app-navigation-light" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-navigation-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-navigation-dark" name="app-navigation" value="2" data-app-navigation="app-navigation-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-navigation-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Navigation] !-->
+
+                <!--! BEGIN: [Header] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set mt-5">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Header" %}</label>
+
+                    <div class="row g-2 theme-options-items app-header" id="appHeaderList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-header-light" name="app-header" value="1" data-app-header="app-header-light" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-header-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-header-dark" name="app-header" value="2" data-app-header="app-header-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-header-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Header] !-->
+
+                <!--! BEGIN: [Skins] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Skins" %}</label>
+
+                    <div class="row g-2 theme-options-items app-skin" id="appSkinList">
+
+                        <div class="col-6 text-center position-relative single-option light-button active">
+
+                            <input type="radio" class="btn-check" id="app-skin-light" name="app-skin" value="1" data-app-skin="app-skin-light">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-light">{% trans "Light" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center position-relative single-option dark-button">
+
+                            <input type="radio" class="btn-check" id="app-skin-dark" name="app-skin" value="2" data-app-skin="app-skin-dark">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-dark">{% trans "Dark" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Skins] !-->
+
+                <!--! BEGIN: [Typography] !-->
+
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-0 border border-gray-2 theme-options-set">
+
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Typography" %}</label>
+
+                    <div class="row g-2 theme-options-items font-family" id="fontFamilyList">
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-lato" name="font-family" value="1" data-font-family="app-font-family-lato">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-lato">{% trans "Lato" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-rubik" name="font-family" value="2" data-font-family="app-font-family-rubik">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-rubik">{% trans "Rubik" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-inter" name="font-family" value="3" data-font-family="app-font-family-inter" checked>
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-inter">{% trans "Inter" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-cinzel" name="font-family" value="4" data-font-family="app-font-family-cinzel">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-cinzel">{% trans "Cinzel" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-nunito" name="font-family" value="6" data-font-family="app-font-family-nunito">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-nunito">{% trans "Nunito" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-roboto" name="font-family" value="7" data-font-family="app-font-family-roboto">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto">{% trans "Roboto" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-ubuntu" name="font-family" value="8" data-font-family="app-font-family-ubuntu">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ubuntu">{% trans "Ubuntu" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-poppins" name="font-family" value="9" data-font-family="app-font-family-poppins">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-poppins">{% trans "Poppins" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-raleway" name="font-family" value="10" data-font-family="app-font-family-raleway">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-raleway">{% trans "Raleway" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-system-ui" name="font-family" value="11" data-font-family="app-font-family-system-ui">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-system-ui">{% trans "System UI" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-noto-sans" name="font-family" value="12" data-font-family="app-font-family-noto-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-noto-sans">{% trans "Noto Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-fira-sans" name="font-family" value="13" data-font-family="app-font-family-fira-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-fira-sans">{% trans "Fira Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-work-sans" name="font-family" value="14" data-font-family="app-font-family-work-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-work-sans">{% trans "Work Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-open-sans" name="font-family" value="15" data-font-family="app-font-family-open-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-open-sans">{% trans "Open Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-maven-pro" name="font-family" value="16" data-font-family="app-font-family-maven-pro">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-maven-pro">{% trans "Maven Pro" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-quicksand" name="font-family" value="17" data-font-family="app-font-family-quicksand">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-quicksand">{% trans "Quicksand" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat" name="font-family" value="18" data-font-family="app-font-family-montserrat">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat">{% trans "Montserrat" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-josefin-sans" name="font-family" value="19" data-font-family="app-font-family-josefin-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-josefin-sans">{% trans "Josefin Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-ibm-plex-sans" name="font-family" value="20" data-font-family="app-font-family-ibm-plex-sans">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ibm-plex-sans">{% trans "IBM Plex Sans" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-source-sans-pro" name="font-family" value="5" data-font-family="app-font-family-source-sans-pro">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-source-sans-pro">{% trans "Source Sans Pro" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat-alt" name="font-family" value="21" data-font-family="app-font-family-montserrat-alt">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat-alt">{% trans "Montserrat Alt" %}</label>
+
+                        </div>
+
+                        <div class="col-6 text-center single-option">
+
+                            <input type="radio" class="btn-check" id="app-font-family-roboto-slab" name="font-family" value="22" data-font-family="app-font-family-roboto-slab">
+
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto-slab">{% trans "Roboto Slab" %}</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--! END: [Typography] !-->
+
+            </div>
+
+            <div class="customizer-sidebar-footer px-4 ht-60 border-top d-flex align-items-center gap-2">
+
+                <div class="flex-fill w-50">
+
+                    <a href="javascript:void(0);" class="btn btn-danger" data-style="reset-all-common-style">{% trans "Reset" %}</a>
+
+                </div>
+
+                <div class="flex-fill w-50">
+
+                    <a href="{% url 'index' %}" target="_blank" class="btn btn-primary">{% trans "Download" %}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--! ================================================================ !-->
+
+    <!--! [End] Theme Customizer !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! Footer Script !-->
+
+    <!--! ================================================================ !-->
+
+    <!--! BEGIN: Vendors JS !-->
+
+    <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
+
+    <!-- vendors.min.js {always must need to be top} -->
+
+    <script src="{% static 'assets/vendors/js/jquery.validate.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/select2.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/select2-active.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/quill.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/datepicker.min.js' %}"></script>
+
+    <!--! END: Vendors JS !-->
+
+    <!--! BEGIN: Apps Init  !-->
+
+    <script src="{% static 'assets/js/common-init.min.js' %}"></script>
+
+    <script>
+
+        (function () {
+
+            var form = document.getElementById('project-details');
+
+            if (!form) return;
+
+
+
+            var projectNameField = document.getElementById('projectName');
+
+            var projectDescriptionField = document.getElementById('projectDescription');
+
+            var partnerField = document.getElementById('projectClient');
+
+            var endDateField = document.getElementById('targetReleaseDate');
+
+            var endDateFeedback = document.getElementById('targetReleaseDateFeedback');
+
+            var statusField = document.getElementById('projectStatus');
+
+            var startDateEl = document.getElementById('projectReleaseDate');
+
+            var billingField = document.getElementById('billingType');
+
+            var zoneField = document.getElementById('zone_dintervention');
+
+            var submitButton = document.getElementById('manual-submit-btn');
+
+            var completionBadge = document.getElementById('formCompletionBadge');
+
+            var projectNameCounter = document.getElementById('projectNameCounter');
+
+            var projectDescriptionCounter = document.getElementById('projectDescriptionCounter');
+
+            var billingTypeCounter = document.getElementById('billingTypeCounter');
+
+            var projectTimelineHint = document.getElementById('projectTimelineHint');
+
+            var projectDurationHint = document.getElementById('projectDurationHint');
+
+            var zoneSelectionHint = document.getElementById('zoneSelectionHint');
+
+            var projectTitleSuggestionBtn = document.getElementById('projectTitleSuggestionBtn');
+
+            var summaryTitle = document.getElementById('summaryTitle');
+
+            var summaryPartner = document.getElementById('summaryPartner');
+
+            var summaryStatus = document.getElementById('summaryStatus');
+
+            var summaryTimeline = document.getElementById('summaryTimeline');
+
+            var summaryZones = document.getElementById('summaryZones');
+
+            var previewProjectTitle = document.getElementById('previewProjectTitle');
+
+            var previewProjectDescription = document.getElementById('previewProjectDescription');
+
+            var previewStatusBadge = document.getElementById('previewStatusBadge');
+
+            var previewCompletionPercent = document.getElementById('previewCompletionPercent');
+
+            var previewCompletionBar = document.getElementById('previewCompletionBar');
+
+            var previewPartner = document.getElementById('previewPartner');
+
+            var previewBilling = document.getElementById('previewBilling');
+
+            var previewTimeline = document.getElementById('previewTimeline');
+
+            var previewDuration = document.getElementById('previewDuration');
+
+            var previewZonesCount = document.getElementById('previewZonesCount');
+
+            var previewZonesList = document.getElementById('previewZonesList');
+
+            var previewCardHeader = document.getElementById('previewCardHeader');
+
+            var previewProjectInitials = document.getElementById('previewProjectInitials');
+
+            var previewTimelineViz = document.getElementById('previewTimelineViz');
+
+            var previewTimelineProgress = document.getElementById('previewTimelineProgress');
+
+            var previewTimelineDot = document.getElementById('previewTimelineDot');
+
+            var previewTimelineStart = document.getElementById('previewTimelineStart');
+
+            var previewTimelineEnd = document.getElementById('previewTimelineEnd');
+
+            var previewKpiReadiness = document.getElementById('previewKpiReadiness');
+
+            var previewKpiZones = document.getElementById('previewKpiZones');
+
+            var previewKpiDeadline = document.getElementById('previewKpiDeadline');
+
+            var previewKpiPhase = document.getElementById('previewKpiPhase');
+
+            var previewHealth = document.getElementById('previewHealth');
+
+            var previewDateState = document.getElementById('previewDateState');
+
+            var previewRisk = document.getElementById('previewRisk');
+
+            var projectStepIdentity = document.getElementById('projectStepIdentity');
+
+            var projectStepPlanning = document.getElementById('projectStepPlanning');
+
+            var projectStepCoverage = document.getElementById('projectStepCoverage');
+
+            var projectDisplayModeBadge = document.getElementById('projectDisplayModeBadge');
+
+            var formFocusSections = Array.from(form.querySelectorAll('.project-form-section[data-focus-group]'));
+
+            var previewFocusBlocks = Array.from(document.querySelectorAll('.project-preview-focus-block[data-focus-group]'));
+
+            var currentFocusGroup = 'identity';
+
+            var titleSuggestionValue = '';
+
+
+
+            function pluralize(count, singular, plural) {
+
+                return count + ' ' + (count > 1 ? plural : singular);
+
+            }
+
+
+
+            function formatDate(dateValue) {
+
+                if (!dateValue) return '';
+
+
+
+                var date = new Date(dateValue + 'T00:00:00');
+
+                if (isNaN(date.getTime())) return '';
+
+
+
+                return new Intl.DateTimeFormat('fr-FR', {
+
+                    day: '2-digit',
+
+                    month: 'long',
+
+                    year: 'numeric'
+
+                }).format(date);
+
+            }
+
+
+
+            function updateTextCounter(field, output, maxLength, singularLabel, pluralLabel) {
+
+                if (!field || !output) return;
+
+
+
+                var length = (field.value || '').trim().length;
+
+
+
+                if (typeof maxLength === 'number') {
+
+                    output.textContent = length + ' / ' + maxLength + ' caractères';
+
+                    return;
+
+                }
+
+
+
+                output.textContent = pluralize(length, singularLabel, pluralLabel);
+
+            }
+
+
+
+            function getSelectedZones() {
+
+                return zoneField && zoneField.selectedOptions ? Array.from(zoneField.selectedOptions).map(function (option) {
+
+                    return option.text;
+
+                }) : [];
+
+            }
+
+
+
+            function getDurationLabel() {
+
+                var startDate = startDateEl && startDateEl.value ? new Date(startDateEl.value + 'T00:00:00') : null;
+
+                var endDate = endDateField && endDateField.value ? new Date(endDateField.value + 'T00:00:00') : null;
+
+
+
+                if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || endDate < startDate) {
+
+                    return 'Non calculée';
+
+                }
+
+
+
+                var dayCount = Math.round((endDate - startDate) / 86400000) + 1;
+
+                return pluralize(dayCount, 'jour', 'jours');
+
+            }
+
+
+
+            function getTimelineLabel() {
+
+                var formattedStart = formatDate(startDateEl ? startDateEl.value : '');
+
+                var formattedEnd = formatDate(endDateField ? endDateField.value : '');
+
+                return formattedStart && formattedEnd ? ('Du ' + formattedStart + ' au ' + formattedEnd) : 'À définir';
+
+            }
+
+
+
+            function buildTitleSuggestion() {
+
+                var partnerName = partnerField && partnerField.selectedIndex > 0 ? partnerField.options[partnerField.selectedIndex].text.trim() : '';
+
+                var billingName = billingField && billingField.value.trim() ? billingField.value.trim() : '';
+
+                var startYear = startDateEl && startDateEl.value ? startDateEl.value.slice(0, 4) : '';
+
+                var endYear = endDateField && endDateField.value ? endDateField.value.slice(0, 4) : '';
+
+                var yearLabel = '';
+
+
+
+                if (startYear && endYear) {
+
+                    yearLabel = startYear === endYear ? startYear : (startYear + '-' + endYear);
+
+                } else {
+
+                    yearLabel = startYear || endYear;
+
+                }
+
+
+
+                if (!partnerName && !billingName && !yearLabel) {
+
+                    return '';
+
+                }
+
+
+
+                var parts = ['Projet'];
+
+                if (partnerName) {
+
+                    parts.push(partnerName);
+
+                }
+
+                if (yearLabel) {
+
+                    parts.push(yearLabel);
+
+                }
+
+                if (!partnerName && billingName) {
+
+                    parts.push(billingName);
+
+                }
+
+
+
+                return parts.join(' - ');
+
+            }
+
+
+
+            function updateTitleSuggestion() {
+
+                if (!projectTitleSuggestionBtn) return;
+
+
+
+                titleSuggestionValue = buildTitleSuggestion();
+
+                projectTitleSuggestionBtn.disabled = !titleSuggestionValue;
+
+                projectTitleSuggestionBtn.textContent = titleSuggestionValue || 'Aucune suggestion pour l\'instant';
+
+            }
+
+
+
+            function setEndDateValidationError(message) {
+
+                if (!endDateField) return;
+
+
+
+                endDateField.setCustomValidity(message || '');
+
+                endDateField.classList.toggle('is-invalid', !!message);
+
+
+
+                if (endDateFeedback) {
+
+                    endDateFeedback.textContent = message || '';
+
+                }
+
+            }
+
+
+
+            function syncEndDateMin() {
+
+                if (!startDateEl || !endDateField) return;
+
+
+
+                if (startDateEl.value) {
+
+                    endDateField.min = startDateEl.value;
+
+                } else {
+
+                    endDateField.removeAttribute('min');
+
+                }
+
+            }
+
+
+
+            function updateTimelineHint() {
+
+                if (!projectTimelineHint) return;
+
+
+
+                var formattedStart = formatDate(startDateEl ? startDateEl.value : '');
+
+                var formattedEnd = formatDate(endDateField ? endDateField.value : '');
+
+
+
+                if (formattedStart && formattedEnd) {
+
+                    projectTimelineHint.textContent = 'Période prévue: du ' + formattedStart + ' au ' + formattedEnd + '.';
+
+                } else if (formattedStart) {
+
+                    projectTimelineHint.textContent = 'Début prévu le ' + formattedStart + '. Date de fin en attente.';
+
+                } else {
+
+                    projectTimelineHint.textContent = 'Ajoutez les dates pour calculer automatiquement la durée et le statut.';
+
+                }
+
+            }
+
+
+
+            function updateDurationHint() {
+
+                if (!projectDurationHint) return;
+
+
+
+                var startDate = startDateEl && startDateEl.value ? new Date(startDateEl.value + 'T00:00:00') : null;
+
+                var endDate = endDateField && endDateField.value ? new Date(endDateField.value + 'T00:00:00') : null;
+
+
+
+                if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || endDate < startDate) {
+
+                    projectDurationHint.textContent = 'Durée estimée: non calculée';
+
+                    return;
+
+                }
+
+
+
+                var dayCount = Math.round((endDate - startDate) / 86400000) + 1;
+
+                projectDurationHint.textContent = 'Durée estimée: ' + pluralize(dayCount, 'jour', 'jours');
+
+            }
+
+
+
+            function updateZoneHint() {
+
+                if (!zoneField || !zoneSelectionHint) return;
+
+
+
+                var count = zoneField.selectedOptions ? zoneField.selectedOptions.length : 0;
+
+
+
+                if (!count) {
+
+                    zoneSelectionHint.textContent = 'Sélectionnez une ou plusieurs zones d\'intervention.';
+
+                    return;
+
+                }
+
+
+
+                zoneSelectionHint.textContent = pluralize(count, 'zone sélectionnée', 'zones sélectionnées');
+
+            }
+
+
+
+            function updateSummary() {
+
+                if (summaryTitle) {
+
+                    summaryTitle.textContent = projectNameField && projectNameField.value.trim() ? projectNameField.value.trim() : 'Non renseigné';
+
+                }
+
+
+
+                if (summaryPartner) {
+
+                    summaryPartner.textContent = partnerField && partnerField.selectedIndex > 0 ? partnerField.options[partnerField.selectedIndex].text : 'Non sélectionné';
+
+                }
+
+
+
+                if (summaryStatus) {
+
+                    summaryStatus.textContent = statusField && statusField.value.trim() ? statusField.value.trim() : 'En attente des dates';
+
+                }
+
+
+
+                if (summaryTimeline) {
+
+                    var formattedStart = formatDate(startDateEl ? startDateEl.value : '');
+
+                    var formattedEnd = formatDate(endDateField ? endDateField.value : '');
+
+                    summaryTimeline.textContent = formattedStart && formattedEnd ? ('Du ' + formattedStart + ' au ' + formattedEnd) : 'À définir';
+
+                }
+
+
+
+                if (summaryZones) {
+
+                    var selectedZones = getSelectedZones();
+
+                    summaryZones.textContent = selectedZones.length ? selectedZones.join(', ') : 'Aucune zone sélectionnée';
+
+                }
+
+            }
+
+
+
+            function updateSectionStepper() {
+
+                var identityReady = !!(
+
+                    projectNameField && projectNameField.value.trim() &&
+
+                    projectDescriptionField && projectDescriptionField.value.trim() &&
+
+                    partnerField && partnerField.selectedIndex > 0 &&
+
+                    billingField && billingField.value.trim()
+
+                );
+
+
+
+                var planningReady = !!(
+
+                    startDateEl && startDateEl.value &&
+
+                    endDateField && endDateField.value &&
+
+                    statusField && statusField.value.trim() &&
+
+                    !(endDateField && endDateField.validationMessage)
+
+                );
+
+
+
+                var coverageReady = !!(zoneField && zoneField.selectedOptions && zoneField.selectedOptions.length > 0);
+
+
+
+                if (projectStepIdentity) {
+
+                    projectStepIdentity.classList.toggle('is-complete', identityReady);
+
+                }
+
+                if (projectStepPlanning) {
+
+                    projectStepPlanning.classList.toggle('is-complete', planningReady);
+
+                }
+
+                if (projectStepCoverage) {
+
+                    projectStepCoverage.classList.toggle('is-complete', coverageReady);
+
+                }
+
+            }
+
+
+
+            function applyFocusGroup(group) {
+
+                if (!group) return;
+
+                currentFocusGroup = group;
+
+
+
+                formFocusSections.forEach(function (section) {
+
+                    var isTarget = section.getAttribute('data-focus-group') === group;
+
+                    section.classList.toggle('is-active', isTarget);
+
+                    section.classList.toggle('is-dimmed', !isTarget);
+
+                });
+
+
+
+                previewFocusBlocks.forEach(function (block) {
+
+                    var isTarget = block.getAttribute('data-focus-group') === group;
+
+                    block.classList.toggle('is-active', isTarget);
+
+                    block.classList.toggle('is-dimmed', !isTarget);
+
+                });
+
+            }
+
+
+
+            function syncFocusFromEventTarget(target) {
+
+                if (!target) return;
+
+
+
+                var group = '';
+
+                var section = target.closest('.project-form-section[data-focus-group]');
+
+                if (section) {
+
+                    group = section.getAttribute('data-focus-group') || '';
+
+                }
+
+
+
+                if (!group && (target === projectNameField || target === projectDescriptionField || target === partnerField || target === billingField)) {
+
+                    group = 'identity';
+
+                }
+
+                if (!group && (target === startDateEl || target === endDateField || target === statusField)) {
+
+                    group = 'planning';
+
+                }
+
+                if (!group && target === zoneField) {
+
+                    group = 'coverage';
+
+                }
+
+
+
+                if (group) {
+
+                    applyFocusGroup(group);
+
+                }
+
+            }
+
+
+
+            function updatePreviewCard() {
+
+                var selectedZones = getSelectedZones();
+
+                var statusValue = statusField && statusField.value.trim() ? statusField.value.trim() : 'Brouillon';
+
+
+
+                // Gradient dynamique selon le statut
+
+                if (previewCardHeader) {
+
+                    var headerGradients = {
+
+                        'Projet en cours': 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
+
+                        'Projet planifi\u00e9': 'linear-gradient(135deg, #92400e 0%, #f59e0b 100%)',
+
+                        'Projet cl\u00f4tur\u00e9': 'linear-gradient(135deg, #065f46 0%, #10b981 100%)'
+
+                    };
+
+                    previewCardHeader.style.background = headerGradients[statusValue] || 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)';
+
+                }
+
+
+
+                // Initiales du projet
+
+                if (previewProjectInitials) {
+
+                    var rawTitle = projectNameField && projectNameField.value.trim() ? projectNameField.value.trim() : '';
+
+                    if (rawTitle) {
+
+                        var titleWords = rawTitle.split(/\s+/).filter(Boolean);
+
+                        previewProjectInitials.textContent = titleWords.length >= 2
+
+                            ? (titleWords[0][0] + titleWords[1][0]).toUpperCase()
+
+                            : rawTitle.slice(0, 2).toUpperCase();
+
+                    } else {
+
+                        previewProjectInitials.textContent = 'P';
+
+                    }
+
+                }
+
+
+
+                var completionFields = [projectNameField, projectDescriptionField, partnerField, startDateEl, endDateField, billingField, statusField];
+
+                var completedCount = completionFields.filter(function (field) {
+
+                    if (!field) return false;
+
+                    if (field.tagName === 'SELECT') {
+
+                        return field.selectedIndex > 0;
+
+                    }
+
+                    return !!field.value.trim();
+
+                }).length + (selectedZones.length ? 1 : 0);
+
+                var totalCount = completionFields.length + 1;
+
+                var progress = Math.round((completedCount / totalCount) * 100);
+
+
+
+                if (previewProjectTitle) {
+
+                    previewProjectTitle.textContent = projectNameField && projectNameField.value.trim() ? projectNameField.value.trim() : (titleSuggestionValue || 'Projet sans titre');
+
+                }
+
+                if (previewProjectDescription) {
+
+                    previewProjectDescription.textContent = projectDescriptionField && projectDescriptionField.value.trim()
+
+                        ? projectDescriptionField.value.trim()
+
+                        : 'Ajoutez une description pour voir un aperçu synthétique du projet.';
+
+                }
+
+                if (previewStatusBadge) {
+
+                    var statusClass = 'bg-soft-secondary text-secondary';
+
+                    if (statusValue === 'Projet en cours') statusClass = 'bg-soft-primary text-primary';
+
+                    if (statusValue === 'Projet planifié') statusClass = 'bg-soft-warning text-warning';
+
+                    if (statusValue === 'Projet clôturé') statusClass = 'bg-soft-success text-success';
+
+                    previewStatusBadge.className = 'badge ' + statusClass;
+
+                    previewStatusBadge.textContent = statusValue;
+
+                }
+
+                if (previewCompletionPercent) {
+
+                    previewCompletionPercent.textContent = progress + '%';
+
+                }
+
+                if (previewCompletionBar) {
+
+                    previewCompletionBar.style.width = progress + '%';
+
+                    previewCompletionBar.setAttribute('aria-valuenow', String(progress));
+
+                }
+
+
+
+                var startDate = startDateEl && startDateEl.value ? new Date(startDateEl.value + 'T00:00:00') : null;
+
+                var endDate = endDateField && endDateField.value ? new Date(endDateField.value + 'T00:00:00') : null;
+
+                var today = new Date();
+
+                today.setHours(0, 0, 0, 0);
+
+                var isDateRangeValid = startDate && endDate && !isNaN(startDate.getTime()) && !isNaN(endDate.getTime()) && endDate >= startDate;
+
+
+
+                if (previewKpiReadiness) {
+
+                    previewKpiReadiness.textContent = progress >= 90 ? 'Prêt' : (progress >= 50 ? 'Partiel' : 'À compléter');
+
+                }
+
+                if (previewKpiZones) {
+
+                    previewKpiZones.textContent = pluralize(selectedZones.length, 'zone', 'zones');
+
+                }
+
+                if (previewKpiDeadline) {
+
+                    if (isDateRangeValid) {
+
+                        var daysToDeadline = Math.ceil((endDate - today) / 86400000);
+
+                        if (daysToDeadline > 0) {
+
+                            previewKpiDeadline.textContent = pluralize(daysToDeadline, 'jour', 'jours');
+
+                        } else if (daysToDeadline === 0) {
+
+                            previewKpiDeadline.textContent = 'Échéance aujourd\'hui';
+
+                        } else {
+
+                            previewKpiDeadline.textContent = 'Dépassé de ' + pluralize(Math.abs(daysToDeadline), 'jour', 'jours');
+
+                        }
+
+                    } else {
+
+                        previewKpiDeadline.textContent = 'Indéfini';
+
+                    }
+
+                }
+
+                if (previewKpiPhase) {
+
+                    if (statusValue === 'Projet en cours') previewKpiPhase.textContent = 'Exécution';
+
+                    else if (statusValue === 'Projet planifié') previewKpiPhase.textContent = 'Planification';
+
+                    else if (statusValue === 'Projet clôturé') previewKpiPhase.textContent = 'Clôture';
+
+                    else previewKpiPhase.textContent = 'Préparation';
+
+                }
+
+
+
+                if (previewHealth) {
+
+                    previewHealth.textContent = progress >= 85 ? 'Bonne' : (progress >= 60 ? 'Moyenne' : 'Faible');
+
+                }
+
+                if (previewDateState) {
+
+                    if (!startDateEl.value || !endDateField.value) previewDateState.textContent = 'Incomplet';
+
+                    else previewDateState.textContent = isDateRangeValid ? 'Cohérent' : 'Invalide';
+
+                }
+
+                if (previewRisk) {
+
+                    var riskLabel = 'Modéré';
+
+                    if (!isDateRangeValid || !selectedZones.length) riskLabel = 'Élevé';
+
+                    else if (progress >= 85 && statusValue === 'Projet en cours') riskLabel = 'Faible';
+
+                    previewRisk.textContent = riskLabel;
+
+                }
+
+
+
+                if (previewPartner) {
+
+                    previewPartner.textContent = partnerField && partnerField.selectedIndex > 0 ? partnerField.options[partnerField.selectedIndex].text : 'Non sélectionné';
+
+                }
+
+                if (previewBilling) {
+
+                    previewBilling.textContent = billingField && billingField.value.trim() ? billingField.value.trim() : 'Non renseigné';
+
+                }
+
+                if (previewTimeline) {
+
+                    previewTimeline.textContent = getTimelineLabel();
+
+                }
+
+                if (previewDuration) {
+
+                    previewDuration.textContent = getDurationLabel();
+
+                }
+
+                if (previewZonesCount) {
+
+                    previewZonesCount.textContent = pluralize(selectedZones.length, 'sélectionnée', 'sélectionnées');
+
+                }
+
+                if (previewZonesList) {
+
+                    previewZonesList.innerHTML = selectedZones.length
+
+                        ? selectedZones.map(function (zone) {
+
+                            return '<span class="badge bg-soft-primary text-primary">' + zone.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>';
+
+                        }).join('')
+
+                        : '<span class="badge bg-soft-secondary text-secondary">Aucune zone</span>';
+
+                }
+
+
+
+                // Timeline visuelle
+
+                var vizStart = startDateEl && startDateEl.value ? new Date(startDateEl.value + 'T00:00:00') : null;
+
+                var vizEnd = endDateField && endDateField.value ? new Date(endDateField.value + 'T00:00:00') : null;
+
+                if (previewTimelineViz) {
+
+                    if (vizStart && vizEnd && !isNaN(vizStart.getTime()) && !isNaN(vizEnd.getTime()) && vizEnd >= vizStart) {
+
+                        previewTimelineViz.style.display = '';
+
+                        var todayViz = new Date();
+
+                        todayViz.setHours(0, 0, 0, 0);
+
+                        var totalMs = vizEnd - vizStart;
+
+                        var elapsedMs = todayViz - vizStart;
+
+                        var pct = totalMs <= 0 ? 100 : Math.min(100, Math.max(0, Math.round((elapsedMs / totalMs) * 100)));
+
+                        if (previewTimelineProgress) previewTimelineProgress.style.width = pct + '%';
+
+                        if (previewTimelineDot) previewTimelineDot.style.left = pct + '%';
+
+                        if (previewTimelineStart) previewTimelineStart.textContent = formatDate(startDateEl.value);
+
+                        if (previewTimelineEnd) previewTimelineEnd.textContent = formatDate(endDateField.value);
+
+                    } else {
+
+                        previewTimelineViz.style.display = 'none';
+
+                    }
+
+                }
+
+            }
+
+
+
+            function updateSubmitState() {
+
+                if (!submitButton) return;
+
+
+
+                var zoneCount = zoneField && zoneField.selectedOptions ? zoneField.selectedOptions.length : 0;
+
+                var isReady = form.checkValidity() && zoneCount > 0 && !(endDateField && endDateField.validationMessage);
+
+
+
+                submitButton.disabled = !isReady;
+
+
+
+                if (completionBadge) {
+
+                    completionBadge.className = 'badge ' + (isReady ? 'bg-soft-success text-success' : 'bg-soft-secondary text-secondary');
+
+                    completionBadge.textContent = isReady ? 'Formulaire prêt' : 'Formulaire à compléter';
+
+                }
+
+            }
+
+
+
+            function refreshSmartHelpers() {
+
+                updateTextCounter(projectNameField, projectNameCounter, 255);
+
+                updateTextCounter(projectDescriptionField, projectDescriptionCounter, null, 'caractère', 'caractères');
+
+                updateTextCounter(billingField, billingTypeCounter, 255);
+
+                updateTitleSuggestion();
+
+                updateTimelineHint();
+
+                updateDurationHint();
+
+                updateZoneHint();
+
+                updateSectionStepper();
+
+                updateSummary();
+
+                updatePreviewCard();
+
+                updateSubmitState();
+
+            }
+
+
+
+            function autoFillProjectStatus() {
+
+                if (!endDateField || !statusField) return;
+
+
+
+                var endDate = endDateField.value ? new Date(endDateField.value + 'T00:00:00') : null;
+
+                var startDate = startDateEl && startDateEl.value ? new Date(startDateEl.value + 'T00:00:00') : null;
+
+
+
+                if (!startDate || isNaN(startDate.getTime()) || !endDate || isNaN(endDate.getTime())) {
+
+                    setEndDateValidationError('');
+
+                    statusField.value = '';
+
+                    refreshSmartHelpers();
+
+                    return;
+
+                }
+
+
+
+                if (endDate < startDate) {
+
+                    setEndDateValidationError('La date de fin doit etre superieure ou egale a la date de debut.');
+
+                    statusField.value = '';
+
+                    refreshSmartHelpers();
+
+                    return;
+
+                }
+
+
+
+                setEndDateValidationError('');
+
+
+
+                var today = new Date();
+
+                today.setHours(0, 0, 0, 0);
+
+
+
+                var calculatedStatus = '';
+
+
+
+                if (endDate < today) {
+
+                    calculatedStatus = 'Projet clôturé';
+
+                } else if (startDate > today) {
+
+                    calculatedStatus = 'Projet planifié';
+
+                } else {
+
+                    calculatedStatus = 'Projet en cours';
+
+                }
+
+
+
+                statusField.value = calculatedStatus;
+
+
+
+                refreshSmartHelpers();
+
+            }
+
+
+
+            if (statusField) {
+
+                statusField.readOnly = true;
+
+            }
+
+
+
+            if (window.jQuery && window.jQuery.fn && window.jQuery.fn.select2) {
+
+                if (partnerField) {
+
+                    window.jQuery(partnerField).select2({
+
+                        width: '100%',
+
+                        placeholder: partnerField.getAttribute('data-placeholder') || 'Sélectionner un partenaire',
+
+                        allowClear: true,
+
+                        dropdownCssClass: 'project-select2-dropdown'
+
+                    }).on('change', refreshSmartHelpers);
+
+                }
+
+
+
+                if (zoneField) {
+
+                    window.jQuery(zoneField).select2({
+
+                        width: '100%',
+
+                        placeholder: zoneField.getAttribute('data-placeholder') || 'Sélectionner une zone',
+
+                        dropdownCssClass: 'project-select2-dropdown'
+
+                    }).on('change', refreshSmartHelpers);
+
+                }
+
+            }
+
+
+
+            if (projectTitleSuggestionBtn) {
+
+                projectTitleSuggestionBtn.addEventListener('click', function () {
+
+                    if (!projectNameField || !titleSuggestionValue) return;
+
+                    projectNameField.value = titleSuggestionValue;
+
+                    refreshSmartHelpers();
+
+                });
+
+            }
+
+
+
+            if (endDateField) {
+
+                endDateField.addEventListener('change', autoFillProjectStatus);
+
+                endDateField.addEventListener('input', autoFillProjectStatus);
+
+            }
+
+
+
+            if (startDateEl) {
+
+                startDateEl.addEventListener('change', syncEndDateMin);
+
+                startDateEl.addEventListener('input', syncEndDateMin);
+
+                startDateEl.addEventListener('change', autoFillProjectStatus);
+
+                startDateEl.addEventListener('input', autoFillProjectStatus);
+
+            }
+
+
+
+            [projectNameField, projectDescriptionField, partnerField, billingField, zoneField].forEach(function (field) {
+
+                if (!field) return;
+
+                field.addEventListener('input', refreshSmartHelpers);
+
+                field.addEventListener('change', refreshSmartHelpers);
+
+            });
+
+
+
+            form.addEventListener('focusin', function (event) {
+
+                syncFocusFromEventTarget(event.target);
+
+            });
+
+
+
+            if (window.jQuery && window.jQuery.fn && window.jQuery.fn.select2) {
+
+                if (partnerField) {
+
+                    window.jQuery(partnerField).on('select2:open select2:select', function () {
+
+                        applyFocusGroup('identity');
+
+                    });
+
+                }
+
+                if (zoneField) {
+
+                    window.jQuery(zoneField).on('select2:open select2:select', function () {
+
+                        applyFocusGroup('coverage');
+
+                    });
+
+                }
+
+            }
+
+
+
+            form.addEventListener('submit', function () {
+
+                refreshSmartHelpers();
+
+            });
+
+
+
+            syncEndDateMin();
+
+            autoFillProjectStatus();
+
+            refreshSmartHelpers();
+
+            applyFocusGroup(currentFocusGroup);
+
+
+
+            if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+
+                window.requestAnimationFrame(function () {
+
+                    form.classList.add('project-motion-ready');
+
+                });
+
+            }
+
+        })();
+
+    </script>
+
+    <!--! END: Apps Init !-->
+
+    <!--! BEGIN: Theme Customizer  !-->
+
+    <script src="{% static 'assets/js/theme-customizer-init.min.js' %}"></script>
+
+    <!--! END: Theme Customizer !-->
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,443 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <meta name="author" content="CLUSTER SECURITE ALIMENTAIRE">
+    <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
+    <!--! BEGIN: Apps Title-->
+    <title>{% trans "CLUSTER SECURITE ALIMENTAIRE || Réinitialisation du mot de passe" %}</title>
+    <!--! END:  Apps Title-->
+    <!--! BEGIN: Favicon-->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo-abbr.png' %}">
+    <!--! END: Favicon-->
+    <!--! BEGIN: Bootstrap CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!--! END: Bootstrap CSS-->
+    <!--! BEGIN: Vendors CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}">
+    <!--! END: Vendors CSS-->
+    <!--! BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/language-switcher-fix.css' %}" />
+    <style>
+        .otp-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .otp-digit {
+            height: 52px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border: 2px solid #d9e2ec;
+            border-radius: 0.6rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .otp-digit:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+        .otp-digit.is-filled {
+            border-color: #0a7f98;
+            background: #f5fbfd;
+        }
+        .otp-digit.has-error {
+            border-color: #dc3545;
+            background: #fff5f5;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.12);
+        }
+        .otp-feedback {
+            max-width: 320px;
+            margin: 0.75rem auto 0;
+            padding: 0.65rem 0.85rem;
+            border-radius: 0.6rem;
+            background: #fff5f5;
+            border: 1px solid #f1b8bf;
+            color: #b42318;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+    </style>
+    <!--! END: Custom CSS-->
+    <!--! HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries !-->
+    <!--! WARNING: Respond.js doesn"t work if you view the page via file: !-->
+    <!--[if lt IE 9]>
+			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+    <!--! ================================================================ !-->
+    <!--! [Start] Main Content !-->
+    <!--! ================================================================ !-->
+    <main class="auth-creative-wrapper">
+        <div class="auth-creative-inner">
+            <div class="creative-card-wrapper">
+                <div class="card my-4 overflow-hidden" style="z-index: 1">
+                    <div class="row flex-1 g-0">
+                        <div class="col-lg-6 h-100 my-auto">
+                            <div class="wd-50 bg-white p-2 rounded-circle shadow-lg position-absolute translate-middle top-50 start-50">
+                                <img src="{% static 'assets/images/logo-abbr.png' %}" alt="" class="img-fluid">
+                            </div>
+                            <div class="creative-card-body card-body p-sm-5">
+                                {% if messages %}
+                                <div class="mb-4">
+                                    {% for message in messages %}
+                                    <div class="alert {% if 'error' in message.tags %}alert-danger{% elif 'success' in message.tags %}alert-success{% elif 'warning' in message.tags %}alert-warning{% else %}alert-info{% endif %} mb-2" role="alert">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
+                                <!-- ÉTAPE 1: Email Verification -->
+                                {% if step == 'email' %}
+                                <h2 class="fs-20 fw-bolder mb-4">{% trans "Réinitialisation du mot de passe" %}</h2>
+                                <h4 class="fs-13 fw-bold mb-2">{% trans "Étape 1 : Vérification de l'email" %}</h4>
+                                <p class="fs-12 fw-medium text-muted">{% trans "Entrez l'adresse email associée à votre compte pour recevoir un code de vérification." %}</p>
+                                <form action="{% url 'password_reset_email_step' %}" method="POST" class="w-100 mt-4 pt-2">
+                                    {% csrf_token %}
+                                    <div class="mb-4">
+                                        <input type="email" name="email" class="form-control" placeholder="{% trans "Adresse email" %}" required>
+                                    </div>
+                                    <div class="mt-5">
+                                        <button type="submit" class="btn btn-lg btn-primary w-100">{% trans "Recevoir le code OTP" %}</button>
+                                    </div>
+                                </form>
+                                <div class="mt-5 text-muted">
+                                    <span>{% trans "Vous avez un compte ?" %} <a href="{% url 'auth_login_creative' %}">{% trans "Se connecter" %}</a></span>
+                                </div>
+
+                                <!-- ÉTAPE 2: OTP Verification -->
+                                {% elif step == 'otp' %}
+                                <h2 class="fs-20 fw-bolder mb-4">{% trans "Réinitialisation du mot de passe" %}</h2>
+                                <h4 class="fs-13 fw-bold mb-2">{% trans "Étape 2 : Vérification du code OTP" %}</h4>
+                                <p class="fs-12 fw-medium text-muted">{% trans "Un code de vérification a été envoyé à " %}<strong>{{ reset_email }}</strong>{% trans ". Veuillez l'entrer ci-dessous." %}</p>
+                                <form action="{% url 'password_reset_otp_step' %}" method="POST" class="w-100 mt-4 pt-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reset_email" value="{{ reset_email }}">
+                                    <div class="mb-4">
+                                        <div class="otp-grid" id="otp-grid">
+                                            <input type="text" class="form-control otp-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" aria-label="Chiffre 1 du code OTP">
+                                            <input type="text" class="form-control otp-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Chiffre 2 du code OTP">
+                                            <input type="text" class="form-control otp-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Chiffre 3 du code OTP">
+                                            <input type="text" class="form-control otp-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Chiffre 4 du code OTP">
+                                            <input type="text" class="form-control otp-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Chiffre 5 du code OTP">
+                                            <input type="text" class="form-control otp-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Chiffre 6 du code OTP">
+                                        </div>
+                                        <input type="hidden" name="otp_code" id="otp_code_hidden" required>
+                                        <small class="text-muted d-block mt-2">{% trans "Le code expire dans 10 minutes" %}</small>
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        {% if 'error' in message.tags %}
+                                        <div class="otp-feedback" id="otp-feedback" role="alert">
+                                            {{ message }}
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="mt-5">
+                                        <button type="submit" class="btn btn-lg btn-primary w-100">{% trans "Vérifier le code OTP" %}</button>
+                                    </div>
+                                </form>
+                                <div class="mt-4 text-muted fs-12">
+                                    <p><a href="{% url 'password_reset_email_step' %}">{% trans "Vous n'avez pas reçu le code ? Réessayer" %}</a></p>
+                                </div>
+
+                                <!-- ÉTAPE 3: Password Reset -->
+                                {% elif step == 'password' %}
+                                <h2 class="fs-20 fw-bolder mb-4">{% trans "Réinitialisation du mot de passe" %}</h2>
+                                <h4 class="fs-13 fw-bold mb-2">{% trans "Étape 3 : Définir un nouveau mot de passe" %}</h4>
+                                <p class="fs-12 fw-medium text-muted">{% trans "Veuillez entrer et confirmer votre nouveau mot de passe." %}</p>
+                                <form action="{% url 'password_reset_password_step' %}" method="POST" class="w-100 mt-4 pt-2">
+                                    {% csrf_token %}
+                                    <div class="mb-4">
+                                        <input type="password" name="new_password" class="form-control" placeholder="{% trans "Nouveau mot de passe" %}" required minlength="8">
+                                        <small class="text-muted d-block mt-1">{% trans "Minimum 8 caractères" %}</small>
+                                    </div>
+                                    <div class="mb-4">
+                                        <input type="password" name="confirm_password" class="form-control" placeholder="{% trans "Confirmer le mot de passe" %}" required minlength="8">
+                                    </div>
+                                    <div class="mt-5">
+                                        <button type="submit" class="btn btn-lg btn-primary w-100">{% trans "Réinitialiser le mot de passe" %}</button>
+                                    </div>
+                                </form>
+                                <div class="mt-5 text-muted">
+                                    <span>{% trans "Vous avez un compte ?" %} <a href="{% url 'auth_login_creative' %}">{% trans "Se connecter" %}</a></span>
+                                </div>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 bg-primary">
+                            <div class="h-100 d-flex align-items-center justify-content-center">
+                                <img src="{% static 'assets/images/auth/auth-user.png' %}" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!--! ================================================================ !-->
+    <!--! [End] Main Content !-->
+    <!--! ================================================================ !-->
+    <!--! ================================================================ !-->
+    <!--! BEGIN: Theme Customizer !-->
+    <!--! ================================================================ !-->
+    <div class="theme-customizer">
+        <div class="customizer-handle">
+            <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
+                <i class="feather-settings"></i>
+            </a>
+        </div>
+        <div class="customizer-sidebar-wrapper">
+            <div class="customizer-sidebar-header px-4 ht-80 border-bottom d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">{% trans "Theme Settings" %}</h5>
+                <a href="javascript:void(0);" class="cutomizer-close-trigger d-flex">
+                    <i class="feather-x"></i>
+                </a>
+            </div>
+            <div class="customizer-sidebar-body position-relative p-4" data-scrollbar-target="#psScrollbarInit">
+                <!--! BEGIN: [Skins] !-->
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Skins" %}</label>
+                    <div class="row g-2 theme-options-items app-skin" id="appSkinList">
+                        <div class="col-6 text-center position-relative single-option light-button active">
+                            <input type="radio" class="btn-check" id="app-skin-light" name="app-skin" value="1" data-app-skin="app-skin-light">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-light">{% trans "Light" %}</label>
+                        </div>
+                        <div class="col-6 text-center position-relative single-option dark-button">
+                            <input type="radio" class="btn-check" id="app-skin-dark" name="app-skin" value="2" data-app-skin="app-skin-dark">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-dark">{% trans "Dark" %}</label>
+                        </div>
+                    </div>
+                </div>
+                <!--! END: [Skins] !-->
+                <!--! BEGIN: [Typography] !-->
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-0 border border-gray-2 theme-options-set">
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">{% trans "Typography" %}</label>
+                    <div class="row g-2 theme-options-items font-family" id="fontFamilyList">
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-lato" name="font-family" value="1" data-font-family="app-font-family-lato">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-lato">{% trans "Lato" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-rubik" name="font-family" value="2" data-font-family="app-font-family-rubik">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-rubik">{% trans "Rubik" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-inter" name="font-family" value="3" data-font-family="app-font-family-inter" checked>
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-inter">{% trans "Inter" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-cinzel" name="font-family" value="4" data-font-family="app-font-family-cinzel">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-cinzel">{% trans "Cinzel" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-nunito" name="font-family" value="6" data-font-family="app-font-family-nunito">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-nunito">{% trans "Nunito" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-roboto" name="font-family" value="7" data-font-family="app-font-family-roboto">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto">{% trans "Roboto" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-ubuntu" name="font-family" value="8" data-font-family="app-font-family-ubuntu">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ubuntu">{% trans "Ubuntu" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-poppins" name="font-family" value="9" data-font-family="app-font-family-poppins">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-poppins">{% trans "Poppins" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-raleway" name="font-family" value="10" data-font-family="app-font-family-raleway">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-raleway">{% trans "Raleway" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-system-ui" name="font-family" value="11" data-font-family="app-font-family-system-ui">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-system-ui">{% trans "System UI" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-noto-sans" name="font-family" value="12" data-font-family="app-font-family-noto-sans">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-noto-sans">{% trans "Noto Sans" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-fira-sans" name="font-family" value="13" data-font-family="app-font-family-fira-sans">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-fira-sans">{% trans "Fira Sans" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-work-sans" name="font-family" value="14" data-font-family="app-font-family-work-sans">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-work-sans">{% trans "Work Sans" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-open-sans" name="font-family" value="15" data-font-family="app-font-family-open-sans">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-open-sans">{% trans "Open Sans" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-maven-pro" name="font-family" value="16" data-font-family="app-font-family-maven-pro">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-maven-pro">{% trans "Maven Pro" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-quicksand" name="font-family" value="17" data-font-family="app-font-family-quicksand">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-quicksand">{% trans "Quicksand" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat" name="font-family" value="18" data-font-family="app-font-family-montserrat">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat">{% trans "Montserrat" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-josefin-sans" name="font-family" value="19" data-font-family="app-font-family-josefin-sans">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-josefin-sans">{% trans "Josefin Sans" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-ibm-plex-sans" name="font-family" value="20" data-font-family="app-font-family-ibm-plex-sans">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ibm-plex-sans">{% trans "IBM Plex Sans" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-source-sans-pro" name="font-family" value="5" data-font-family="app-font-family-source-sans-pro">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-source-sans-pro">{% trans "Source Sans Pro" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-montserrat-alt" name="font-family" value="21" data-font-family="app-font-family-montserrat-alt">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat-alt">{% trans "Montserrat Alt" %}</label>
+                        </div>
+                        <div class="col-6 text-center single-option">
+                            <input type="radio" class="btn-check" id="app-font-family-roboto-slab" name="font-family" value="22" data-font-family="app-font-family-roboto-slab">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto-slab">{% trans "Roboto Slab" %}</label>
+                        </div>
+                    </div>
+                </div>
+                <!--! END: [Typography] !-->
+            </div>
+            <div class="customizer-sidebar-footer px-4 ht-60 border-top d-flex align-items-center gap-2">
+                <div class="flex-fill w-50">
+                    <a href="javascript:void(0);" class="btn btn-danger" data-style="reset-all-common-style">{% trans "Reset" %}</a>
+                </div>
+                <div class="flex-fill w-50">
+                    <a href="{% url 'index' %}" target="_blank" class="btn btn-primary">{% trans "Download" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--! ================================================================ !-->
+    <!--! [End] Theme Customizer !-->
+    <!--! ================================================================ !-->
+    <!--! ================================================================ !-->
+    <!--! Footer Script !-->
+    <!--! ================================================================ !-->
+    <!--! BEGIN: Vendors JS !-->
+    <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
+    <!-- vendors.min.js {always must need to be top} -->
+    <!--! END: Vendors JS !-->
+    <!--! BEGIN: Apps Init  !-->
+    <script src="{% static 'assets/js/common-init.min.js' %}"></script>
+    <!--! END: Apps Init !-->
+    <!--! BEGIN: Theme Customizer  !-->
+    <script src="{% static 'assets/js/theme-customizer-init.min.js' %}"></script>
+    <!--! END: Theme Customizer !-->
+    {% if step == 'otp' %}
+    <script>
+        (function () {
+            var grid = document.getElementById('otp-grid');
+            var hidden = document.getElementById('otp_code_hidden');
+            var feedback = document.getElementById('otp-feedback');
+            if (!grid || !hidden) {
+                return;
+            }
+
+            var inputs = Array.prototype.slice.call(grid.querySelectorAll('.otp-digit'));
+            var hasDangerAlert = !!document.querySelector('.creative-card-body .alert-danger');
+
+            function sanitizeDigit(value) {
+                return (value || '').replace(/\D/g, '').slice(0, 1);
+            }
+
+            function syncHidden() {
+                var joined = inputs.map(function (input) {
+                    return sanitizeDigit(input.value);
+                }).join('');
+                hidden.value = joined;
+            }
+
+            inputs.forEach(function (input, index) {
+                input.addEventListener('input', function (e) {
+                    var digit = sanitizeDigit(e.target.value);
+                    e.target.value = digit;
+                    e.target.classList.toggle('is-filled', digit.length === 1);
+                    e.target.classList.remove('has-error');
+                    if (feedback) {
+                        feedback.style.display = 'none';
+                    }
+                    syncHidden();
+                    if (digit && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                        inputs[index + 1].select();
+                    }
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Backspace' && !input.value && index > 0) {
+                        inputs[index - 1].focus();
+                        inputs[index - 1].value = '';
+                        inputs[index - 1].classList.remove('is-filled');
+                        syncHidden();
+                    }
+                    if (e.key === 'ArrowLeft' && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                    if (e.key === 'ArrowRight' && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener('paste', function (e) {
+                    var data = (e.clipboardData || window.clipboardData).getData('text') || '';
+                    var digits = data.replace(/\D/g, '').slice(0, inputs.length).split('');
+                    if (!digits.length) {
+                        return;
+                    }
+                    e.preventDefault();
+                    inputs.forEach(function (field, fieldIndex) {
+                        field.value = digits[fieldIndex] || '';
+                        field.classList.toggle('is-filled', !!digits[fieldIndex]);
+                        field.classList.remove('has-error');
+                    });
+                    if (feedback) {
+                        feedback.style.display = 'none';
+                    }
+                    syncHidden();
+                    var nextIndex = Math.min(digits.length, inputs.length - 1);
+                    inputs[nextIndex].focus();
+                });
+            });
+
+            if (hasDangerAlert) {
+                inputs.forEach(function (input) {
+                    input.classList.add('has-error');
+                });
+            }
+
+            inputs[0].focus();
+        })();
+    </script>
+    {% endif %}
+</body>
+
+</html>
+
+
+
